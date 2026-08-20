@@ -1,0 +1,49 @@
+{% extends 'school_admin/base.html' %}
+
+{% block title %}Assignment Details{% endblock title %}
+
+{% block content %}
+
+<div class="flex-1 p-8">
+    <div class="px-10">
+        <div class="flex items-center justify-between mb-8">
+            <h1 class="text-3xl font-semibold text-slate-800">Assignment Details</h1>
+            <a href="{% url 'manage_assignments' %}" class="px-5 py-3 rounded-lg border border-slate-300 text-slate-700 font-medium hover:bg-slate-50">Back</a>
+        </div>
+        <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-8">
+            <h2 class="text-2xl font-semibold text-slate-800 mb-8">{{ assignment.title }}</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <p class="text-sm text-slate-500 mb-1">Subject</p>
+                    <p class="text-base font-medium text-slate-800">{{ assignment.subject.name }}</p>
+                </div>
+                <div>
+                    <p class="text-sm text-slate-500 mb-1">Teacher</p>
+                    <p class="text-base font-medium text-slate-800">{{ assignment.teacher.user.first_name }}</p>
+                </div>
+                <div>
+                    <p class="text-sm text-slate-500 mb-1">Class-Section</p>
+                    <p class="text-base font-medium text-slate-800">{{ assignment.class_section.schoolclass.name }} - {{ assignment.class_section.name }}</p>
+                </div>
+                <div>
+                    <p class="text-sm text-slate-500 mb-1">Assigned Date</p>
+                    <p class="text-base font-medium text-slate-800">{{ assignment.assigned_date }}</p>
+                </div>
+                <div>
+                    <p class="text-sm text-slate-500 mb-1">Due Date</p>
+                    <p class="text-base font-medium text-slate-800">{{ assignment.due_date }}</p>
+                </div>
+            </div>
+            <div class="mt-8 pt-8 border-t border-slate-200">
+                <h3 class="text-lg font-semibold text-slate-800 mb-3">Description</h3>
+                <div class="text-slate-600 leading-7 whitespace-pre-line">{{ assignment.description }}</div>
+            </div>
+            <div class="flex justify-end gap-4 mt-8 pt-6 border-t border-slate-200">
+                <a href="" class="px-5 py-3 rounded-lg bg-blue-600 text-white font-medium hover:bg-blue-700">Edit Assignment</a>
+                <a href="" class="px-5 py-3 rounded-lg bg-red-600 text-white font-medium hover:bg-red-700">Delete Assignment</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

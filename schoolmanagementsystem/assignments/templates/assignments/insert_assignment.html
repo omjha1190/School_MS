@@ -1,0 +1,68 @@
+{% extends 'school_admin/base.html' %}
+
+{% block title %}Add Assignment{% endblock title %}
+
+{% block content %}
+<div class="flex-1 p-8">
+    <div class="px-10">
+        <h1 class="text-3xl font-semibold text-slate-800 mb-8">Add Assignment</h1>
+        <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-8">
+            <form method="POST">
+                {% csrf_token %}
+                <div class="grid grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-2">Assignment Title</label>
+                        <input type="text" name="title" value="{{assignment.title}}" placeholder="Enter assignment title" class="w-full border border-slate-300 rounded-lg px-4 py-3">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-2">Subject</label>
+                        <select name="subject" class="w-full border border-slate-300 rounded-lg px-4 py-3">
+                            <option value="">Select Subject</option>
+                            {% for subject in subjects %}
+                                <option value="{{ subject.id }}" {% if assignment.subject.id == subject.id %}selected{% endif %}>
+                                    {{ subject.name }} 
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-2">Teacher</label>
+                        <select name="teacher" class="w-full border border-slate-300 rounded-lg px-4 py-3">
+                            <option value="">Select Teacher</option>
+                            {% for teacher in teachers %}
+                                <option value="{{ teacher.id }}" {% if assignment.teacher.id == teacher.id %}selected{% endif %}>
+                                    {{ teacher.user.first_name }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-2">Class-Section</label>
+                        <select name="class_section" class="w-full border border-slate-300 rounded-lg px-4 py-3">
+                            <option value="">Select Class-Section</option>
+                            {% for section in sections %}
+                                <option value="{{ section.id }}" {% if assignment.class_section.id == section.id %}selected{% endif %}>
+                                    {{ section.schoolclass.name }} - {{ section.name }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-2">Assigned Date</label>
+                        <input type="date" name="assigned_date" value="{{assignment.assigned_date|date:'Y-m-d'}}" class="w-full border border-slate-300 rounded-lg px-4 py-3">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-2">Due Date</label>
+                        <input type="date" name="due_date" value="{{ assignment.due_date|date:'Y-m-d' }}" class="w-full border border-slate-300 rounded-lg px-4 py-3">
+                    </div>
+                </div>
+                <div class="mt-6">
+                    <label class="block text-sm font-medium text-slate-700 mb-2">Description</label>
+                    <textarea name="description" rows="5" placeholder="Enter assignment details..." class="w-full border border-slate-300 rounded-lg px-4 py-3">{{assignment.description}}</textarea>
+                </div>
+                <button type="submit" class="w-full px-6 py-3 rounded-lg bg-slate-800 text-white font-medium hover:bg-slate-700 mt-4"> Save Assignment</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock content %}

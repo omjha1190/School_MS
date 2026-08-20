@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     "students",
     "academics",
     "attendance",
+    "assignments",
     "examinations",
     "notices",
     "transport",
