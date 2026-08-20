@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{% endblock title %}</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-slate-50 text-slate-900 font-sans">
+<div class="flex min-h-screen">
+    <div class="w-64 shrink-0 bg-slate-800 text-slate-100 ">
+        <div class="p-6 border-b border-slate-700">
+            <h1 class="text-xl font-medium">School Management</h1>
+            <p class="text-sm text-slate-300 mt-1">Student Panel</p>
+        </div>
+        <nav class="p-4 space-y-2">
+            <a href="{% url 'student_dashboard' %}" class="block px-4 py-3 rounded-lg text-slate-300 hover:bg-slate-700">Dashboard</a>
+            <a href="#" class="block px-4 py-3 rounded-lg text-slate-300 hover:bg-slate-700">My Profile</a>
+            <a href="#" class="block px-4 py-3 rounded-lg text-slate-300 hover:bg-slate-700">My Class</a>
+            <a href="#" class="block px-4 py-3 rounded-lg text-slate-300 hover:bg-slate-700">Subjects</a>
+            <a href="#" class="block px-4 py-3 rounded-lg text-slate-300 hover:bg-slate-700">Attendance</a>
+            <a href="#" class="block px-4 py-3 rounded-lg text-slate-300 hover:bg-slate-700">Assignments</a>
+            <a href="#" class="block px-4 py-3 rounded-lg text-slate-300 hover:bg-slate-700">Examinations</a>
+            <a href="#" class="block px-4 py-3 rounded-lg text-slate-300 hover:bg-slate-700">Results</a>
+            <a href="#" class="block px-4 py-3 rounded-lg text-slate-300 hover:bg-slate-700">Timetable</a>
+            <a href="#" class="block px-4 py-3 rounded-lg text-slate-300 hover:bg-slate-700">Notices</a>
+        </nav>
+    </div>
+            {% block content %}
+            {% endblock content %}
+</div>
+</body>
+</html>

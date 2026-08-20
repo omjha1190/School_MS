@@ -1,0 +1,66 @@
+{% extends 'school_admin/base.html' %}
+
+{% block title %}Manage Drivers{% endblock title %}
+
+{% block content %}
+<div class="flex-1">
+    <div class="flex items-center justify-between bg-white px-8 py-6 shadow-lg mb-8">
+        <h1 class="text-3xl font-semibold text-slate-800">Manage Drivers</h1>
+        <a href="{% url 'insert_driver' %}" class="px-5 py-3 rounded-lg bg-slate-800 text-white font-medium hover:bg-slate-700 transition">+ Add Driver</a>
+    </div>
+    <div class="px-8 pb-10">
+        {% if drivers %}
+        <div class="grid grid-cols-2 gap-6">
+            {% for driver in drivers %}
+            <div class="bg-white rounded-2xl border border-slate-200 shadow-md hover:shadow-xl hover:-translate-y-1 transition duration-300 overflow-hidden">
+                <div class="grid grid-cols-12 min-h-[300px]">
+                    <div class="col-span-5 bg-slate-100 flex items-center justify-center p-5">
+                        {% if driver.cover_image %}
+                            <img src="{{ driver.cover_image.url }}" alt="{{ driver.name }}" class="w-full h-full max-h-[270px] object-cover rounded-xl">
+                        {% else %}
+                            <div class="w-full h-full max-h-[270px] rounded-xl bg-slate-200 flex flex-col items-center justify-center">
+                                <p class="text-lg text-slate-600 mt-3">No Photo</p>
+                            </div>
+                        {% endif %}
+                    </div>
+                    <div class="col-span-7 p-6 flex flex-col justify-between">
+                        <div>
+                            <div class="mb-5">
+                                <p class="text-xs uppercase tracking-wider text-slate-400 font-medium">Driver</p>
+                                <h2 class="text-2xl font-semibold text-slate-800 mt-1">{{ driver.name }}</h2>
+                            </div>
+                            <div class="border-t border-slate-100 py-3">
+                                <p class="text-xs text-slate-400 mb-1">Phone Number</p>
+                                <p class="text-sm font-medium text-slate-700">{{ driver.phone }}</p>
+                            </div>
+                            <div class="border-t border-slate-100 py-3">
+                                <p class="text-xs text-slate-400 mb-1">License Number</p>
+                                <p class="text-sm font-medium text-slate-700">{{ driver.license_number }}</p>
+                            </div>
+                            <div class="border-t border-slate-100 py-3">
+                                <p class="text-xs text-slate-400 mb-1">Address</p>
+                                <p class="text-sm text-slate-600 leading-5">{{ driver.address }}</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-3 pt-4 border-t border-slate-100">
+                            <a href="{% url "edit_driver" driver.id %}" class="flex-1 text-center px-4 py-2 rounded-lg border border-slate-300 text-slate-700 text-sm font-medium hover:bg-slate-50 transition">Edit</a>
+                            <a href="{% url "delete_driver" driver.id %}" class="flex-1 text-center px-4 py-2 rounded-lg bg-red-50 text-red-600 text-sm font-medium hover:bg-red-100 transition">Delete</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-md py-20 text-center">
+            <div class="w-20 h-20 mx-auto rounded-full bg-slate-100 flex items-center justify-center">
+                <span class="text-3xl text-slate-400">D</span>
+            </div>
+            <h2 class="text-xl font-semibold text-slate-700 mt-5">No Drivers Found</h2>
+            <p class="text-sm text-slate-400 mt-2">Add a driver to start managing your school bus drivers.</p>
+            <a href="{% url 'insert_driver' %}" class="inline-block mt-6 px-5 py-3 rounded-lg bg-slate-800 text-white font-medium hover:bg-slate-700 transition">Add Driver</a>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock content %}

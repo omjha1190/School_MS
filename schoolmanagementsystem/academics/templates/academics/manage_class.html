@@ -1,0 +1,64 @@
+{% extends 'school_admin/base.html' %}
+
+{% block title %}Add Class{% endblock title %}
+
+
+{% block content %}
+<div class="flex-1 ">
+    <div>
+        <div class="flex items-center bg-white px-8 py-5 shadow-lg mb-10">
+            <h1 class="text-3xl font-semibold text-slate-800">Manage Classes</h1>
+        </div>
+        <div class="px-10">
+            <div class="flex justify-end gap-3 mb-4">
+            <a href="{% url 'insert_class' %}" class="px-5 py-3 bg-slate-800 text-white rounded-lg font-medium hover:bg-slate-700">+ Add Class</a>
+            <a href="{% url 'insert_section' %}" class="px-5 py-3 bg-slate-800 text-white rounded-lg font-medium hover:bg-slate-700">+ Add Section</a>
+            <a href="{% url 'insert_subject' %}" class="px-5 py-3 bg-slate-800 text-white rounded-lg font-medium hover:bg-slate-700">+ Add Subject</a>
+        </div>
+        <div class="bg-white rounded-xl border border-slate-200 shadow-sm">
+            <table class="w-full">
+                <thead class="bg-slate-50 border-b border-slate-200">
+                    <tr>
+                        <th class="text-left px-6 py-4 text-sm font-semibold text-slate-700">ID</th>
+                        <th class="text-left px-6 py-4 text-sm font-semibold text-slate-700">Class Name</th>
+                        <th class="text-left px-6 py-4 text-sm font-semibold text-slate-700">Sections</th>
+                        <th class="text-left px-6 py-4 text-sm font-semibold text-slate-700">Subject</th>
+                        <th class="text-right px-6 py-4 text-sm font-semibold text-slate-700">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for classes  in schoolclass %}
+                        <tr class="hover:bg-slate-50">
+                            <td class="px-6 py-4 text-sm text-slate-500 border-b border-stone-200">{{ classes.id }}</td>
+                            <td class="px-6 py-4 border-b border-stone-200">
+                                <p class="text-sm font-medium text-slate-800">{{ classes.name }}</p>
+                            </td>
+                            <td class="px-3 py-4 border-b border-stone-200">
+                                {% for section in classes.section_set.all %}
+                                    <span>{{ section.name }}</span>{% if not forloop.last %}, {% endif %}
+                                {% empty %}
+                                    <span class="text-stone-400">No Section</span>
+                                {% endfor %}
+                            </td>
+                            <td class="px-3 py-4 border-b border-stone-200">
+                                {% for subject in classes.subject_set.all %}
+                                    <span>{{ subject.name }}</span>{% if not forloop.last %}, {% endif %}
+                                {% empty %}
+                                    <span class="text-stone-400">No Subject</span>
+                                {% endfor %}
+                            </td>
+                            <td class="px-6 py-4 border-b border-stone-200">
+                                <div class="flex justify-end gap-2">
+                                    <a href="{% url "edit_class" classes.id %}" class="px-4 py-2 text-sm border border-emerald-400 rounded-lg text-emerald-600 hover:bg-emerald-100">Edit</a>
+                                    <a href="{% url "delete_class" classes.id %}"  class="px-4 py-2 text-sm border border-red-400 rounded-lg text-red-600 hover:bg-red-100">Delete</a>
+                                </div>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}
