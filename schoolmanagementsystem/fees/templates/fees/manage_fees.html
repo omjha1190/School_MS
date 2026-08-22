@@ -1,0 +1,68 @@
+{% extends 'school_admin/base.html' %}
+
+{% block title %}Manage Fees{% endblock title %}
+
+{% block content %}
+
+<div class="flex-1 p-8">
+    <div class="px-10">
+        <div class="flex items-center justify-between mb-8">
+            <h1 class="text-3xl font-semibold text-slate-800">Manage Fees</h1>
+            <a href="{% url 'insert_fee' %}" class="px-5 py-3 rounded-lg bg-slate-800 text-white font-medium hover:bg-slate-700">Add Fee</a>
+        </div>
+        <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+            <div class="overflow-x-auto">
+                <table class="w-full">
+                    <thead class="bg-slate-50 border-b border-slate-200">
+                        <tr>
+                            <th class="text-left px-6 py-4 text-sm font-semibold text-slate-700">Student</th>
+                            <th class="text-left px-6 py-4 text-sm font-semibold text-slate-700">Fee Type</th>
+                            <th class="text-left px-6 py-4 text-sm font-semibold text-slate-700">Amount</th>
+                            <th class="text-left px-6 py-4 text-sm font-semibold text-slate-700">Due Date</th>
+                            <th class="text-left px-6 py-4 text-sm font-semibold text-slate-700">Paid Date</th>
+                            <th class="text-left px-6 py-4 text-sm font-semibold text-slate-700">Status</th>
+                            <th class="text-left px-6 py-4 text-sm font-semibold text-slate-700">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-200">
+                        {% for fee in fees %}
+                        <tr class="hover:bg-slate-50">
+                            <td class="px-6 py-4 text-sm font-medium text-slate-800">{{ fee.student }}</td>
+                            <td class="px-6 py-4 text-sm text-slate-600">{{ fee.fee_type }}</td>
+                            <td class="px-6 py-4 text-sm text-slate-600">₹ {{ fee.amount }}</td>
+                            <td class="px-6 py-4 text-sm text-slate-600">{{ fee.due_date }}</td>
+                            <td class="px-6 py-4 text-sm text-slate-600">
+                                {% if fee.paid_date %}
+                                    {{ fee.paid_date }}
+                                {% else %}
+                                    -
+                                {% endif %}
+                            </td>
+                            <td class="px-6 py-4 text-sm">
+                                {% if fee.status == "Paid" %}
+                                    <span class="px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-700">Paid</span>
+                                {% else %}
+                                    <span class="px-3 py-1 rounded-full text-xs font-medium bg-amber-100 text-amber-700">Pending</span>
+                                {% endif %}
+                            </td>
+                            <td class="px-6 py-4 border-b border-stone-200">
+                                <div class="flex gap-2">
+                                    <a href="{% url "fees_history" fee.id %}" class="px-4 py-2 text-sm border border-sky-400 rounded-lg text-sky-600 hover:bg-sky-100">History</a>
+                                    <a href="{% url "edit_fee" fee.id %}" class="px-4 py-2 text-sm border border-emerald-400 rounded-lg text-emerald-600 hover:bg-emerald-100">Edit</a>
+                                    <a href="{% url "delete_fee" fee.id %}" onclick="return confirm('Are you sure you want to delete this fee of {{ fee.student.user.first_name }} ?')" class="px-4 py-2 text-sm border border-red-400 rounded-lg text-red-600 hover:bg-red-100">Delete</a>
+                                </div>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="7" class="px-6 py-12 text-center text-slate-500">No fees found.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

@@ -12,6 +12,7 @@ urlpatterns = [
     path('attendance/', include('attendance.urls')),
     path('examination/', include('examinations.urls')),
     path('notices/', include('notices.urls')),
+    path('fees/', include('fees.urls')),
     path('transport/', include('transport.urls')),
     path('assignments/', include('assignments.urls')),
 ]

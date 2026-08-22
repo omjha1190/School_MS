@@ -1,0 +1,60 @@
+{% extends 'school_admin/base.html' %}
+
+{% block title %}Fee History{% endblock title %}
+
+{% block content %}
+<div class="flex-1 p-8">
+    <div class="px-10">
+        <div class="flex items-center justify-between mb-8">
+            <h1 class="text-3xl font-semibold text-slate-800">Fee History</h1>
+            <a href="{% url 'manage_fees' %}" class="px-5 py-3 rounded-lg border border-slate-300 text-slate-700 font-medium hover:bg-slate-50">Back</a>
+        </div>
+        <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-6 mb-6">
+            <h2 class="text-xl font-semibold text-slate-800">{{ student }}</h2>
+            <p class="text-sm text-slate-500 mt-1">Fee Payment History</p>
+        </div>
+        <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+            <div class="overflow-x-auto">
+                <table class="w-full">
+                    <thead class="bg-slate-50 border-b border-slate-200">
+                        <tr>
+                            <th class="text-left px-6 py-4 text-sm font-semibold text-slate-700">Fee Type</th>
+                            <th class="text-left px-6 py-4 text-sm font-semibold text-slate-700">Amount</th>
+                            <th class="text-left px-6 py-4 text-sm font-semibold text-slate-700">Due Date</th>
+                            <th class="text-left px-6 py-4 text-sm font-semibold text-slate-700">Paid Date</th>
+                            <th class="text-left px-6 py-4 text-sm font-semibold text-slate-700">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-200">
+                        {% for fee in fees %}
+                        <tr class="hover:bg-slate-50">
+                            <td class="px-6 py-4 text-sm font-medium text-slate-800">{{ fee.fee_type }}</td>
+                            <td class="px-6 py-4 text-sm text-slate-600">₹{{ fee.amount }}</td>
+                            <td class="px-6 py-4 text-sm text-slate-600">{{ fee.due_date }}</td>
+                            <td class="px-6 py-4 text-sm text-slate-600">
+                                {% if fee.paid_date %}
+                                    {{ fee.paid_date }}
+                                {% else %}
+                                    -
+                                {% endif %}
+                            </td>
+                            <td class="px-6 py-4">
+                                {% if fee.status == "Paid" %}
+                                    <span class="px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-700">Paid</span>
+                                {% else %}
+                                    <span class="px-3 py-1 rounded-full text-xs font-medium bg-yellow-100 text-yellow-700">Pending</span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="5" class="px-6 py-12 text-center text-slate-500">No fee history found.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}
