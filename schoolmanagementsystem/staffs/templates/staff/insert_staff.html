@@ -25,7 +25,7 @@
                         <select name="staff_type" class="w-full border border-slate-300 rounded-lg px-4 py-3">
                             <option value="">Select Staff Type</option>
                             {% for value, label in staff_types %}
-                                <option value="{{ value }}" {% if staff.staff_type == value %}selected{% endif %}>
+                                <option value="{{ value }}" {% if staff.staff_types == value %}selected{% endif %}>
                                     {{ label }}
                                 </option>
                             {% endfor %}
