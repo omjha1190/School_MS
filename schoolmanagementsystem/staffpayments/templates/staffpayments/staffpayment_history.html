@@ -3,195 +3,75 @@
 {% block title %}Payment History{% endblock title %}
 
 {% block content %}
-
 <div class="flex-1 p-8">
-
     <div class="px-10">
-
-        <!-- Header -->
         <div class="mb-8">
-            <h1 class="text-3xl font-semibold text-slate-800">
-                Payment History
-            </h1>
-
-            <p class="text-sm text-slate-500 mt-1">
-                Payment history of {{ staff.name }}
-            </p>
+            <h1 class="text-3xl font-semibold text-slate-800">Payment History</h1>
+            <p class="text-sm text-slate-500 mt-1">Payment history of {{ staff.name }}</p>
         </div>
-
-
-        <!-- Staff Information -->
         <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-6 mb-6">
-
             <div class="flex items-center gap-5">
-
                 {% if staff.cover_image %}
-                    <img
-                        src="{{ staff.cover_image.url }}"
-                        alt="{{ staff.name }}"
-                        class="w-16 h-16 rounded-full object-cover">
+                    <img src="{{ staff.cover_image.url }}" alt="{{ staff.name }}" class="w-16 h-16 rounded-full object-cover">
                 {% else %}
                     <div class="w-16 h-16 rounded-full bg-slate-200 flex items-center justify-center">
-                        <span class="text-xl font-semibold text-slate-600">
-                            {{ staff.name|first|upper }}
-                        </span>
+                        <span class="text-xl font-semibold text-slate-600">{{ staff.name|first|upper }}</span>
                     </div>
                 {% endif %}
-
                 <div>
-                    <h2 class="text-xl font-semibold text-slate-800">
-                        {{ staff.name }}
-                    </h2>
-
-                    <p class="text-sm text-slate-500">
-                        {{ staff.staff_type }}
-                    </p>
+                    <h2 class="text-xl font-semibold text-slate-800">{{ staff.name }}</h2>
+                    <p class="text-sm text-slate-500">{{ staff.staff_type }}</p>
                 </div>
-
             </div>
-
         </div>
-
-
-        <!-- Payment History -->
         <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
-
             <div class="px-6 py-5 border-b border-slate-200">
-                <h2 class="text-lg font-semibold text-slate-800">
-                    Payment Records
-                </h2>
+                <h2 class="text-lg font-semibold text-slate-800">Payment Records</h2>
             </div>
-
-
             {% if payments %}
-
                 <div class="overflow-x-auto">
-
                     <table class="w-full text-sm">
-
                         <thead class="bg-slate-50">
-
                             <tr class="text-left text-slate-600">
-
-                                <th class="px-6 py-4 font-medium">
-                                    Payment Date
-                                </th>
-
-                                <th class="px-6 py-4 font-medium">
-                                    Basic Salary
-                                </th>
-
-                                <th class="px-6 py-4 font-medium">
-                                    Allowances
-                                </th>
-
-                                <th class="px-6 py-4 font-medium">
-                                    Deductions
-                                </th>
-
-                                <th class="px-6 py-4 font-medium">
-                                    Net Salary
-                                </th>
-
-                                <th class="px-6 py-4 font-medium">
-                                    Method
-                                </th>
-
-                                <th class="px-6 py-4 font-medium">
-                                    Status
-                                </th>
-
+                                <th class="px-6 py-4 font-medium">Payment Date</th>
+                                <th class="px-6 py-4 font-medium">Basic Salary</th>
+                                <th class="px-6 py-4 font-medium">Allowances</th>
+                                <th class="px-6 py-4 font-medium">Deductions</th>
+                                <th class="px-6 py-4 font-medium">Net Salary</th>
+                                <th class="px-6 py-4 font-medium">Method</th>
+                                <th class="px-6 py-4 font-medium">Status</th>
                             </tr>
-
                         </thead>
-
-
                         <tbody class="divide-y divide-slate-200">
-
                             {% for payment in payments %}
-
                                 <tr class="hover:bg-slate-50">
-
-                                    <td class="px-6 py-4 text-slate-700">
-                                        {{ payment.payment_date|date:"d M Y" }}
-                                    </td>
-
-                                    <td class="px-6 py-4 text-slate-700">
-                                        ₹{{ payment.basic_salary }}
-                                    </td>
-
-                                    <td class="px-6 py-4 text-slate-700">
-                                        ₹{{ payment.allowances }}
-                                    </td>
-
-                                    <td class="px-6 py-4 text-slate-700">
-                                        ₹{{ payment.deductions }}
-                                    </td>
-
-                                    <td class="px-6 py-4 font-semibold text-slate-800">
-                                        ₹{{ payment.net_salary }}
-                                    </td>
-
-                                    <td class="px-6 py-4 text-slate-700">
-                                        {{ payment.payment_method }}
-                                    </td>
-
+                                    <td class="px-6 py-4 text-slate-700">{{ payment.payment_date|date:"d M Y" }}</td>
+                                    <td class="px-6 py-4 text-slate-700">₹{{ payment.basic_salary }}</td>
+                                    <td class="px-6 py-4 text-slate-700">₹{{ payment.allowances }}</td>
+                                    <td class="px-6 py-4 text-slate-700">₹{{ payment.deductions }}</td>
+                                    <td class="px-6 py-4 font-semibold text-slate-800">₹{{ payment.net_salary }}</td>
+                                    <td class="px-6 py-4 text-slate-700">{{ payment.payment_method }}</td>
                                     <td class="px-6 py-4">
-
                                         {% if payment.status == "Paid" %}
-
-                                            <span class="px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-700">
-                                                Paid
-                                            </span>
-
+                                            <span class="px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-700">Paid</span>
                                         {% else %}
-
-                                            <span class="px-3 py-1 rounded-full text-xs font-medium bg-yellow-100 text-yellow-700">
-                                                Pending
-                                            </span>
-
+                                            <span class="px-3 py-1 rounded-full text-xs font-medium bg-yellow-100 text-yellow-700">Pending</span>
                                         {% endif %}
-
                                     </td>
-
                                 </tr>
-
                             {% endfor %}
-
                         </tbody>
-
                     </table>
-
                 </div>
-
             {% else %}
-
                 <div class="p-10 text-center">
-
-                    <p class="text-slate-500">
-                        No payment history found for {{ staff.name }}.
-                    </p>
-
+                    <p class="text-slate-500">No payment history found for {{ staff.name }}.</p>
                 </div>
-
             {% endif %}
-
         </div>
-
-
-        <!-- Back Button -->
         <div class="mt-6">
-
-            <a
-                href="{% url 'manage_staffpayments' %}"
-                class="inline-block px-5 py-3 rounded-lg border border-slate-300 text-slate-700 font-medium hover:bg-slate-50">
-                Back to Payments
-            </a>
-
+            <a href="{% url 'manage_staffpayments' %}" class="inline-block px-5 py-3 rounded-lg border border-slate-300 text-slate-700 font-medium hover:bg-slate-50">Back to Payments</a>
         </div>
-
-    </div>
-
+    </div>  
 </div>
-
 {% endblock content %}
