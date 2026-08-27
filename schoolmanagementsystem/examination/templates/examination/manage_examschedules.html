@@ -1,0 +1,79 @@
+{% extends 'school_admin/base.html' %}
+
+{% block title %}Manage Exam Schedule{% endblock title %}
+
+{% block content %}
+
+<div class="flex-1 bg-white">
+    <div class="bg-white px-8 py-5 shadow-sm mb-8 flex items-center justify-between">
+        <div>
+            <h1 class="text-3xl font-bold text-slate-900">Exam Schedule</h1>
+            <p class="text-sm text-slate-600 mt-1">Manage examination dates, timings and rooms</p>
+        </div>
+        <a href="{% url 'insert_examschedule' %}"
+           class="px-5 py-3 rounded-lg bg-indigo-600 text-white font-semibold hover:bg-indigo-700 transition">+ Add Schedule</a>
+    </div>
+    <div class="px-8 pb-10">
+        <div class="grid grid-cols-2 gap-6">
+            {% for schedule in examschedules %}
+            <div class="bg-white rounded-xl border border-slate-200 shadow-sm hover:shadow-md transition overflow-hidden">
+                <div class="bg-indigo-50 p-5">
+                    <div class="flex items-start justify-between">
+                        <div>
+                            <p class="text-xs font-bold uppercase tracking-wide text-indigo-600">Examination</p>
+                            <h2 class="text-xl font-bold text-slate-900 mt-1">{{ schedule.exam.exam_name }}</h2>
+                        </div>
+                        <span class="px-3 py-1 rounded-full bg-white text-indigo-700 text-xs font-bold shadow-sm">{{ schedule.section.schoolclass.name }}</span>
+                    </div>
+                    <div class="mt-4">
+                        <p class="text-xs font-semibold text-indigo-600">Subject</p>
+                        <p class="text-lg font-bold text-slate-900 mt-1">{{ schedule.subject.name }}</p>
+                    </div>
+                </div>
+                <div class="p-5">
+                    <div class="grid grid-cols-2 gap-3">
+                        <div class="bg-blue-50 rounded-lg p-4">
+                            <p class="text-xs font-semibold text-blue-700">Exam Date</p>
+                            <p class="text-sm font-bold text-slate-900 mt-1">{{ schedule.exam_date }}</p>
+                        </div>
+                        <div class="bg-purple-50 rounded-lg p-4">
+                            <p class="text-xs font-semibold text-purple-700">Section</p>
+                            <p class="text-sm font-bold text-slate-900 mt-1">{{ schedule.section.name }}</p>
+                        </div>
+                        <div class="bg-amber-50 rounded-lg p-4">
+                            <p class="text-xs font-semibold text-amber-700">Time</p>
+                            <p class="text-sm font-bold text-slate-900 mt-1">{{ schedule.start_time }} - {{ schedule.end_time }}</p>
+                        </div>
+                        <div class="bg-emerald-50 rounded-lg p-4">
+                            <p class="text-xs font-semibold text-emerald-700">Room No</p>
+                            <p class="text-sm font-bold text-slate-900 mt-1">{{ schedule.room_no }}</p>
+                        </div>
+                    </div>
+                    <div class="mt-4 bg-slate-50 rounded-lg p-4 flex items-center justify-between">
+                        <div>
+                            <p class="text-xs font-semibold text-slate-600">Maximum Marks</p>
+                            <p class="text-lg font-bold text-slate-900 mt-1">{{ schedule.max_marks }}</p>
+                        </div>
+                        <div class="text-3xl">📝</div>
+                    </div>
+                </div>
+                <div class="px-5 py-4 bg-slate-50 flex items-center justify-between">
+                    <div class="text-xs font-semibold text-slate-600">{{ schedule.exam.academic_year }}</div>
+                    <div class="flex gap-3">
+                        <a href="{% url "edit_examschedule" schedule.id %}" class="px-4 py-2 rounded-lg bg-emerald-100 text-emerald-800 text-sm font-semibold hover:bg-emerald-200">Edit</a>
+                        <a href="{% url "delete_examschedule" schedule.id %}" onclick="return confirm('Are you sure you want to delete this exam schedule?')" class="px-4 py-2 rounded-lg bg-red-100 text-red-800 text-sm font-semibold hover:bg-red-200">Delete</a>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <div class="col-span-2 py-16 text-center border border-slate-200 rounded-xl">
+                <div class="text-4xl mb-4">📅</div>
+                <h2 class="text-xl font-bold text-slate-900">No Exam Schedules</h2>
+                <p class="text-sm text-slate-600 mt-2">Start by adding an examination schedule.</p>
+                <a href="{% url 'insert_examschedule' %}" class="inline-block mt-5 px-5 py-2.5 rounded-lg bg-indigo-600 text-white font-semibold hover:bg-indigo-700">+ Add Schedule</a>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock content %}

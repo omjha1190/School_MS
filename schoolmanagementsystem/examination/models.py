@@ -34,7 +34,7 @@ class ExamSchedule(models.Model):
     exam_date = models.DateField()
     start_time = models.TimeField()
     end_time = models.TimeField()
-    room = models.CharField(max_length=100)
+    room_no = models.CharField(max_length=100)
     max_marks = models.DecimalField(max_digits=5, decimal_places=2)
 
     def __str__(self):

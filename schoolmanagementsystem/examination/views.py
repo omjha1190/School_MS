@@ -68,3 +68,60 @@ def delete_exam(req, id):
     except Exam.DoesNotExist:
         data ['error'] = "This exam is not available"
     return redirect("manage_exams")
+
+def insert_examschedule(req):
+    data = {
+        "exams" : Exam.objects.all(),
+        "sections" : Section.objects.all(),
+        "subjects" : Subject.objects.all()
+    }
+    if req.method == "POST":
+        examschedule = ExamSchedule()
+        examschedule.exam = Exam.objects.get(id=req.POST.get('exam'))
+        examschedule.section = Section.objects.get(id=req.POST.get('section'))
+        examschedule.subject = Subject.objects.get(id=req.POST.get('subject'))
+        examschedule.exam_date = req.POST.get('exam_date')
+        examschedule.start_time = req.POST.get('start_time')
+        examschedule.end_time = req.POST.get('end_time')
+        examschedule.room_no = req.POST.get('room_no')
+        examschedule.max_marks = req.POST.get('max_marks')
+        examschedule.save()
+        return redirect("manage_examschedules")
+    return render(req, "examination/insert_examschedule.html", data)
+
+def manage_examschedules(req):
+    data = {
+        "examschedules" : ExamSchedule.objects.all(),
+    }
+    return render(req, "examination/manage_examschedules.html", data)
+
+def edit_examschedule(req, id):
+    data = {
+        "examschedule" : ExamSchedule.objects.get(id=id),
+        "exams" : Exam.objects.all(),
+        "sections" : Section.objects.all(),
+        "subjects" : Subject.objects.all()
+    }
+    if req.method == "POST":
+        examschedule = ExamSchedule.objects.get(id=id)
+        examschedule.exam = Exam.objects.get(id=req.POST.get('exam'))
+        examschedule.section = Section.objects.get(id=req.POST.get('section'))
+        examschedule.subject = Subject.objects.get(id=req.POST.get('subject'))
+        examschedule.exam_date = req.POST.get('exam_date')
+        examschedule.start_time = req.POST.get('start_time')
+        examschedule.end_time = req.POST.get('end_time')
+        examschedule.room_no = req.POST.get('room_no')
+        examschedule.max_marks = req.POST.get('max_marks')
+        examschedule.save()
+        return redirect("manage_examschedules")
+    return render(req, "examination/insert_examschedule.html", data)
+
+def delete_examschedule(req, id):
+    data = {}
+    try:
+        examschedule = ExamSchedule.objects.get(id=id)
+        examschedule.delete()
+        return redirect("manage_examschedules")
+    except ExamSchedule.DoesNotExist:
+        data ['error'] = "This exam is not available."
+    return redirect("manage_examschedules")
