@@ -1,0 +1,92 @@
+{% extends 'school_admin/base.html' %}
+
+{% block title %}Exam Details{% endblock title %}
+
+{% block content %}
+<div class="flex-1 bg-white">
+    <div class="bg-white px-8 py-5 shadow-sm mb-8">
+        <div class="flex items-center justify-between">
+            <div>
+                <p class="text-sm font-semibold text-indigo-600 mb-1">EXAM DETAILS</p>
+                <h1 class="text-3xl font-bold text-slate-900">{{ exam.exam_name }}</h1>
+                <p class="text-sm text-slate-600 mt-1">Academic Year: {{ exam.academic_year }}</p>
+            </div>
+            <a href="{% url 'manage_exams' %}" class="px-4 py-2 rounded-lg bg-slate-100 text-slate-700 font-semibold hover:bg-slate-200">← Back</a>
+        </div>
+    </div>
+    <div class="px-8 pb-10">
+        <div class="max-w-5xl mx-auto">
+            <div class="bg-indigo-50 rounded-xl p-6 mb-6">
+                <div class="flex items-center justify-between mb-5">
+                    <h2 class="text-lg font-bold text-slate-900">Examination Information</h2>
+                    <span class="px-4 py-1.5 rounded-full bg-blue-100 text-blue-800 text-sm font-semibold">{{ exam.status }}</span>
+                </div>
+                <div class="grid grid-cols-4 gap-4">
+                    <div class="bg-white rounded-lg p-4">
+                        <p class="text-xs font-semibold text-indigo-600">Academic Year</p>
+                        <p class="text-sm font-bold text-slate-900 mt-1">{{ exam.academic_year }}</p>
+                    </div>
+                    <div class="bg-white rounded-lg p-4">
+                        <p class="text-xs font-semibold text-blue-600">Start Date</p>
+                        <p class="text-sm font-bold text-slate-900 mt-1">{{ exam.start_date }}</p>
+                    </div>
+                    <div class="bg-white rounded-lg p-4">
+                        <p class="text-xs font-semibold text-purple-600">End Date</p>
+                        <p class="text-sm font-bold text-slate-900 mt-1">{{ exam.end_date }}</p>
+                    </div>
+                    <div class="bg-white rounded-lg p-4">
+                        <p class="text-xs font-semibold text-pink-600">Exam Mode</p>
+                        <p class="text-sm font-bold text-slate-900 mt-1">{{ exam.mode }}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-violet-50 rounded-xl p-6 mb-6">
+                <div class="flex items-center justify-between mb-4">
+                    <h2 class="text-lg font-bold text-slate-900">Classes</h2>
+                    <span class="px-3 py-1 rounded-full bg-violet-100 text-violet-800 text-xs font-bold">{{ exam.schoolclass.count }} Classes</span>
+                </div>
+                <div class="flex flex-wrap gap-3">
+                    {% for schoolclass in exam.schoolclass.all %}
+                    <div class="px-4 py-2 rounded-lg bg-white text-violet-800 font-semibold shadow-sm">{{ schoolclass.name }}</div>
+                    {% empty %}
+                    <p class="text-sm text-slate-500">No classes assigned.</p>
+                    {% endfor %}
+                </div>
+            </div>
+            {% if exam.description %}
+            <div class="bg-amber-50 rounded-xl p-6 mb-6">
+                <div class="flex items-center justify-between mb-4">
+                    <h2 class="text-lg font-bold text-slate-900">Description</h2>
+                    <span class="px-3 py-1 rounded-md bg-amber-100 text-amber-800 text-xs font-semibold">About this exam</span>
+                </div>
+                <div class="bg-white rounded-lg p-5">
+                    <p class="text-sm font-medium text-slate-800 leading-7 whitespace-pre-line">{{ exam.description }}</p>
+                </div>
+            </div>
+            {% endif %}
+            {% if exam.instructions %}
+            <div class="bg-emerald-50 rounded-xl p-6 mb-6">
+                <div class="flex items-center justify-between mb-4">
+                    <h2 class="text-lg font-bold text-slate-900">Instructions</h2>
+                    <span class="px-3 py-1 rounded-md bg-emerald-100 text-emerald-800 text-xs font-semibold">Important</span>
+                </div>
+                <div class="bg-white rounded-lg p-5">
+                    <p class="text-sm font-medium text-slate-800 leading-7 whitespace-pre-line">{{ exam.instructions }}</p>
+                </div>
+            </div>
+            {% endif %}
+            <div class="bg-slate-50 rounded-xl p-5
+                        flex items-center justify-between">
+                <div>
+                    <p class="text-sm font-bold text-slate-900">Exam Management</p>
+                    <p class="text-xs text-slate-600 mt-1">Update or remove this examination</p>
+                </div>
+                <div class="flex gap-3">
+                    <a href="{% url "view_exam" exam.id %}" class="px-5 py-2.5 rounded-lg bg-emerald-100 text-emerald-800 font-semibold hover:bg-emerald-200">Edit Exam</a>
+                    <a href="{% url "delete_exam" exam.id %}" onclick="return confirm('Are you sure you want to delete {{ exam.exam_name }}?')" class="px-5 py-2.5 rounded-lg bg-red-100 text-red-800 font-semibold hover:bg-red-200">Delete Exam</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}
