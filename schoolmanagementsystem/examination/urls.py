@@ -11,4 +11,9 @@ urlpatterns = [
     path("manage/examschedule/", views.manage_examschedules, name="manage_examschedules"),
     path("edit/examschedule/<int:id>/", views.edit_examschedule, name="edit_examschedule"),
     path("delete/examschedule/<int:id>/", views.delete_examschedule, name="delete_examschedule"),
+    path("insert/result/", views.insert_result, name="insert_result"),
+    path("manage/results/", views.manage_results, name="manage_results"),
+    path("view/results/<int:student_id>/<int:exam_id>/", views.view_result, name="view_result"),
+    path("edit/results/<int:id>/", views.edit_result, name="edit_result"),
+    path("delete/results/<int:id>/", views.delete_result, name="delete_result"),
 ]

@@ -1,0 +1,71 @@
+{% extends 'school_admin/base.html' %}
+
+{% block title %}Add Result{% endblock title %}
+
+{% block content %}
+<div class="flex-1 p-8">
+    <div class="px-10">
+        <h1 class="text-3xl font-semibold text-slate-800 mb-8">Add Result</h1>
+        <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-8">
+            <form method="POST">
+                {% csrf_token %}
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-2">Student</label>
+                        <select name="student" required class="w-full border border-slate-300 rounded-lg px-4 py-3">
+                            <option value="">Select Student</option>
+                            {% for student in students %}
+                                <option value="{{ student.id }}" {% if result.student.id == student.id %}selected{% endif %}>
+                                    {{ student }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-2">Exam</label>
+                        <select name="exam" required class="w-full border border-slate-300 rounded-lg px-4 py-3">
+                            <option value="">Select Exam</option>
+                            {% for exam in exams %}
+                                <option value="{{ exam.id }}" {% if result.exam.id == exam.id %}selected{% endif %}>
+                                    {{ exam.exam_name }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-2">Subject</label>
+                        <select name="subject" required class="w-full border border-slate-300 rounded-lg px-4 py-3">
+                            <option value="">Select Subject</option>
+                            {% for subject in subjects %}
+                                <option value="{{ subject.id }}" {% if result.subject.id == subject.id %}selected{% endif %}>
+                                    {{ subject.name }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-2">Marks</label>
+                        <input type="number" name="marks" step="0.01" min="0" value="{{result.marks}}" required placeholder="Enter marks obtained" class="w-full border border-slate-300 rounded-lg px-4 py-3">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-2">Grade</label>
+                        <select name="grade" required class="w-full border border-slate-300 rounded-lg px-4 py-3">
+                            <option value="">Select Grade</option>
+                            {% for value, label in grades %}
+                                <option value="{{ value }}" {% if result.grade == value %}selected{% endif %}>
+                                    {{ label }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-2">Remarks</label>
+                        <input type="text" name="remarks" value="{{result.remarks|default:"" }}" placeholder="Enter remarks" class="w-full border border-slate-300 rounded-lg px-4 py-3">
+                    </div>
+                </div>
+                <button type="submit" class="w-full px-6 py-3 rounded-lg bg-slate-800 text-white font-medium hover:bg-slate-700 mt-8">Save Result</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock content %}

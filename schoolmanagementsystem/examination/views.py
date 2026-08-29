@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from academics.models import SchoolClass, Section, Subject
 from students.models import Student
 from .models import Exam, ExamSchedule, Result
+from django.db.models import Q
 
 # Create your views here.
 def insert_exam(req):
@@ -125,3 +126,89 @@ def delete_examschedule(req, id):
     except ExamSchedule.DoesNotExist:
         data ['error'] = "This exam is not available."
     return redirect("manage_examschedules")
+
+def insert_result(req):
+    data = {
+        "students" : Student.objects.all(),
+        "exams" : Exam.objects.all(),
+        "subjects" : Subject.objects.all(),
+        "grades" : Result.GRADE_CHOICES
+    }
+    if req.method == "POST":
+        result = Result()
+        result.student = Student.objects.get(id=req.POST.get("student"))
+        result.exam = Exam.objects.get(id=req.POST.get("exam"))
+        result.subject = Subject.objects.get(id=req.POST.get("subject"))
+        result.marks = req.POST.get("marks")
+        result.grade = req.POST.get("grade")
+        result.remarks = req.POST.get("remarks")
+        result.save()
+        return redirect("manage_results")
+    return render(req, "examination/insert_result.html", data)
+
+def manage_results(req):
+    if req.GET.get("search"):
+        search = req.GET.get("search")
+        query = Q(student__user__first_name__icontains=search) | Q(student__schoolclass__name__icontains=search) |Q(student__section__name__icontains=search)
+        data = {
+            "results" : Result.objects.filter(query),
+            "search" : search
+        }
+    else : 
+        results = Result.objects.select_related("student", "exam", "student__section", "student__section__schoolclass").order_by("student", "exam")
+        unique_results = []
+        seen = set()
+
+        for result in results:
+            key = (result.student_id, result.exam_id)
+            if key not in seen:
+                unique_results.append(result)
+                seen.add(key)
+        data = {
+            "results": unique_results,
+        }
+    return render(req, "examination/manage_results.html", data)
+
+def view_result(req, student_id, exam_id):
+
+    student = Student.objects.get(id=student_id)
+    exam = Exam.objects.get(id=exam_id)
+
+    results = Result.objects.filter(student=student,exam=exam).select_related("subject")
+    data = {
+        "student": student,
+        "exam": exam,
+        "results": results,
+    }
+    return render(req,"examination/view_result.html",data)
+
+def edit_result(req, id):
+    result = Result.objects.get(id=id)
+
+    data = {
+        "result" : result,
+        "students" : Student.objects.all(),
+        "exams" : Exam.objects.all(),
+        "subjects" : Subject.objects.all(),
+        "grades" :  Result.GRADE_CHOICES
+    }
+    if req.method == "POST":
+        result.student = Student.objects.get(id=req.POST.get("student"))
+        result.exam = Exam.objects.get(id=req.POST.get("exam"))
+        result.subject = Subject.objects.get(id=req.POST.get("subject"))
+        result.marks = req.POST.get("marks")
+        result.grade = req.POST.get("grade")
+        result.remarks = req.POST.get("remarks") or None
+        result.save()
+        return redirect("manage_results")
+    return render(req, "examination/insert_result.html", data)
+
+def delete_result(req, id):
+    data = {}
+    try : 
+        result = Result.objects.get(id=id)
+        result.delete()
+        return redirect("manage_results")
+    except Result.DoesNotExist:
+        data ['error'] = "This result does not exit."
+    return redirect("manage_results")

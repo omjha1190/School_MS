@@ -1,0 +1,94 @@
+{% extends 'school_admin/base.html' %}
+
+{% block title %}Result Details{% endblock title %}
+
+{% block content %}
+<div class="flex-1 bg-white">
+    <div class="px-8 py-6 border-b border-slate-200">
+        <div class="flex items-center justify-between">
+            <h1 class="text-3xl font-bold text-slate-900">Result Details</h1>
+            <a href="{% url 'manage_results' %}" class="px-4 py-2 rounded-lg bg-slate-100 text-slate-800 font-semibold hover:bg-slate-200">← Back</a>
+        </div>
+    </div>
+    <div class="px-8 py-8">
+        <div class="bg-indigo-50 rounded-xl p-6 mb-8">
+            <div class="flex items-center gap-6">
+                {% if student.cover_image %}
+                    <img src="{{ student.cover_image.url }}" class="w-28 h-32 object-cover rounded-lg border-4 border-white shadow">
+                {% else %}
+                    <div class="w-28 h-32 rounded-lg bg-indigo-100 flex items-center justify-center text-4xl">👤</div>
+                {% endif %}
+                <div>
+                    <p class="text-xs font-bold uppercase tracking-wide text-indigo-600">Student</p>
+                    <h2 class="text-2xl font-bold text-slate-900 mt-1">
+                        {{ student.user.first_name }}
+                        {{ student.user.last_name }}
+                    </h2>
+                    <div class="flex items-center gap-3 mt-3">
+                        <span class="px-3 py-1 rounded-lg bg-purple-100 text-purple-800 text-sm font-bold">{{ student.section.schoolclass.name }}</span>
+                        <span class="px-3 py-1 rounded-lg bg-blue-100 text-blue-800 text-sm font-bold">Section {{ student.section.name }}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="grid grid-cols-3 gap-5 mb-8">
+            <div class="bg-blue-50 rounded-xl p-5">
+                <p class="text-xs font-bold text-blue-700">Examination</p>
+                <p class="text-lg font-bold text-slate-900 mt-1">{{ exam.exam_name }}</p>
+            </div>
+            <div class="bg-purple-50 rounded-xl p-5">
+                <p class="text-xs font-bold text-purple-700">Academic Year</p>
+                <p class="text-lg font-bold text-slate-900 mt-1">{{ exam.academic_year }}</p>
+            </div>
+            <div class="bg-emerald-50 rounded-xl p-5">
+                <p class="text-xs font-bold text-emerald-700">Status</p>
+                <p class="text-lg font-bold text-slate-900 mt-1">{{ exam.status }}</p>
+            </div>
+        </div>
+        <div class="bg-white border border-slate-200 rounded-xl shadow-sm overflow-hidden">
+            <div class="px-6 py-5 bg-slate-50">
+                <h2 class="text-xl font-bold text-slate-900">Subject Results</h2>
+                <p class="text-sm text-slate-600 mt-1">Marks and performance in each subject</p>
+            </div>
+            <table class="w-full text-left">
+                <thead class="bg-slate-100">
+                    <tr>
+                        <th class="px-6 py-4 text-xs font-bold uppercase text-slate-700">#</th>
+                        <th class="px-6 py-4 text-xs font-bold uppercase text-slate-700">Subject</th>
+                        <th class="px-6 py-4 text-xs font-bold uppercase text-slate-700">Marks</th>
+                        <th class="px-6 py-4 text-xs font-bold uppercase text-slate-700">Grade</th>
+                        <th class="px-6 py-4 text-xs font-bold uppercase text-slate-700">Remarks</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-200">
+                    {% for result in results %}
+                    <tr class="hover:bg-slate-50">
+                        <td class="px-6 py-4 text-sm font-semibold text-slate-500">{{ forloop.counter }}</td>
+                        <td class="px-6 py-4">
+                            <p class="text-sm font-bold text-slate-900">{{ result.subject.name }}</p>
+                        </td>
+                        <td class="px-6 py-4">
+                            <span class="text-sm font-bold text-slate-900">{{ result.marks }}</span>
+                        </td>
+                        <td class="px-6 py-4">
+                            <span class="inline-block px-3 py-1 rounded-lg bg-indigo-100 text-indigo-800 text-sm font-bold">{{ result.grade }}</span>
+                        </td>
+                        <td class="px-6 py-4">
+                            <span class="text-sm font-medium text-slate-700">{{ result.remarks|default:"No remarks" }}</span>
+                        </td>
+                    </tr>
+
+                    {% empty %}
+                    <tr>
+                        <td colspan="5" class="px-6 py-12 text-center">
+                            <p class="text-slate-500 font-medium">No subject results found.</p>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

@@ -61,7 +61,9 @@ def student_details(req, id):
 
 def edit_student(req, id):
     data = {
-        "student" : Student.objects.get(id=id)
+        "student" : Student.objects.get(id=id),
+        "schoolclasses" : SchoolClass.objects.all(),
+        "sections" : Section.objects.all(),
     }
     if req.method == "POST":
         student = Student.objects.get(id=id)
