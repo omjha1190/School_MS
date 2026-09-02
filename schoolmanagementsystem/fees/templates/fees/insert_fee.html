@@ -3,17 +3,16 @@
 {% block title %}Add Fee{% endblock title %}
 
 {% block content %}
-
 <div class="flex-1 p-8">
     <div class="px-10">
         <h1 class="text-3xl font-semibold text-slate-800 mb-8">Add Fee</h1>
         <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-8">
             <form method="POST">
                 {% csrf_token %}
-                <div class="grid grid-cols-2 gap-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
                         <label class="block text-sm font-medium text-slate-700 mb-2">Student</label>
-                        <select name="student" class="w-full border border-slate-300 rounded-lg px-4 py-3">
+                        <select name="student" required class="w-full border border-slate-300 rounded-lg px-4 py-3">
                             <option value="">Select Student</option>
                             {% for student in students %}
                                 <option value="{{ student.id }}" {% if fee.student.id == student.id %}selected{% endif %}>
@@ -23,49 +22,92 @@
                         </select>
                     </div>
                     <div>
-                        <label class="block text-sm font-medium text-slate-700 mb-2">Fee Type</label>
-                        <select name="fee_type" required class="w-full border border-slate-300 rounded-lg px-4 py-3">
-                            <option value="">Select Fee Type</option>
-                            <option value="Tuition" {% if fee.fee_type == "Tuition" %}selected{% endif %}>Tuition Fee</option>
-                            <option value="Admission" {% if fee.fee_type == "Admission" %}selected{% endif %}>Admission Fee</option>
-                            <option value="Registration" {% if fee.fee_type == "Registration" %}selected{% endif %}>Registration Fee</option>
-                            <option value="Annual" {% if fee.fee_type == "Annual" %}selected{% endif %}>Annual Fee</option>
-                            <option value="Examination" {% if fee.fee_type == "Examination" %}selected{% endif %}>Examination Fee</option>
-                            <option value="Transport" {% if fee.fee_type == "Transport" %}selected{% endif %}>Transport Fee</option>
-                            <option value="Library" {% if fee.fee_type == "Library" %}selected{% endif %}>Library Fee</option>
-                            <option value="Computer/Lab" {% if fee.fee_type == "Computer/Lab" %}selected{% endif %}>Computer/Lab Fee</option>
-                            <option value="Activity" {% if fee.fee_type == "Activity" %}selected{% endif %}>Activity Fee</option>
-                            <option value="Sports" {% if fee.fee_type == "Sports" %}selected{% endif %}>Sports Fee</option>
-                            <option value="Miscellaneous" {% if fee.fee_type == "Miscellaneous" %}selected{% endif %}>Miscellaneous Fee</option>
-                            <option value="Late" {% if fee.fee_type == "Late" %}selected{% endif %}>Late Fee</option>
-                            <option value="Hostel" {% if fee.fee_type == "Hostel" %}selected{% endif %}>Hostel Fee</option>
+                        <label class="block text-sm font-medium text-slate-700 mb-2">Section</label>
+                        <select name="section" class="w-full border border-slate-300 rounded-lg px-4 py-3">
+                            <option value="">Select Section</option>
+                            {% for section in sections %}
+                                <option value="{{ section.id }}" {% if fee.section.id == section.id %}selected{% endif %}>
+                                    {{ section }}
+                                </option>
+                            {% endfor %}
                         </select>
                     </div>
-                    <div>
-                        <label class="block text-sm font-medium text-slate-700 mb-2">Amount</label>
-                        <input type="number" name="amount" step="0.01" value="{{fee.amount}}" placeholder="Enter amount" class="w-full border border-slate-300 rounded-lg px-4 py-3">
+                    <div class="md:col-span-2">
+                        <label class="block text-sm font-medium text-slate-700 mb-3">Fee Items</label>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            {% for feeitem in feeitems %}
+                                <label class="border border-slate-200 rounded-lg p-4 cursor-pointer hover:bg-slate-50">
+                                    <div class="flex items-center gap-3">
+                                        <input type="checkbox" name="fee_items" value="{{ feeitem.id }}" data-amount="{{ feeitem.amount }}" {% if feeitem in fee.fee_items.all %}checked{% endif %} class="fee-checkbox w-4 h-4">
+                                        <div class="flex-1">
+                                            <p class="text-sm font-medium text-slate-700">{{ feeitem.get_fee_type_display }}</p>
+                                            <p class="text-sm text-slate-500"> class: {{ feeitem.schoolclass.name }}</p>
+                                        </div>
+                                        <span class="font-medium text-slate-800">₹ {{ feeitem.amount }}</span>
+                                    </div>
+                                </label>
+                            {% empty %}
+                                <p class="text-sm text-slate-500">No fee items available.</p>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <div class="md:col-span-2">
+                        <div class="bg-slate-50 border border-slate-200 rounded-lg p-5">
+                            <div class="flex justify-between items-center">
+                                <span class="text-sm font-medium text-slate-600">Total Amount</span>
+                                <span id="totalAmount" class="text-2xl font-semibold text-slate-800">₹ 0.00</span>
+                            </div>
+                        </div>
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-slate-700 mb-2">Due Date</label>
-                        <input type="date" name="due_date" value="{{fee.due_date|date:'Y-m-d'}}" class="w-full border border-slate-300 rounded-lg px-4 py-3">
+                        <input type="date" name="due_date" value="{{fee.due_date|date:"Y-m-d"}}" required class="w-full border border-slate-300 rounded-lg px-4 py-3">
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-slate-700 mb-2">Paid Date</label>
-                        <input type="date" name="paid_date" value="{{fee.paid_date|date:'Y-m-d'}}" class="w-full border border-slate-300 rounded-lg px-4 py-3">
+                        <input type="date" name="paid_date" value="{{fee.paid_date|date:"Y-m-d"}}" class="w-full border border-slate-300 rounded-lg px-4 py-3">
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-slate-700 mb-2">Status</label>
                         <select name="status" class="w-full border border-slate-300 rounded-lg px-4 py-3">
-                            <option value="Pending" {% if fee.status == "Pending" %}selected{% endif %}>Pending</option>
-                            <option value="Paid" {% if fee.status == "Paid" %}selected{% endif %}>Paid</option>
+                            {% for value, label in fee_status %}
+                                <option value="{{ value }}" {% if fee.status == value %}selected{% endif %}>
+                                    {{ label }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-2">Payment Method</label>
+                        <select name="payment_method" class="w-full border border-slate-300 rounded-lg px-4 py-3">
+                            {% for value, label in payment_methods %}
+                                <option value="{{ value }}" {% if fee.payment_method == value %}selected{% endif %}>
+                                    {{ label }}
+                                </option>
+                            {% endfor %}
                         </select>
                     </div>
                 </div>
-                <div class="flex justify-end gap-4 mt-8">
-                    <button type="submit" class="px-6 py-3 rounded-lg bg-slate-800 text-white font-medium hover:bg-slate-700">Save Fee</button>
-                </div>
+                <button type="submit" class="w-full px-6 py-3 rounded-lg bg-slate-800 text-white font-medium hover:bg-slate-700 mt-8">Save Fee</button>
             </form>
         </div>
     </div>
 </div>
+
+<script>
+    const checkboxes = document.querySelectorAll(".fee-checkbox");
+    const totalAmount = document.getElementById("totalAmount");
+    function calculateTotal() {
+        let total = 0;
+        checkboxes.forEach(function(checkbox) {
+            if (checkbox.checked) {
+                total += parseFloat(checkbox.dataset.amount);
+            }
+        });
+        totalAmount.textContent = "₹ " + total.toFixed(2);
+    }
+    checkboxes.forEach(function(checkbox) {
+        checkbox.addEventListener("change", calculateTotal);
+    });
+</script>
 {% endblock content %}
