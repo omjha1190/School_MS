@@ -1,0 +1,64 @@
+{% extends 'school_admin/base.html' %}
+
+{% block title %}Add BookIssues{% endblock title %}
+
+{% block content %}
+
+<div class="flex-1 p-8">
+    <div class="px-10">
+        <h1 class="text-3xl font-semibold text-slate-800 mb-8">Issue Book</h1>
+        <div class="bg-white rounded-xl shadow-sm p-6">
+            <form method="POST">
+                {% csrf_token %}
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Book</label>
+                        <select name="book" required class="w-full border border-gray-300 rounded-lg px-4 py-2">
+                            <option value="">Select Book</option>
+                            {% for book in books %}
+                                <option value="{{ book.id }}" {% if bookissue.book.id == book.id %}selected{% endif %}>
+                                    {{ book.title }} 
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Student</label>
+                        <select name="student" required class="w-full border border-gray-300 rounded-lg px-4 py-2">
+                            <option value="">Select Student</option>
+                            {% for student in students %}
+                                <option value="{{ student.id }}" {% if bookissue.student.id == student.id %}selected{% endif %}>
+                                    {{ student }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Section</label>
+                        <select name="section" required class="w-full border border-gray-300 rounded-lg px-4 py-2">
+                            <option value="">Select Section</option>
+                            {% for section in sections %}
+                                <option value="{{ section.id }}" {% if bookissue.section.id == section.id %}selected{% endif %}>
+                                    {{ section }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Issue Date</label>
+                        <input type="date" name="issue_date" value="{{bookissue.issue_date|date:"Y-m-d"}}" required class="w-full border border-gray-300 rounded-lg px-4 py-2">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Due Date</label>    
+                        <input type="date" name="due_date" value="{{bookissue.due_date|date:"Y-m-d"}}" required class="w-full border border-gray-300 rounded-lg px-4 py-2">
+                    </div>
+                </div>
+                <div class="mt-6 flex justify-end">
+                    <button type="submit" class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">Issue Book</button>
+                </div>
+            </form>
+        </div>    
+    </div>
+</div>
+
+{% endblock %}

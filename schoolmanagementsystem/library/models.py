@@ -1,5 +1,6 @@
 from django.db import models
-from academics.models import Subject
+from academics.models import Subject, Section
+from students.models import Student
 
 # Create your models here.
 class Book(models.Model):
@@ -32,4 +33,20 @@ class Book(models.Model):
 
     def __str__(self):
         return self.title
+
+class BookIssue(models.Model):
+    ISSUE_STATUS = [
+        ("Issued", "Issued"),
+        ("Returned", "Returned"),
+    ]
+    book = models.ForeignKey(Book, on_delete=models.CASCADE)
+    student = models.ForeignKey(Student, on_delete=models.CASCADE)
+    section = models.ForeignKey(Section, on_delete=models.CASCADE)
+    issue_date = models.DateField()
+    due_date = models.DateField()
+    return_date = models.DateField(null=True, blank=True)
+    status = models.CharField(max_length=20, choices=ISSUE_STATUS, default="Issued")
+
+    def __str__(self):
+        return f"{self.student} - {self.book.title}"
     
