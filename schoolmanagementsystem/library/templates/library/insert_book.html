@@ -1,0 +1,73 @@
+{% extends 'school_admin/base.html' %}
+
+{% block title %}Add Book{% endblock title %}
+
+{% block content %}
+<div class="flex-1 p-8">
+    <div class="px-10">
+        <h1 class="text-3xl font-semibold text-slate-800 mb-8">Add Book</h1>
+        <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-8">
+            <form method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-2">Book Title</label>
+                        <input type="text" name="title" value="{{book.title}}" required placeholder="Enter book title" class="w-full border border-slate-300 rounded-lg px-4 py-3">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-2">Author</label>
+                        <input type="text" name="author" value="{{book.author}}" required placeholder="Enter author name" class="w-full border border-slate-300 rounded-lg px-4 py-3">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-2">ISBN</label>
+                        <input type="text" name="isbn" value="{{book.isbn}}" required placeholder="Enter ISBN" class="w-full border border-slate-300 rounded-lg px-4 py-3">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-2">Category</label>
+                        <select name="category" required class="w-full border border-slate-300 rounded-lg px-4 py-3">
+                            <option value="">Select Category</option>
+                            {% for value, label in categories %}
+                                <option value="{{ value }}" {% if book.category == value %}selected{% endif %}>
+                                    {{ label }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-2">Subject</label>
+                        <select name="subject" class="w-full border border-slate-300 rounded-lg px-4 py-3">
+                            <option value="">Select Subject</option>
+                            {% for subject in subjects %}
+                                <option value="{{ subject.id }}" {% if book.subject.id == subject.id %}selected{% endif %}>
+                                    {{ subject.name }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-2">Publisher</label>
+                        <input type="text" name="publisher" value="{{book.publisher}}" placeholder="Enter publisher name" class="w-full border border-slate-300 rounded-lg px-4 py-3">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-2">Quantity</label>
+                        <input type="number" name="quantity" min="1" value="1" value="{{book.quantity}}" required class="w-full border border-slate-300 rounded-lg px-4 py-3">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-2">Shelf Number</label>
+                        <input type="text" name="shelf_number" value="{{book.shelf_number}}" placeholder="Example: A-01" class="w-full border border-slate-300 rounded-lg px-4 py-3">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-2">Cover Image</label>
+                        <input type="file" name="cover_image" accept="image/*" class="w-full border border-slate-300 rounded-lg px-4 py-3">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-2">Description</label>
+                        <textarea name="description" rows="4" placeholder="Enter book description" class="w-full border border-slate-300 rounded-lg px-4 py-3">{{book.description}}</textarea>
+                    </div>
+                </div>
+                <button type="submit" class="w-full px-6 py-3 rounded-lg bg-slate-800 text-white font-medium hover:bg-slate-700 mt-8">Save Book</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock content %}

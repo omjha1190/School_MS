@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     "staffs",
     "staffpayments",
     "transport",
+    "library",
 ]
 
 MIDDLEWARE = [
