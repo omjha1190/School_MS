@@ -147,3 +147,21 @@ def delete_book_issue(req, id):
     except BookIssue.DoesNotExist:
         data ['error'] = "This Book Issue does not exist"
     return redirect("manage_book_issues")
+
+def library_dashboard(req):
+    total_books = Book.objects.count()
+
+    total_quantity = sum(book.quantity for book in Book.objects.all())
+    available_quantity = sum(book.available_quantity for book in Book.objects.all())
+    issued_books = BookIssue.objects.filter(status="Issued").count()
+    returned_books = BookIssue.objects.filter(status="Returned").count()
+    
+    data = {
+        "total_books": total_books,
+        "total_quantity": total_quantity,
+        "available_quantity": available_quantity,
+        "issued_books": issued_books,
+        "returned_books": returned_books,
+    }
+
+    return render(req, "library/library_dashboard.html", data)

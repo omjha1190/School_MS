@@ -1,0 +1,51 @@
+{% extends 'school_admin/base.html' %}
+
+{% block title %}Library Dashboard{% endblock title %}
+
+{% block content %}
+<div class="flex-1 p-8">
+    <div class="px-10">
+        <div class="flex justify-between items-center mb-10">
+            <h1 class="text-3xl font-semibold text-slate-800">Library Dashboard</h1>
+            <div class="flex gap-3">
+                <a href="{% url 'insert_book' %}" class="px-5 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">Add Book</a>
+                <a href="{% url 'insert_book_issue' %}" class="px-5 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700">Issue Book</a>
+            </div>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6 mb-8">
+            <div class="bg-white rounded-xl shadow-sm p-6">
+                <p class="text-sm text-gray-500">Total Books</p>
+                <h2 class="text-3xl font-bold text-slate-800 mt-2">{{ total_books }}</h2>
+            </div>
+            <div class="bg-white rounded-xl shadow-sm p-6">
+                <p class="text-sm text-gray-500">Total Copies</p>
+                <h2 class="text-3xl font-bold text-slate-800 mt-2">{{ total_quantity }}</h2>
+            </div>
+            <div class="bg-white rounded-xl shadow-sm p-6">
+                <p class="text-sm text-gray-500">Available Copies</p>
+                <h2 class="text-3xl font-bold text-green-600 mt-2">{{ available_quantity }}</h2>
+            </div>
+            <div class="bg-white rounded-xl shadow-sm p-6">
+                <p class="text-sm text-gray-500">Currently Issued</p>
+                <h2 class="text-3xl font-bold text-yellow-600 mt-2">{{ issued_books }}</h2>
+            </div>
+            <div class="bg-white rounded-xl shadow-sm p-6">
+                <p class="text-sm text-gray-500">Returned</p>
+                <h2 class="text-3xl font-bold text-blue-600 mt-2">{{ returned_books }}</h2>
+            </div>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="bg-white rounded-xl shadow-sm p-6">
+                <h2 class="text-xl font-semibold text-slate-800 mb-2">Books</h2>
+                <p class="text-gray-500 mb-5">Manage your library books and inventory.</p>
+                <a href="{% url 'manage_books' %}" class="inline-block px-5 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">Manage Books</a>
+            </div>
+            <div class="bg-white rounded-xl shadow-sm p-6">
+                <h2 class="text-xl font-semibold text-slate-800 mb-2">Book Issues</h2>
+                <p class="text-gray-500 mb-5">Manage issued and returned books.</p>
+                <a href="{% url 'manage_book_issues' %}" class="inline-block px-5 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700">Manage Book Issues</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
