@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
-from .models import SchoolClass, Section, Subject, TeacherAssignment
+from .models import SchoolClass, Section, Subject, TeacherAssignment, StudentEnrollment
 from teachers.models import Teacher
+from students.models import Student
 
 # Create your views here.
 def insert_class(req):
@@ -102,3 +103,51 @@ def delete_teacher_assignment(req, id):
     except TeacherAssignment.DoesNotExist:
         data ['error'] = "No teacher is assigned to it"
     return redirect('manage_teacher_assignment')    
+
+
+def insert_enrollment(req):
+    data = {
+        "students" : Student.objects.all(),
+        "sections" : Section.objects.all(),
+    }
+    if req.method == "POST":
+        enrollment = StudentEnrollment()
+        enrollment.student_id = req.POST.get('student')
+        enrollment.section_id = req.POST.get('section')
+        enrollment.academic_year = req.POST.get('academic_year')
+        enrollment.roll_no = req.POST.get('roll_no')
+        enrollment.save()
+        return redirect("manage_enrollments")
+    return render(req, "academics/insert_enrollment.html", data)
+
+def manage_enrollments(req):
+    data = {
+        "enrollments" : StudentEnrollment.objects.all(),
+    }
+    return render(req, "academics/manage_enrollment.html", data)
+
+def edit_enrollment(req, id):
+    enrollment = StudentEnrollment.objects.get(id=id)
+    data = {
+        "enrollment" : enrollment,
+        "students" : Student.objects.all(),
+        "sections" : Section.objects.all(),
+    }
+    if req.method == "POST":
+        enrollment.student_id = req.POST.get('student')
+        enrollment.section_id = req.POST.get('section')
+        enrollment.academic_year = req.POST.get('academic_year')
+        enrollment.roll_no = req.POST.get('roll_no')
+        enrollment.save()
+        return redirect("manage_enrollments")
+    return render(req, "academics/insert_enrollment.html", data)
+
+def delete_enrollment(req, id):
+    data = {}
+    try :
+        enrollment = StudentEnrollment.objects.get(id=id)
+        enrollment.delete()
+        return redirect("manage_enrollments")
+    except StudentEnrollment.DoesNotExist:
+        data ['error'] = "This Student enrollment does not exit"
+    return redirect("manage_enrollments")

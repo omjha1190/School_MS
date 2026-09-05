@@ -1,0 +1,52 @@
+{% extends 'school_admin/base.html' %}
+
+{% block title %}Add Enrollment{% endblock title %}
+
+{% block content %}
+
+<div class="flex-1 p-8">
+    <div class="px-10">
+        <h1 class="text-3xl font-semibold text-slate-800 mb-8">Assign Roll Number</h1>
+        <div class="bg-white rounded-xl shadow-sm p-6">
+            <form method="POST">
+                {% csrf_token %}
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-2">Student</label>
+                        <select name="student" required class="w-full border border-slate-300 rounded-lg px-4 py-2.5">
+                            <option value="">Select Student</option>
+                            {% for student in students %}
+                                <option value="{{ student.id }}" {% if enrollment.student.id == student.id %}selected{% endif %}>
+                                    {{ student }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-2">Section</label>
+                        <select name="section" required class="w-full border border-slate-300 rounded-lg px-4 py-2.5">
+                            <option value="">Select Section</option>
+                            {% for section in sections %}
+                                <option value="{{ section.id }}" {% if enrollment.section.id == section.id %}selected{% endif %}>
+                                    {{ section }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-2">Academic Year</label>
+                        <input type="text" name="academic_year" value="{{enrollment.academic_year}}" placeholder="2026-27" required class="w-full border border-slate-300 rounded-lg px-4 py-2.5">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-2">Roll Number</label>
+                        <input type="number" name="roll_no" min="1" value="{{enrollment.roll_no}}" required class="w-full border border-slate-300 rounded-lg px-4 py-2.5">
+                    </div>
+                </div>
+                <div class="mt-6 flex justify-end">
+                    <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2.5 rounded-lg font-medium">Assign Roll Number</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
