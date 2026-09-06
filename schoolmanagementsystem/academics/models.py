@@ -16,7 +16,7 @@ class Section(models.Model):
         return f"{self.schoolclass.name} - {self.name}"
 
 class StudentEnrollment(models.Model):
-    student = models.ForeignKey("students.Student", on_delete=models.CASCADE)
+    student = models.ForeignKey("students.Student", on_delete=models.CASCADE, related_name="enrollments")
     section = models.ForeignKey(Section, on_delete=models.CASCADE)
     academic_year = models.CharField(max_length=50)
     roll_no = models.IntegerField()

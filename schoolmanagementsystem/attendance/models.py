@@ -1,6 +1,4 @@
 from django.db import models
-from students.models import Student
-from teachers.models import Teacher
 
 # Create your models here.
 class StudentAttendance(models.Model):

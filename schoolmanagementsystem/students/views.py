@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from accounts.models import UserProfile
 from .models import Student
-from academics.models import SchoolClass, Section
+from academics.models import SchoolClass, Section, StudentEnrollment
 
 # Create your views here.
 def insert_student(req):
@@ -38,11 +38,17 @@ def insert_student(req):
         student.date_of_birth = req.POST.get("date_of_birth")
         student.gender = req.POST.get("gender")
         student.admission_date = req.POST.get("admission_date")
-        student.schoolclass = SchoolClass.objects.get(id=req.POST.get('schoolclass'))
-        student.section = Section.objects.get(id=req.POST.get('section'))
         student.parent_name = req.POST.get("parent_name")
         student.parent_phone = req.POST.get("parent_phone")
         student.save()
+
+        StudentEnrollment.objects.create(
+            student=student,
+            section_id=req.POST.get("section"),
+            academic_year=req.POST.get("academic_year"),
+            roll_no=req.POST.get("roll_no"),
+        )
+
         return redirect('manage_students')
     return render(req, "students/insert.html", data)
 
@@ -83,6 +89,21 @@ def edit_student(req, id):
         student.parent_name = req.POST.get('parent_name')
         student.parent_phone = req.POST.get('parent_phone')
         student.save()
+
+        enrollment = student.enrollments.first()
+
+        if enrollment:
+            enrollment.section_id = req.POST.get("section")
+            enrollment.academic_year = req.POST.get("academic_year")
+            enrollment.roll_no = req.POST.get("roll_no")
+            enrollment.save()
+        else:
+            StudentEnrollment.objects.create(
+                student=student,
+                section_id=req.POST.get("section"),
+                academic_year=req.POST.get("academic_year"),
+                roll_no=req.POST.get("roll_no"),
+            )
         return redirect('manage_students')
     return render(req, "students/insert.html", data)
 

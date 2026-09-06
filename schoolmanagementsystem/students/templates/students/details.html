@@ -90,11 +90,30 @@
                         </div>
                         <div class="p-5 bg-white rounded-xl border border-slate-200 shadow-sm hover:shadow-md transition">
                             <p class="text-sm text-slate-500 mb-2">Class</p>
-                            <p class="text-base font-semibold text-slate-800">{{ student.schoolclass }}</p>
+                            <p class="text-base font-semibold text-slate-800">
+                                {{ student.enrollments.first.section.schoolclass.name }}
+                            </p>
                         </div>
+
                         <div class="p-5 bg-white rounded-xl border border-slate-200 shadow-sm hover:shadow-md transition">
                             <p class="text-sm text-slate-500 mb-2">Section</p>
-                            <p class="text-base font-semibold text-slate-800">{{ student.section }}</p>
+                            <p class="text-base font-semibold text-slate-800">
+                                {{ student.enrollments.first.section.name }}
+                            </p>
+                        </div>
+
+                        <div class="p-5 bg-white rounded-xl border border-slate-200 shadow-sm hover:shadow-md transition">
+                            <p class="text-sm text-slate-500 mb-2">Roll Number</p>
+                            <p class="text-base font-semibold text-slate-800">
+                                {{ student.enrollments.first.roll_no }}
+                            </p>
+                        </div>
+
+                        <div class="p-5 bg-white rounded-xl border border-slate-200 shadow-sm hover:shadow-md transition">
+                            <p class="text-sm text-slate-500 mb-2">Academic Year</p>
+                            <p class="text-base font-semibold text-slate-800">
+                                {{ student.enrollments.first.academic_year }}
+                            </p>
                         </div>
                     </div>
                 </div>
