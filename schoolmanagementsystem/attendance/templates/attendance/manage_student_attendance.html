@@ -1,0 +1,107 @@
+{% extends 'school_admin/base.html' %}
+
+{% block title %}Manage Student Attendance{% endblock title %}
+
+{% block content %}
+<div class="flex-1 p-8">
+    <div class="bg-white px-8 py-5 rounded-xl shadow-lg mb-6">
+        <h1 class="text-3xl font-semibold text-slate-800">Manage Student Attendance</h1>
+    </div>
+    <div class="bg-white rounded-xl border border-slate-200 shadow-lg p-8 mb-6">
+        <form method="POST">
+            {% csrf_token %}
+            <div class="grid grid-cols-3 gap-6">
+                <div>
+                    <label for="schoolclass" class="block text-sm font-medium text-slate-700 mb-2">Class</label>
+                    <select id="schoolclass" name="schoolclass" class="w-full border border-slate-300 rounded-lg px-4 py-3" required>
+                        <option value="">Select Class</option>
+                        {% for schoolclass in schoolclasses %}
+                            <option
+                                value="{{ schoolclass.id }}"
+                                {% if selected_class == schoolclass.id|stringformat:"s" %}
+                                    selected
+                                {% endif %}>{{ schoolclass.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div>
+                    <label for="section" class="block text-sm font-medium text-slate-700 mb-2">Section
+                    </label>
+                    <select id="section" name="section" class="w-full border border-slate-300 rounded-lg px-4 py-3" required>
+                        <option value="">Select Section</option>
+                        {% for section in sections %}
+                            <option
+                                value="{{ section.id }}"
+                                {% if selected_section == section.id|stringformat:"s" %}
+                                    selected
+                                {% endif %}>{{ section.schoolclass.name }} - {{ section.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <!-- Date -->
+                <div>
+                    <label for="date" class="block text-sm font-medium text-slate-700 mb-2">Date</label>
+                    <input type="date" id="date" name="date" value="{{ selected_date }}" class="w-full border border-slate-300 rounded-lg px-4 py-3" required>
+                </div>
+            </div>
+            <button type="submit" class="mt-6 px-6 py-3 rounded-lg bg-slate-800 text-white font-medium hover:bg-slate-700">View Attendance
+            </button>
+        </form>
+    </div>
+    {% if attendances %}
+        <div class="bg-white rounded-xl border border-slate-200 shadow-lg p-8">
+            <div class="flex items-center justify-between mb-6">
+                <div>
+                    <h2 class="text-2xl font-semibold text-slate-800">Attendance Sheet</h2>
+                    <p class="text-sm text-slate-500 mt-1">
+                        {{ attendances.0.enrollment.section.schoolclass.name }}
+                        -
+                        {{ attendances.0.enrollment.section.name }}
+                        &nbsp; | &nbsp;
+                        {{ selected_date }}
+                    </p>
+                </div>
+                <div class="text-sm text-slate-600">
+                    Total Students:
+                    <span class="font-semibold">
+                        {{ attendances|length }}
+                    </span>
+                </div>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="w-full">
+                    <thead>
+                        <tr class="bg-slate-100 border-b border-slate-200">
+                            <th class="text-left px-6 py-4 font-semibold text-slate-700">Roll No</th>
+                            <th class="text-left px-6 py-4 font-semibold text-slate-700">Student</th>
+                            <th class="text-left px-6 py-4 font-semibold text-slate-700">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for attendance in attendances %}
+                            <tr class="border-b border-slate-200 hover:bg-slate-50">
+                                <td class="px-6 py-4 text-slate-700">{{ attendance.enrollment.roll_no }}</td>
+                                <td class="px-6 py-4 font-medium text-slate-800">{{ attendance.enrollment.student }}</td>
+                                <td class="px-6 py-4">
+                                    {% if attendance.status %}
+                                        <span class="px-3 py-1 rounded-full bg-green-100 text-green-700 text-sm font-medium">Present</span>
+                                    {% else %}
+                                        <span class="px-3 py-1 rounded-full bg-red-100 text-red-700 text-sm font-medium">Absent</span>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    {% elif selected_date %}
+        <div class="bg-white rounded-xl border border-slate-200 shadow-lg p-8">
+            <div class="text-center py-8">
+                <h2 class="text-xl font-semibold text-slate-800">No Attendance Found</h2>
+                <p class="text-slate-500 mt-2">There is no attendance record for the selected class, section and date.</p>
+            </div>
+        </div>
+    {% endif %}
+</div>
+{% endblock content %}

@@ -4,12 +4,20 @@ from teachers.models import Teacher
 
 # Create your models here.
 class StudentAttendance(models.Model):
-    student = models.ForeignKey(Student, on_delete=models.CASCADE)
+    enrollment = models.ForeignKey("academics.StudentEnrollment", on_delete=models.CASCADE, null=True, blank=True)
     date = models.DateField()
-    status = models.BooleanField(default=False)
+    status = models.BooleanField(default=True)
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=["enrollment", "date"],
+                name="unique_enrollment_attendance_per_day"
+            )
+        ]
 
     def __str__(self):
-        return f"{self.student} - {self.date}"
+        return f"{self.enrollment.student} - {self.date}"
 
 
 class TeacherAttendance(models.Model):

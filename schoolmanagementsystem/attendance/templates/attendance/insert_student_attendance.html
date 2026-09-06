@@ -1,0 +1,83 @@
+{% extends 'school_admin/base.html' %}
+
+{% block title %}Student Attendance{% endblock title %}
+
+{% block content %}
+<div class="flex-1 p-8">
+    <div class="bg-white px-8 py-5 rounded-xl shadow-lg mb-6">
+        <h1 class="text-3xl font-semibold text-slate-800">Student Attendance</h1>
+    </div>
+    <div class="bg-white rounded-xl border border-slate-200 shadow-lg p-8">
+        <form method="POST">
+            {% csrf_token %}
+            <div class="grid grid-cols-3 gap-6">
+                <div>
+                    <label for="schoolclass" class="block text-sm font-medium text-slate-700 mb-2">Class</label>
+                    <select id="schoolclass" name="schoolclass" class="w-full border border-slate-300 rounded-lg px-4 py-3" required>
+                        <option value="">Select Class</option>
+                        {% for schoolclass in schoolclasses %}
+                            <option
+                                value="{{ schoolclass.id }}"
+                                {% if selected_class == schoolclass.id|stringformat:"s" %}
+                                    selected
+                                {% endif %}>{{ schoolclass.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div>
+                    <label for="section" class="block text-sm font-medium text-slate-700 mb-2">Section</label>
+                    <select id="section" name="section" class="w-full border border-slate-300 rounded-lg px-4 py-3" required>
+                        <option value="">Select Section</option>
+                        {% for section in sections %}
+                            <option
+                                value="{{ section.id }}"
+                                {% if selected_section == section.id|stringformat:"s" %}
+                                    selected
+                                {% endif %}>{{ section.schoolclass.name }} - {{ section.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div>
+                    <label for="date" class="block text-sm font-medium text-slate-700 mb-2">Date</label>
+                    <input type="date" id="date" name="date" value="{{ selected_date }}" class="w-full border border-slate-300 rounded-lg px-4 py-3" required>
+                </div>
+            </div>
+            <button type="submit" name="action" value="load" class="mt-6 px-6 py-3 rounded-lg bg-slate-800 text-white font-medium hover:bg-slate-700">Load Students</button>
+            {% if enrollments %}
+                <div class="mt-8">
+                    <div class="flex items-center justify-between mb-4">
+                        <h2 class="text-xl font-semibold text-slate-800">Attendance Sheet</h2>
+                        <div class="text-sm text-slate-600">
+                            Total Students:
+                            <span class="font-semibold">{{ enrollments|length }}</span>
+                        </div>
+                    </div>
+                    <div class="border border-slate-200 rounded-lg overflow-hidden">
+                        <div class="grid grid-cols-3 bg-slate-100 px-6 py-4">
+                            <div class="font-semibold text-slate-700">Roll No</div>
+                            <div class="font-semibold text-slate-700">Student Name</div>
+                            <div class="font-semibold text-slate-700">Attendance</div>
+                        </div>
+                        {% for enrollment in enrollments %}
+                            <div class="grid grid-cols-3 px-6 py-4 border-t border-slate-200 items-center">
+                                <div class="text-slate-700">{{ enrollment.roll_no }}</div>
+                                <div class="font-medium text-slate-800">{{ enrollment.student }}</div>
+                                <div>
+                                    <label class="inline-flex items-center gap-2 cursor-pointer">
+                                        <input type="checkbox" name="absent_students" value="{{ enrollment.id }}" class="w-5 h-5 rounded border-slate-300">
+                                        <span class="text-red-600 font-medium">Absent</span>
+                                    </label>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                    <div class="mt-6 flex justify-end">
+                        <button type="submit" name="action" value="save" class="px-6 py-3 rounded-lg bg-green-600 text-white font-medium hover:bg-green-700">Save Attendance
+                        </button>
+                    </div>
+                </div>
+            {% endif %}
+        </form>
+    </div>
+</div>
+{% endblock content %}
