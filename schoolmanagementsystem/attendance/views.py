@@ -3,6 +3,7 @@ from .models import StudentAttendance, TeacherAttendance
 from academics.models import SchoolClass, Section, StudentEnrollment
 from students.models import Student
 from django.db.models import Prefetch
+from teachers.models import Teacher
 
 # Create your views here.
 def student_attendance(req):
@@ -56,13 +57,37 @@ def manage_student_attendance(req, section_id):
         data["selected_section"] = section_id
         data["selected_date"] = date
 
-        data["attendances"] = StudentAttendance.objects.filter(
-            enrollment__section_id=section_id,
-            date=date
-        ).select_related(
-            "enrollment__student",
-            "enrollment__section__schoolclass"
-        ).order_by(
-            "enrollment__roll_no"
-        )
+        data["attendances"] = StudentAttendance.objects.filter( enrollment__section_id=section_id, date=date ).select_related( "enrollment__student", "enrollment__section__schoolclass" ).order_by( "enrollment__roll_no" )
     return render(req, "attendance/manage_student_attendance.html", data)
+
+
+def teacher_attendance(req):
+    data = {
+        "teachers": Teacher.objects.all()
+    }
+    if req.method == "POST":
+        action = req.POST.get("action")
+        date = req.POST.get("date")
+        if action == "load":
+            data["selected_date"] = date
+        elif action == "save":
+            absent_teachers = req.POST.getlist("absent_teachers")
+            teachers = Teacher.objects.all()
+            for teacher in teachers:
+                if str(teacher.id) in absent_teachers:
+                    status = False
+                else:
+                    status = True
+                TeacherAttendance.objects.update_or_create( teacher=teacher, date=date, defaults={ "status": status } )
+            return redirect("manage_teacher_attendance")
+
+    return render(req,"attendance/insert_teacher_attendance.html", data)
+
+
+def manage_teacher_attendance(req):
+    data = {}
+    if req.method == "POST":
+        date = req.POST.get("date")
+        data["selected_date"] = date
+        data["attendances"] = TeacherAttendance.objects.filter(date=date).select_related("teacher").order_by("teacher")
+    return render(req,"attendance/manage_teacher_attendance.html",data)

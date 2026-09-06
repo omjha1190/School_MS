@@ -21,9 +21,17 @@ class StudentAttendance(models.Model):
 
 
 class TeacherAttendance(models.Model):
-    teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE)
+    teacher = models.ForeignKey("teachers.Teacher", on_delete=models.CASCADE)
     date = models.DateField()
-    status = models.BooleanField(default=False)
+    status = models.BooleanField(default=True)
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=["teacher", "date"],
+                name="unique_teacher_attendance_per_day"
+            )
+        ]
 
     def __str__(self):
         return f"{self.teacher} - {self.date}"
