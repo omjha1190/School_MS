@@ -1,0 +1,25 @@
+{% extends "home/base.html" %}
+
+{% block title %}Login{% endblock title %}
+
+{% block content %}
+<div class=" flex items-center justify-center px-5 min-h-screen">
+    <div class="glass rounded-3xl shadow-2xl w-full max-w-md p-10">
+        <div class="text-center mb-8">
+            <h1 class="text-4xl font-bold mb-2">Welcome</h1>
+            <p class="text-gray-400">Login to continue to your School Portal.</p>
+        </div>
+        <form method="POST">
+            {% csrf_token %}
+            {{ loginForm.as_p }}
+            <button type="submit" class="w-full mt-2 bg-yellow-500 hover:bg-yellow-400 text-black font-bold py-3 rounded-xl transition duration-300">Login</button>
+        </form>
+        <div class="flex items-center my-8">
+            <div class="flex-1 h-px bg-gray-700"></div>
+            <span class="px-4 text-gray-500 text-sm">OR</span>
+            <div class="flex-1 h-px bg-gray-700"></div>
+        </div>
+        <a href="" class="cta-link">Create New Account</a>
+        <p class="text-center text-gray-500 text-sm mt-8">© 2026 Our School. All Rights Reserved.</p>
+    </div>
+{% endblock content %}
