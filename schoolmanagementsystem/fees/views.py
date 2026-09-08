@@ -4,6 +4,9 @@ from academics.models import SchoolClass, Section
 from .models import Fee, FeeItem
 
 # Create your views here.
+
+def fee_dashboard(req):
+    return render(req, "fees/fee_dashboard.html")
 def insert_fee(req):
     data = {
         "students" : Student.objects.all(),

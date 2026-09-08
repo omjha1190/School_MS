@@ -2,6 +2,7 @@ from django.urls import path
 from transport import views
 
 urlpatterns = [
+    path("dashboard/", views.transport_dashboard, name="transport_dashboard"),
     path("insert/driver/", views.insert_driver, name="insert_driver"),
     path("manage/drivers/", views.manage_drivers, name="manage_drivers"),
     path("edit/drivers/<int:id>/", views.edit_driver, name="edit_driver"),

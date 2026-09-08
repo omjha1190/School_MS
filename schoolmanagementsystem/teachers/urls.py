@@ -7,5 +7,5 @@ urlpatterns = [
     path("teachers/details/<int:id>/", views.teacher_details, name="teacher_details"),
     path("edit/teachers/<int:id>/", views.edit_teacher, name="edit_teacher"),
     path("delete/teacher/<int:id>/", views.delete_teacher, name="delete_teacher"),
-    path("teacher/dashboard/", views.teacher_dashboard, name="teacher_dashboard")
+    path("dashboard/", views.teacher_dashboard, name="teacher_dashboard")
 ]

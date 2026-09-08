@@ -7,13 +7,18 @@ def home(req):
     return render(req, "home/home.html") 
 
 def login(req):
-    form = AuthenticationForm(req.POST or None)
+    form = AuthenticationForm(req, data=req.POST or None)
     if req.method == "POST":
-        username = req.POST.get("username")
-        password = req.POST.get("password")
-        user = authenticate(username=username, password=password)
-        if user is not None:
+        if form.is_valid():
+            user = form.get_user()
             auth_login(req, user)
+
+            if user.userprofile.role == "student":
+                return redirect("student_dashboard")
+            elif user.userprofile.role == "teacher":
+                return redirect("teacher_dashboard")
+            elif user.userprofile.role == "admin":
+                return redirect("admin_dashboard")
             return redirect("home")
     data ={
         "loginForm" : form

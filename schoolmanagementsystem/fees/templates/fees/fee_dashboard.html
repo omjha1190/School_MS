@@ -1,0 +1,28 @@
+{% extends "school_admin/base.html" %}
+
+{% block title %}Fees{% endblock title %}
+
+{% block content %}
+
+<div class="flex-1 p-8">
+    <h1 class="text-3xl font-bold text-slate-900">Fee Management</h1>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-10">
+        <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+            <h2 class="text-xl font-semibold text-slate-900">Student Fees</h2>
+            <p class="text-slate-500 mt-2">Create, manage and view student fee records.</p>
+            <div class="flex gap-3 mt-5">
+                <a href="{% url 'insert_fee' %}" class="bg-slate-900 text-white px-4 py-2 rounded-lg hover:bg-slate-700">Add Fee</a>
+                <a href="{% url 'manage_fees' %}" class="border border-slate-300 px-4 py-2 rounded-lg hover:bg-slate-100">Manage</a>
+            </div>
+        </div>
+        <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+            <h2 class="text-xl font-semibold text-slate-900">Fee Items</h2>
+            <p class="text-slate-500 mt-2">Create and manage different types of fees.</p>
+            <div class="flex gap-3 mt-5">
+                <a href="{% url 'insert_feeitem' %}" class="bg-slate-900 text-white px-4 py-2 rounded-lg hover:bg-slate-700">Add Fee Item</a>
+                <a href="{% url 'manage_feeitems' %}" class="border border-slate-300 px-4 py-2 rounded-lg hover:bg-slate-100">Manage</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

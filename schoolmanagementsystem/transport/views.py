@@ -2,6 +2,10 @@ from django.shortcuts import render, redirect
 from .models import Driver, Bus
 
 # Create your views here.
+
+def transport_dashboard(req):
+    return render(req, "transport/transport_dashboard.html")
+
 def insert_driver(req):
     if req.method == "POST":
         driver = Driver()

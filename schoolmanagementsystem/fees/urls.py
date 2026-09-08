@@ -2,6 +2,7 @@ from django.urls import path
 from fees import views
 
 urlpatterns = [
+    path("dashboard", views.fee_dashboard, name="fee_dashboard"),
     path("insert/fee/", views.insert_fee, name="insert_fee"),
     path("manage/fee/", views.manage_fees, name="manage_fees"),
     path("edit/fee/<int:id>/", views.edit_fee, name="edit_fee"),

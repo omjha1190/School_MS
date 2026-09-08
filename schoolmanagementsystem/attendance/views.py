@@ -91,3 +91,6 @@ def manage_teacher_attendance(req):
         data["selected_date"] = date
         data["attendances"] = TeacherAttendance.objects.filter(date=date).select_related("teacher").order_by("teacher")
     return render(req,"attendance/manage_teacher_attendance.html",data)
+
+def attendance_dashboard(req):
+    return render(req, "attendance/attendance_dashboard.html")

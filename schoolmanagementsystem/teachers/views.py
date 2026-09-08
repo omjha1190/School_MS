@@ -2,6 +2,8 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from accounts.models import UserProfile
 from .models import Teacher
+from django.contrib.auth.decorators import login_required
+
 
 
 # Create your views here.
@@ -85,6 +87,8 @@ def delete_teacher(req, id):
         data ['error'] = "This teacher does not exit"
     return redirect(manage_teachers)    
 
-
+@login_required
 def teacher_dashboard(req):
+    if req.user.userprofile.role != "teacher":
+        return redirect("home")
     return render(req, "teachers/dashboard.html")

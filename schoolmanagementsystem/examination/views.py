@@ -2,9 +2,13 @@ from django.shortcuts import render, redirect
 from academics.models import SchoolClass, Section, Subject
 from students.models import Student
 from .models import Exam, ExamSchedule, Result
-from django.db.models import Q
+from django.db.models import Q, Prefetch
+from academics.models import StudentEnrollment
 
 # Create your views here.
+
+def examination_dashboard(req):
+    return render(req, "examination/examination_dashboard.html")
 def insert_exam(req):
     data = {
         "schoolclasses" : SchoolClass.objects.all(),
@@ -146,27 +150,62 @@ def insert_result(req):
         return redirect("manage_results")
     return render(req, "examination/insert_result.html", data)
 
+from django.db.models import Q, Prefetch
+
 def manage_results(req):
     if req.GET.get("search"):
         search = req.GET.get("search")
-        query = Q(student__user__first_name__icontains=search) | Q(student__schoolclass__name__icontains=search) |Q(student__section__name__icontains=search)
+
+        query = (
+            Q(student__user__first_name__icontains=search)
+            | Q(student__enrollments__section__schoolclass__name__icontains=search)
+            | Q(student__enrollments__section__name__icontains=search)
+        )
+
         data = {
-            "results" : Result.objects.filter(query),
-            "search" : search
+            "results": Result.objects.filter(query)
+                .select_related("student", "student__user", "exam", "subject")
+                .prefetch_related(
+                    Prefetch(
+                        "student__enrollments",
+                        queryset=StudentEnrollment.objects.select_related(
+                            "section__schoolclass"
+                        )
+                    )
+                )
+                .distinct(),
+            "search": search
         }
-    else : 
-        results = Result.objects.select_related("student", "exam", "student__section", "student__section__schoolclass").order_by("student", "exam")
+
+    else:
+        results = (
+            Result.objects
+            .select_related("student", "student__user", "exam", "subject")
+            .prefetch_related(
+                Prefetch(
+                    "student__enrollments",
+                    queryset=StudentEnrollment.objects.select_related(
+                        "section__schoolclass"
+                    )
+                )
+            )
+            .order_by("student", "exam")
+        )
+
         unique_results = []
         seen = set()
 
         for result in results:
             key = (result.student_id, result.exam_id)
+
             if key not in seen:
                 unique_results.append(result)
                 seen.add(key)
+
         data = {
             "results": unique_results,
         }
+
     return render(req, "examination/manage_results.html", data)
 
 def view_result(req, student_id, exam_id):

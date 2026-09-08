@@ -1,10 +1,19 @@
-{% extends 'teachers/base.html' %}
+{% extends "teachers/base.html" %}
 
-{% block title %}
-Teacher Dashboard
-{% endblock title %}
+{% block title %}Teacher Dashboard{% endblock title %}
 
 {% block content %}
 
+<div class="flex-1 p-8">
+
+    <h1 class="text-3xl font-bold text-slate-900">
+        Teacher Dashboard
+    </h1>
+
+    <p class="mt-2 text-slate-500">
+        Welcome back, {{ request.user.first_name|capfirst }}.
+    </p>
+
+</div>
 
 {% endblock content %}

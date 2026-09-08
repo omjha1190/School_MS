@@ -1,0 +1,33 @@
+{% extends "school_admin/base.html" %}
+
+{% block title %}Attendance{% endblock title %}
+
+{% block content %}
+
+<div class="flex-1 p-8">
+    <h1 class="text-3xl font-bold text-slate-900">Attendance Management</h1>
+    <p class="mt-2 text-slate-500">Manage student and teacher attendance.</p>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
+        
+        <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+            <h2 class="text-xl font-semibold">Student Attendance</h2>
+            <p class="text-slate-500 mt-2">Insert and manage student attendance.</p>
+            <div class="flex gap-3 mt-5">
+                <a href="{% url 'student_attendance' %}" class="bg-slate-900 text-white px-5 py-3 rounded-lg hover:bg-slate-700">Mark Attendance</a>
+                <a href="" class="border border-slate-300 px-5 py-3 rounded-lg hover:bg-slate-100">Manage</a>
+            </div>
+        </div>
+
+        <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+            <h2 class="text-xl font-semibold">Teacher Attendance</h2>
+            <p class="text-slate-500 mt-2">Insert and manage teacher attendance.</p>
+            <div class="flex gap-3 mt-5">
+                <a href="{% url 'teacher_attendance' %}" class="bg-slate-900 text-white px-5 py-3 rounded-lg hover:bg-slate-700">Mark Attendance</a>
+                <a href="{% url 'manage_teacher_attendance' %}" class="border border-slate-300 px-5 py-3 rounded-lg hover:bg-slate-100">Manage</a>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+{% endblock content %}

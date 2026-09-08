@@ -1,0 +1,35 @@
+{% extends "school_admin/base.html" %}
+
+{% block title %}Examination{% endblock title %}
+
+{% block content %}
+<div class="flex-1 p-8">
+    <h1 class="text-3xl font-bold text-slate-900">Examination Management</h1>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-10">
+        <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+            <h2 class="text-xl font-semibold text-slate-900">Exams</h2>
+            <p class="text-slate-500 mt-2">Create and manage examinations.</p>
+            <div class="flex gap-3 mt-5">
+                <a href="{% url 'insert_exam' %}" class="bg-slate-900 text-white px-4 py-2 rounded-lg hover:bg-slate-700">Add Exam</a>
+                <a href="{% url 'manage_exams' %}" class="border border-slate-300 px-4 py-2 rounded-lg hover:bg-slate-100">Manage</a>
+            </div>
+        </div>
+        <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+            <h2 class="text-xl font-semibold text-slate-900">Exam Schedules</h2>
+            <p class="text-slate-500 mt-2">Create and manage exam schedules.</p>
+            <div class="flex gap-3 mt-5">
+                <a href="{% url 'insert_examschedule' %}" class="bg-slate-900 text-white px-4 py-2 rounded-lg hover:bg-slate-700">Add Schedule</a>
+                <a href="{% url 'manage_examschedules' %}" class="border border-slate-300 px-4 py-2 rounded-lg hover:bg-slate-100">Manage</a>
+            </div>
+        </div>
+        <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+            <h2 class="text-xl font-semibold text-slate-900">Results</h2>
+            <p class="text-slate-500 mt-2">Enter and manage student results.</p>
+            <div class="flex gap-3 mt-5">
+                <a href="{% url 'insert_result' %}" class="bg-slate-900 text-white px-4 py-2 rounded-lg hover:bg-slate-700">Add Result</a>
+                <a href="{% url 'manage_results' %}" class="border border-slate-300 px-4 py-2 rounded-lg hover:bg-slate-100">Manage</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

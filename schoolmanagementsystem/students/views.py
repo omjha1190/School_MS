@@ -3,6 +3,8 @@ from django.contrib.auth.models import User
 from accounts.models import UserProfile
 from .models import Student
 from academics.models import SchoolClass, Section, StudentEnrollment
+from django.contrib.auth.decorators import login_required
+
 
 # Create your views here.
 def insert_student(req):
@@ -117,5 +119,8 @@ def delete_student(req, id):
         data ['error'] = "This student does not exit"
     return redirect(manage_students)
 
+@login_required
 def student_dashboard(req):
+    if req.user.userprofile.role != "student":
+        return redirect("home")
     return render(req, "students/dashboard.html")
