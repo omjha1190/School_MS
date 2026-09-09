@@ -19,6 +19,12 @@ def manage_notices(req):
     }
     return render(req, "notices/manage.html", data)
 
+def notice_detail(req, id):
+    data = {
+        "notice" : Notice.objects.get(id=id)
+    }
+    return render(req, "notices/notice_detail.html", data)
+
 def edit_notice(req, id):
     data = {
         "notice" : Notice.objects.get(id=id)
