@@ -1,0 +1,44 @@
+{% extends "students/base.html" %}
+
+{% block title %}My Timetable{% endblock title %}
+
+{% block content %}
+<div class="flex-1">
+    <div class="flex items-center justify-between bg-white px-8 py-5 shadow-lg mb-10">
+        <div>
+            <h1 class="text-3xl font-semibold text-slate-800">My Timetable</h1>
+            <p class="text-sm text-slate-500 mt-1">{{ enrollment.section }} · {{ enrollment.academic_year }}</p>
+        </div>
+        <a href="{% url "student_dashboard" %}" class="block px-5 py-2 bg-neutral-800 text-lg font-medium rounded-lg text-white">Back</a>
+    </div>
+    <div class="px-10 pb-10">
+        {% if timetables %}
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {% for timetable in timetables %}
+                    <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-6">
+                        <div class="flex items-center justify-between mb-5">
+                            <h2 class="text-xl font-semibold text-slate-800">{{ timetable.day }}</h2>
+                            <span class="text-xs font-medium px-3 py-1.5 rounded-full bg-slate-100 text-slate-600">{{ timetable.academic_year }}</span>
+                        </div>
+                        <div class="space-y-3">
+                            {% for subject in timetable.subjects.all %}
+                                <div class="flex items-center gap-3 px-4 py-3 rounded-lg bg-slate-50 border border-slate-100">
+                                    <div class="w-8 h-8 rounded-lg bg-white border border-slate-200 flex items-center justify-center text-sm font-semibold text-slate-600">{{ forloop.counter }}</div>
+                                    <span class="text-sm font-medium text-slate-700">{{ subject.name }}</span>
+                                </div>
+                            {% empty %}
+                                <p class="text-sm text-slate-400">No subjects assigned.</p>
+                            {% endfor %}
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="bg-white rounded-xl border border-slate-200 shadow-sm px-6 py-12 text-center">
+                <h2 class="text-lg font-medium text-slate-700">No Timetable Available</h2>
+                <p class="text-sm text-slate-500 mt-2">Your timetable has not been added yet.</p>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock content %}

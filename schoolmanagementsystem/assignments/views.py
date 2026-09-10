@@ -74,3 +74,17 @@ def delete_assignment(req, id):
     except Assignment.DoesNotExist:
         data ['error'] = "This assignment is not available"
     return redirect("manage_assignments")
+
+def student_assignments(req):
+    if req.user.userprofile.role != "student":
+        return redirect("home")
+
+    student = req.user.student
+    enrollment = student.enrollments.first()
+
+    assignments = Assignment.objects.filter(class_section=enrollment.section).order_by("due_date")
+
+    data = {
+        "assignments" : assignments
+    }
+    return render(req, "assignments/student_assignments.html", data)

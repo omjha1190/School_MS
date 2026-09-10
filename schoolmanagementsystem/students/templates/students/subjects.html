@@ -1,0 +1,37 @@
+{% extends "students/base.html" %}
+
+{% block title %}My Subjects{% endblock title %}
+
+{% block content %}
+<div class="flex-1 p-8">
+    <div class="flex justify-between items-center mb-12">
+        <h1 class="text-3xl font-semibold text-slate-800">My Subjects</h1>
+        <a href="{% url "student_dashboard" %}" class="block px-5 py-2 bg-neutral-800 text-lg font-medium rounded-lg text-white">Back</a>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+        {% for item in subject_teachers %}
+        <div class="bg-white rounded-xl border border-slate-200 p-6">
+            <div class="flex items-center gap-4 mb-5">
+                <div class="w-12 h-12 rounded-lg bg-blue-50 flex items-center justify-center">
+                    <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5S19.832 5.477 21 6.253v13C19.832 18.477 18.246 18 16.5 18s-3.332.477-4.5 1.253"/>
+                    </svg>
+                </div>
+                <div>
+                    <h2 class="text-lg font-semibold text-slate-800">{{ item.subject.name }}</h2>
+                    <p class="text-sm text-slate-500">Subject</p>
+                </div>
+            </div>
+            <div class="border-t border-slate-100 pt-4">
+                <p class="text-xs uppercase tracking-wide text-slate-400 mb-1">Teacher</p>
+                <p class="text-slate-700 font-medium">{{ item.teacher.user.get_full_name }}</p>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-span-full bg-white border border-slate-200 rounded-xl p-10 text-center">
+            <p class="text-slate-500">No subjects have been assigned to your section yet.</p>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock content %}

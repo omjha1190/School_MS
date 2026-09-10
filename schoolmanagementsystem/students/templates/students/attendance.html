@@ -1,0 +1,117 @@
+{% extends "students/base.html" %}
+
+{% block title %}My Attendance{% endblock title %}
+
+{% block content %}
+
+<div class="flex-1 p-8">
+    <div class="flex justify-between items-center mb-8">
+        <h1 class="text-3xl font-semibold text-slate-800">My Attendance</h1>
+        <a href="{% url "student_dashboard" %}" class="block px-5 py-2 bg-neutral-800 text-lg font-medium rounded-lg text-white">Back</a>
+    </div>
+    <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6 mb-8">
+        <div class="bg-white border border-slate-200 rounded-xl p-6">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-sm text-slate-500">Total Days</p>
+                    <p class="text-3xl font-semibold text-slate-800 mt-2">{{ total_days }}</p>
+                </div>
+                <div class="w-12 h-12 rounded-lg bg-blue-50 flex items-center justify-center">
+                    <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                    </svg>
+                </div>
+            </div>
+        </div>
+        <div class="bg-white border border-slate-200 rounded-xl p-6">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-sm text-slate-500">Present Days</p>
+                    <p class="text-3xl font-semibold text-green-600 mt-2">{{ present_days }}</p>
+                </div>
+                <div class="w-12 h-12 rounded-lg bg-green-50 flex items-center justify-center">
+                    <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                    </svg>
+                </div>
+            </div>
+        </div>
+        <div class="bg-white border border-slate-200 rounded-xl p-6">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-sm text-slate-500">Absent Days</p>
+                    <p class="text-3xl font-semibold text-red-600 mt-2">{{ absent_days }}</p>
+                </div>
+                <div class="w-12 h-12 rounded-lg bg-red-50 flex items-center justify-center">
+                    <svg class="w-6 h-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                    </svg>
+                </div>
+            </div>
+        </div>
+        <div class="bg-white border border-slate-200 rounded-xl p-6">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-sm text-slate-500">Present Percentage</p>
+                    <p class="text-3xl font-semibold text-purple-600 mt-2">{{ present_percentage }}%</p>
+                </div>
+                <div class="w-12 h-12 rounded-lg bg-purple-50 flex items-center justify-center">
+                    <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19V6m6 13V3M5 19h14"/>
+                    </svg>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="bg-white border border-slate-200 rounded-xl overflow-hidden">
+        <div class="px-6 py-5 border-b border-slate-200">
+            <h2 class="text-lg font-semibold text-slate-800">Attendance Records</h2>
+            <p class="text-sm text-slate-500 mt-1">Your daily attendance history</p>
+        </div>
+        {% if attendance %}
+        <div class="overflow-x-auto">
+            <table class="w-full text-left">
+                <thead class="bg-slate-50 border-b border-slate-200">
+                    <tr>
+                        <th class="px-6 py-4 text-sm font-medium text-slate-500">#</th>
+                        <th class="px-6 py-4 text-sm font-medium text-slate-500">Date</th>
+                        <th class="px-6 py-4 text-sm font-medium text-slate-500">Status</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-100">
+                    {% for record in attendance %}
+                    <tr class="hover:bg-slate-50">
+                        <td class="px-6 py-4 text-sm text-slate-500">{{ forloop.counter }}</td>
+                        <td class="px-6 py-4 text-sm text-slate-700">{{ record.date|date:"d M Y" }}</td>
+                        <td class="px-6 py-4">
+                            {% if record.status %}
+                            <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-green-50 text-green-700">
+                                <span class="w-2 h-2 bg-green-500 rounded-full mr-2"></span>
+                                Present
+                            </span>
+                            {% else %}
+                            <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-red-50 text-red-700">
+                                <span class="w-2 h-2 bg-red-500 rounded-full mr-2"></span>
+                                Absent
+                            </span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <div class="p-12 text-center">
+            <div class="w-14 h-14 mx-auto rounded-full bg-slate-100 flex items-center justify-center mb-4">
+                <svg class="w-7 h-7 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                </svg>
+            </div>
+            <h3 class="text-lg font-medium text-slate-700">No Attendance Records</h3>
+            <p class="text-sm text-slate-500 mt-1">Your attendance records will appear here.</p>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock content %}

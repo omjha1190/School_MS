@@ -1,0 +1,47 @@
+{% extends "school_admin/base.html" %}
+
+{% block title %}Add Class Teacher{% endblock title %}
+
+{% block content %}
+<div class="flex-1 p-8">
+    <div class="max-w-3xl mx-auto">
+        <h1 class="text-2xl font-semibold text-slate-800 mb-10">Add Class Teacher</h1>
+        <div class="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm">
+            <form method="POST">
+                {% csrf_token %}
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-2">Teacher</label>
+                        <select name="teacher" required class="w-full border border-slate-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                            <option value="">Select Teacher</option>
+                            {% for teacher in class_teachers %}
+                                <option value="{{ teacher.id }}" {% if class_teacher.teacher.id == teacher.id %}selected{% endif %}>
+                                    {{ teacher.user.get_full_name }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-2">Class & Section</label>
+                        <select name="section" required class="w-full border border-slate-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                            <option value="">Select Class & Section</option>
+                            {% for section in sections %}
+                                <option value="{{ section.id }}" {% if class_teacher.section.id == section.id %}selected{% endif %}>
+                                    {{ section.schoolclass.name }} - {{ section.name }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-2">Academic Year</label>
+                        <input type="text" name="academic_year" value="{{class_teacher.academic_year}}" placeholder="2026-2027" required class="w-full border border-slate-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                    </div>
+                </div>
+                <div class="flex justify-end gap-3 mt-8">
+                    <button type="submit" class="px-5 py-3 rounded-lg bg-indigo-600 text-white hover:bg-indigo-700">Save Class Teacher</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock content %}

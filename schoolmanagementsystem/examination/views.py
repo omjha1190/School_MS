@@ -9,6 +9,7 @@ from academics.models import StudentEnrollment
 
 def examination_dashboard(req):
     return render(req, "examination/examination_dashboard.html")
+
 def insert_exam(req):
     data = {
         "schoolclasses" : SchoolClass.objects.all(),
@@ -251,3 +252,31 @@ def delete_result(req, id):
     except Result.DoesNotExist:
         data ['error'] = "This result does not exit."
     return redirect("manage_results")
+
+def student_examinations(req):
+    if req.user.userprofile.role != "student":
+        return redirect("home")
+
+    student = req.user.student
+    enrollment = student.enrollments.first()
+
+    schedules = ExamSchedule.objects.filter(section=enrollment.section).order_by("exam_date", "start_time")
+
+    data = {
+        "schedules" : schedules
+    }
+    return render(req, "examination/student_examinations.html", data)
+
+def student_results(req):
+    if req.user.userprofile.role != "student":
+        return redirect("home")
+
+    student = req.user.student
+
+    results = Result.objects.filter(student=student).select_related("exam", "subject").order_by("-exam__start_date", "subject__name")
+
+    data = {
+        "results" : results
+    }
+    return render(req, "examination/student_results.html", data)
+

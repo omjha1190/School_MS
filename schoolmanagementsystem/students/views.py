@@ -2,11 +2,41 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from accounts.models import UserProfile
 from .models import Student
-from academics.models import SchoolClass, Section, StudentEnrollment
+from academics.models import SchoolClass, Section, StudentEnrollment, TeacherAssignment ,ClassTeacher, Timetable
 from django.contrib.auth.decorators import login_required
+from attendance.models import StudentAttendance
+from fees.models import Fee
 
 
 # Create your views here.
+@login_required
+def student_dashboard(req):
+    if req.user.userprofile.role != "student":
+        return redirect("home")
+    student = req.user.student
+    enrollment = student.enrollments.first()
+
+    present_count = StudentAttendance.objects.filter(enrollment=enrollment, status=True).count()
+    absent_count = StudentAttendance.objects.filter(enrollment=enrollment, status=False).count()
+
+    total_fee_count = Fee.objects.filter(student=student).count()
+    paid_fee_count = Fee.objects.filter(student=student, status="Paid").count()
+    pending_fee_count = Fee.objects.filter(student=student, status="Pending").count()
+    overdue_fee_count = Fee.objects.filter(student=student, status="Overdue").count()
+
+    data = {
+        "student" : student,
+        "enrollment" : enrollment,
+        "present_count" : present_count,
+        "absent_count" : absent_count,
+        "total_attendance" : present_count + absent_count,
+        "total_fee_count" : total_fee_count,
+        "paid_fee_count" : paid_fee_count,
+        "pending_fee_count" : pending_fee_count,
+        "overdue_fee_count" : overdue_fee_count,
+    }
+    return render(req, "students/dashboard.html", data)
+
 def insert_student(req):
     data = {
         "schoolclasses" : SchoolClass.objects.all(),
@@ -119,8 +149,90 @@ def delete_student(req, id):
         data ['error'] = "This student does not exit"
     return redirect(manage_students)
 
-@login_required
-def student_dashboard(req):
+
+def student_profile(req):
     if req.user.userprofile.role != "student":
         return redirect("home")
-    return render(req, "students/dashboard.html")
+    student = req.user.student
+    data = {
+        "student" : student
+    }
+    return render(req, "students/profile.html", data)
+
+def student_class(req):
+    if req.user.userprofile.role != "student":
+        return redirect("home")
+
+    student = req.user.student
+    enrollment = student.enrollments.first()
+
+    class_teacher = ClassTeacher.objects.filter(section=enrollment.section, academic_year=enrollment.academic_year).first()
+    subject_teachers = TeacherAssignment.objects.filter(section=enrollment.section).select_related("teacher__user", "subject")
+
+    data = {
+        "student" : student,
+        "enrollment" : enrollment,
+        "class_teacher" : class_teacher,
+        "subject_teachers" : subject_teachers
+    }
+    return render(req, "students/class.html", data)
+
+def student_subjects(req):
+    if req.user.userprofile.role != "student":
+        return redirect("home")
+
+    student = req.user.student
+    enrollment = student.enrollments.first()
+
+    subject_teachers = TeacherAssignment.objects.filter(section=enrollment.section).select_related("teacher__user", "subject")
+
+    data = {
+        "student" : student,
+        "enrollment" : enrollment,
+        "subject_teachers" : subject_teachers
+    }
+    return render(req, "students/subjects.html", data)
+
+def student_attendances(req):
+    if req.user.userprofile.role != "student":
+        return redirect("home")
+
+    student = req.user.student
+    enrollment = student.enrollments.first()
+
+    attendance = StudentAttendance.objects.filter(enrollment=enrollment).order_by("-date")
+    total_days = attendance.count()
+    present_days = attendance.filter(status=True).count()
+    absent_days = attendance.filter(status=False).count()
+
+    if total_days > 0:
+        present_percentage = round(
+            (present_days / total_days) * 100, 2
+        )
+    else : 
+        present_days = 0
+    data = {
+        "student" : student,
+        "enrollment" : enrollment,
+        "attendance" : attendance,
+        "total_days" : total_days,
+        "present_days" : present_days,
+        "absent_days" : absent_days,
+        "present_percentage" : present_percentage
+    }
+    return render(req, "students/attendance.html", data)
+
+def student_timetable(req):
+    if req.user.userprofile.role != "student":
+        return redirect("home")
+    student = req.user.student
+    enrollment = student.enrollments.first()
+
+    timetables = Timetable.objects.filter(section=enrollment.section, academic_year=enrollment.academic_year).prefetch_related("subjects")
+
+    data = {
+        "student" : student,
+        "enrollment" : enrollment,
+        "timetables" : timetables
+    }
+    return render(req, "students/timetable.html",data)

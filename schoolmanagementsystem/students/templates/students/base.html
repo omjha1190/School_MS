@@ -15,15 +15,15 @@
         </div>
         <nav class="p-4 space-y-2">
             <a href="{% url 'student_dashboard' %}" class="block px-4 py-3 rounded-lg text-slate-300 hover:bg-slate-700">Dashboard</a>
-            <a href="#" class="block px-4 py-3 rounded-lg text-slate-300 hover:bg-slate-700">My Profile</a>
-            <a href="#" class="block px-4 py-3 rounded-lg text-slate-300 hover:bg-slate-700">My Class</a>
-            <a href="#" class="block px-4 py-3 rounded-lg text-slate-300 hover:bg-slate-700">Subjects</a>
-            <a href="#" class="block px-4 py-3 rounded-lg text-slate-300 hover:bg-slate-700">Attendance</a>
-            <a href="#" class="block px-4 py-3 rounded-lg text-slate-300 hover:bg-slate-700">Assignments</a>
-            <a href="#" class="block px-4 py-3 rounded-lg text-slate-300 hover:bg-slate-700">Examinations</a>
-            <a href="#" class="block px-4 py-3 rounded-lg text-slate-300 hover:bg-slate-700">Results</a>
-            <a href="#" class="block px-4 py-3 rounded-lg text-slate-300 hover:bg-slate-700">Timetable</a>
-            <a href="#" class="block px-4 py-3 rounded-lg text-slate-300 hover:bg-slate-700">Notices</a>
+            <a href="{% url "student_profile" %}" class="block px-4 py-3 rounded-lg text-slate-300 hover:bg-slate-700">My Profile</a>
+            <a href="{% url "student_class" %}" class="block px-4 py-3 rounded-lg text-slate-300 hover:bg-slate-700">My Class</a>
+            <a href="{% url "student_subjects" %}" class="block px-4 py-3 rounded-lg text-slate-300 hover:bg-slate-700">Subjects</a>
+            <a href="{% url "student_attendances" %}" class="block px-4 py-3 rounded-lg text-slate-300 hover:bg-slate-700">Attendance</a>
+            <a href="{% url "student_assignments" %}" class="block px-4 py-3 rounded-lg text-slate-300 hover:bg-slate-700">Assignments</a>
+            <a href="{% url "student_examinations" %}" class="block px-4 py-3 rounded-lg text-slate-300 hover:bg-slate-700">Examinations</a>
+            <a href="{% url "student_results" %}" class="block px-4 py-3 rounded-lg text-slate-300 hover:bg-slate-700">Results</a>
+            <a href="{% url "student_timetable" %}" class="block px-4 py-3 rounded-lg text-slate-300 hover:bg-slate-700">Timetable</a>
+            <a href="{% url "student_notices" %}" class="block px-4 py-3 rounded-lg text-slate-300 hover:bg-slate-700">Notices</a>
         </nav>
     </div>
             {% block content %}

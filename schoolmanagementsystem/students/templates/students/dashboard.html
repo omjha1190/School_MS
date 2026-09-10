@@ -4,15 +4,209 @@
 
 {% block content %}
 
-<div class="flex-1 p-8">
+<div class="flex-1 p-6 lg:p-8">
 
-    <h1 class="text-3xl font-bold text-slate-900">
-        Student Portal
-    </h1>
+    <!-- Header -->
+    <div class="mb-8">
+        <p class="text-sm font-medium text-slate-500 mb-1">
+            Student Portal
+        </p>
 
-    <p class="mt-2 text-slate-500">
-        Welcome back, {{ request.user.first_name|capfirst }}.
-    </p>
+        <h1 class="text-3xl lg:text-4xl font-bold text-slate-900">
+            Welcome, {{ student.user.first_name|capfirst }}
+        </h1>
+
+        <p class="mt-2 text-slate-500">
+            Here is your student information.
+        </p>
+    </div>
+
+
+    <!-- Student Profile -->
+    <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6">
+
+        <div class="flex items-center gap-4 mb-6">
+            <div class="w-12 h-12 rounded-xl bg-blue-50 flex items-center justify-center">
+                🎓
+            </div>
+
+            <div>
+                <h2 class="text-xl font-bold text-slate-900">
+                    Student Profile
+                </h2>
+
+                <p class="text-sm text-slate-500">
+                    Basic academic information
+                </p>
+            </div>
+        </div>
+
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+
+            <!-- Name -->
+            <div>
+                <p class="text-sm text-slate-500">Student Name</p>
+                <p class="mt-1 font-semibold text-slate-900">
+                    {{ student.user.get_full_name }}
+                </p>
+            </div>
+
+            <!-- Admission Number -->
+            <div>
+                <p class="text-sm text-slate-500">Admission Number</p>
+                <p class="mt-1 font-semibold text-slate-900">
+                    {{ student.admission_number }}
+                </p>
+            </div>
+
+            <!-- Class -->
+            <div>
+                <p class="text-sm text-slate-500">Class</p>
+                <p class="mt-1 font-semibold text-slate-900">
+                    {{ enrollment.section.schoolclass.name }}
+                </p>
+            </div>
+
+            <!-- Section -->
+            <div>
+                <p class="text-sm text-slate-500">Section</p>
+                <p class="mt-1 font-semibold text-slate-900">
+                    {{ enrollment.section.name }}
+                </p>
+            </div>
+
+        </div>
+
+        <!-- Academic Year -->
+        <div class="mt-6 pt-5 border-t border-slate-100">
+
+            <p class="text-sm text-slate-500">
+                Academic Year
+            </p>
+
+            <p class="mt-1 font-semibold text-slate-900">
+                {{ enrollment.academic_year }}
+            </p>
+
+        </div>
+
+    </div>
+    <!-- Attendance Summary -->
+<div class="mt-8">
+
+    <div class="mb-5">
+        <h2 class="text-xl font-bold text-slate-900">
+            Attendance Summary
+        </h2>
+
+        <p class="text-sm text-slate-500 mt-1">
+            Your attendance overview
+        </p>
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-5">
+
+        <!-- Present -->
+        <div class="bg-white rounded-2xl border border-slate-200 p-5 shadow-sm">
+            <p class="text-sm text-slate-500">
+                Present Days
+            </p>
+
+            <p class="text-3xl font-bold text-green-600 mt-2">
+                {{ present_count }}
+            </p>
+        </div>
+
+        <!-- Absent -->
+        <div class="bg-white rounded-2xl border border-slate-200 p-5 shadow-sm">
+            <p class="text-sm text-slate-500">
+                Absent Days
+            </p>
+
+            <p class="text-3xl font-bold text-red-600 mt-2">
+                {{ absent_count }}
+            </p>
+        </div>
+
+        <!-- Total -->
+        <div class="bg-white rounded-2xl border border-slate-200 p-5 shadow-sm">
+            <p class="text-sm text-slate-500">
+                Total Marked Days
+            </p>
+
+            <p class="text-3xl font-bold text-slate-900 mt-2">
+                {{ total_attendance }}
+            </p>
+        </div>
+
+    </div>
+
+</div>
+<!-- Fee Summary -->
+<div class="mt-8">
+
+    <div class="flex items-center justify-between mb-5">
+        <div>
+            <h2 class="text-xl font-bold text-slate-900">
+                Fee Summary
+            </h2>
+
+            <p class="text-sm text-slate-500 mt-1">
+                Overview of your fee records
+            </p>
+        </div>
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+
+        <!-- Total -->
+        <div class="bg-white rounded-2xl border border-slate-200 p-5 shadow-sm">
+            <p class="text-sm text-slate-500">
+                Total Fee Records
+            </p>
+
+            <p class="text-3xl font-bold text-slate-900 mt-2">
+                {{ total_fee_count }}
+            </p>
+        </div>
+
+        <!-- Paid -->
+        <div class="bg-white rounded-2xl border border-slate-200 p-5 shadow-sm">
+            <p class="text-sm text-slate-500">
+                Paid
+            </p>
+
+            <p class="text-3xl font-bold text-green-600 mt-2">
+                {{ paid_fee_count }}
+            </p>
+        </div>
+
+        <!-- Pending -->
+        <div class="bg-white rounded-2xl border border-slate-200 p-5 shadow-sm">
+            <p class="text-sm text-slate-500">
+                Pending
+            </p>
+
+            <p class="text-3xl font-bold text-orange-500 mt-2">
+                {{ pending_fee_count }}
+            </p>
+        </div>
+
+        <!-- Overdue -->
+        <div class="bg-white rounded-2xl border border-slate-200 p-5 shadow-sm">
+            <p class="text-sm text-slate-500">
+                Overdue
+            </p>
+
+            <p class="text-3xl font-bold text-red-600 mt-2">
+                {{ overdue_fee_count }}
+            </p>
+        </div>
+
+    </div>
+
+</div>
 
 </div>
 

@@ -7,4 +7,5 @@ urlpatterns = [
    path("details/<int:id>/", views.assignment_details, name="assignment_details"),
    path("edit/<int:id>/", views.edit_assignment, name="edit_assignment"),
    path("delete/<int:id>/", views.delete_assignment, name="delete_assignment"),
+   path("student/", views.student_assignments, name="student_assignments"),
 ]

@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from .models import SchoolClass, Section, Subject, TeacherAssignment, StudentEnrollment
+from .models import SchoolClass, Section, Subject, TeacherAssignment, StudentEnrollment, ClassTeacher, Timetable
 from teachers.models import Teacher
 from students.models import Student
 
@@ -89,10 +89,22 @@ def manage_teacher_assignment(req):
     return render(req, "academics/manage_teacher_assignment.html", data)
 
 def edit_teacher_assignment(req, id):
+    teacher_assignment = TeacherAssignment.objects.get(id=id)
     data = {
-        ""
+        "teacher_assignment" : teacher_assignment,
+        "teachers" : Teacher.objects.all(),
+        "subjects" : Subject.objects.all(),
+        "schoolclasses" : SchoolClass.objects.all(),
+        "sections" : Section.objects.all(),
     }
-    return render(req, "academics/insert_teacher_assignment.html")
+    if req.method == "POST":
+        teacher_assignment.teacher_id = req.POST.get("teacher")
+        teacher_assignment.subject_id = req.POST.get("subject")
+        teacher_assignment.schoolclass_id = req.POST.get("schoolclass")
+        teacher_assignment.section_id = req.POST.get("section")
+        teacher_assignment.save()
+        return redirect("manage_teacher_assignment")
+    return render(req, "academics/insert_teacher_assignment.html", data)
 
 def delete_teacher_assignment(req, id):
     data = {}
@@ -151,3 +163,95 @@ def delete_enrollment(req, id):
     except StudentEnrollment.DoesNotExist:
         data ['error'] = "This Student enrollment does not exit"
     return redirect("manage_enrollments")
+
+def insert_class_teacher(req):
+    data = {
+        "class_teachers" : Teacher.objects.filter(is_class_teacher=True),
+        "sections" : Section.objects.all()
+    }
+    if req.method == "POST":
+        classteacher = ClassTeacher()
+        classteacher.teacher_id = req.POST.get("teacher")
+        classteacher.section_id = req.POST.get("section")
+        classteacher.academic_year = req.POST.get("academic_year")
+        classteacher.save()
+        return redirect("manage_class_teachers")
+    return render(req, "academics/insert_class_teacher.html", data)
+
+def manage_class_teachers(req):
+    data = {
+        "class_teachers" : ClassTeacher.objects.all(),
+    }
+    return render(req, "academics/manage_class_teachers.html", data)
+
+def edit_class_teacher(req, id):
+    class_teacher = ClassTeacher.objects.get(id=id)
+    data = {
+        "class_teacher" : class_teacher,
+        "class_teachers" : Teacher.objects.filter(is_class_teacher=True),
+        "sections" : Section.objects.all(),
+    }
+    if req.method == "POST":
+        class_teacher.teacher_id = req.POST.get("teacher")
+        class_teacher.section_id = req.POST.get("section")
+        class_teacher.academic_year = req.POST.get("academic_year")
+        class_teacher.save()
+        return redirect("manage_class_teachers")
+    return render(req, "academics/insert_class_teacher.html", data)
+
+def delete_class_teacher(req, id):
+    data = {}
+    try:
+        class_teacher = ClassTeacher.objects.get(id=id)
+        class_teacher.delete()
+        return redirect("manage_class_teachers")
+    except ClassTeacher.DoesNotExist:
+        data ['error'] = "This class teacher does not exist"
+    return redirect("manage_class_teachers")
+
+def insert_timetable(req):
+    data = {
+        "sections" : Section.objects.all(),
+        "subjects" : Subject.objects.all(),
+    }
+    if req.method == "POST":
+        timetable = Timetable()
+        timetable.section_id = req.POST.get("section")
+        timetable.academic_year = req.POST.get("academic_year")
+        timetable.day = req.POST.get("day")
+        timetable.save()
+        timetable.subjects.set(req.POST.getlist('subjects'))
+        return redirect("manage_timetable")
+    return render(req, "academics/insert_timetable.html", data)
+
+def manage_timetable(req):
+    data = {
+        "timetables" : Timetable.objects.all()
+    }
+    return render(req, "academics/manage_timetable.html", data)
+
+def edit_timetable(req, id):
+    timetable = Timetable.objects.get(id=id)
+    data = {
+        "timetable" : timetable,
+        "sections" : Section.objects.all(),
+        "subjects" : Subject.objects.all(),
+    }
+    if req.method == "POST":
+        timetable.section_id = req.POST.get("section")
+        timetable.academic_year = req.POST.get("academic_year")
+        timetable.day = req.POST.get("day")
+        timetable.save
+        timetable.subjects.set(req.POST.getlist('subjects'))
+        return redirect("manage_timetable")
+    return render(req, "academics/insert_timetable.html",data)
+
+def delete_timetable(req, id):
+    data = {}
+    try:
+        timetable = Timetable.objects.get(id=id)
+        timetable.delete()
+        return redirect("manage_timetable")
+    except Timetable.DoesNotExist:
+        data ['error'] = "This timetable is not availabel"
+    return redirect("manage_timetable")

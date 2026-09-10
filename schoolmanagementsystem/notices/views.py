@@ -47,3 +47,13 @@ def delete_notice(req, id):
     except Notice.DoesNotExist:
         data ['error'] = "This Notice is not available"
     return redirect(manage_notices)    
+
+def student_notices(req):
+    if req.user.userprofile.role != "student":
+        return redirect("home")
+
+    notices = Notice.objects.all().order_by("-date")
+    data = {
+        "notices" : notices
+    }
+    return render(req, "notices/student_notices.html", data)

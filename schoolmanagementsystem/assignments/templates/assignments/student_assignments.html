@@ -1,0 +1,59 @@
+{% extends "students/base.html" %}
+
+{% block title %}My Assignments{% endblock title %}
+
+{% block content %}
+
+<div class="flex-1 p-8">
+
+    <h1 class="text-3xl font-bold text-slate-900">
+        My Assignments
+    </h1>
+
+    <p class="mt-2 text-slate-500">
+        Assignments assigned to your class and section.
+    </p>
+
+    <div class="mt-8 space-y-4">
+
+        {% for assignment in assignments %}
+
+            <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200">
+
+                <h2 class="text-xl font-semibold text-slate-900">
+                    {{ assignment.title }}
+                </h2>
+
+                <p class="mt-2 text-slate-600">
+                    Subject: {{ assignment.subject.name }}
+                </p>
+
+                <p class="mt-1 text-slate-600">
+                    Teacher: {{ assignment.teacher.user.get_full_name }}
+                </p>
+
+                <p class="mt-1 text-slate-600">
+                    Due Date: {{ assignment.due_date }}
+                </p>
+
+                <p class="mt-3 text-slate-700">
+                    {{ assignment.description }}
+                </p>
+
+            </div>
+
+        {% empty %}
+
+            <div class="bg-white p-6 rounded-xl border border-slate-200">
+                <p class="text-slate-500">
+                    No assignments found.
+                </p>
+            </div>
+
+        {% endfor %}
+
+    </div>
+
+</div>
+
+{% endblock content %}

@@ -16,7 +16,7 @@
                     <select id="teacher" name="teacher" class="w-full border border-slate-300 rounded-lg px-4 py-3 bg-white focus:outline-none focus:ring-2 focus:ring-slate-400">
                         <option value="">Select Teacher</option>
                         {% for teacher in teachers %}
-                            <option value="{{ teacher.id }}">
+                            <option value="{{ teacher.id }}" {% if teacher_assignment.teacher.id == teacher.id %}selected{% endif %}>
                                 {{ teacher.user.get_full_name }}
                             </option>
                         {% endfor %}
@@ -27,7 +27,7 @@
                     <select id="subject" name="subject" class="w-full border border-slate-300 rounded-lg px-4 py-3 bg-white focus:outline-none focus:ring-2 focus:ring-slate-400">
                         <option value="">Select Subject</option>
                         {% for subject in subjects %}
-                            <option value="{{ subject.id }}">
+                            <option value="{{ subject.id }}" {% if teacher_assignment.subject.id == subject.id %}selected{% endif %}>
                                 {{ subject.name }}
                             </option>
                         {% endfor %}
@@ -38,7 +38,7 @@
                     <select id="schoolclass" name="schoolclass" class="w-full border border-slate-300 rounded-lg px-4 py-3 bg-white focus:outline-none focus:ring-2 focus:ring-slate-400">
                         <option value="">Select Class</option>
                         {% for schoolclass in schoolclasses %}
-                            <option value="{{ schoolclass.id }}">
+                            <option value="{{ schoolclass.id }}" {% if teacher_assignment.schoolclass.id == schoolclass.id %}selected{% endif %}>
                                 {{ schoolclass.name }}
                             </option>
                         {% endfor %}
@@ -49,7 +49,7 @@
                     <select id="section" name="section" class="w-full border border-slate-300 rounded-lg px-4 py-3 bg-white focus:outline-none focus:ring-2 focus:ring-slate-400">
                         <option value="">Select Section</option>
                         {% for section in sections %}
-                            <option value="{{ section.id }}">
+                            <option value="{{ section.id }}" {% if teacher_assignment.section.id == section.id %}selected{% endif %}>
                                 {{ section.schoolclass.name }} - {{ section.name }}
                             </option>
                         {% endfor %}

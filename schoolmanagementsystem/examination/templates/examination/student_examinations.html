@@ -1,0 +1,26 @@
+{% extends "students/base.html" %}
+
+{% block title %}My Examinations{% endblock title %}
+
+{% block content %}
+<div class="flex-1 p-8">
+    <h1 class="text-3xl font-bold text-slate-900">My Examinations</h1>
+    <p class="mt-2 text-slate-500">Your upcoming and scheduled examinations.</p>
+    <div class="mt-8 space-y-4">
+        {% for schedule in schedules %}
+            <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200">
+                <h2 class="text-xl font-semibold text-slate-900">{{ schedule.exam.exam_name }}</h2>
+                <p class="mt-2 text-slate-600">Subject: {{ schedule.subject.name }}</p>
+                <p class="mt-1 text-slate-600">Date: {{ schedule.exam_date }}</p>
+                <p class="mt-1 text-slate-600">Time: {{ schedule.start_time }} - {{ schedule.end_time }}</p>
+                <p class="mt-1 text-slate-600">Room: {{ schedule.room_no }}</p>
+                <p class="mt-1 text-slate-600">Maximum Marks: {{ schedule.max_marks }}</p>
+            </div>
+        {% empty %}
+            <div class="bg-white p-6 rounded-xl border border-slate-200">
+                <p class="text-slate-500">No examinations found.</p>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock content %}

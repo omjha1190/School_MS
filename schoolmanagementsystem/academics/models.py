@@ -61,4 +61,39 @@ class TeacherAssignment(models.Model):
 
     def __str__(self):
         return f"{self.teacher.user.get_full_name()} - {self.subject.name}"
-        
+
+
+class ClassTeacher(models.Model):
+    teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE)
+    section = models.OneToOneField(Section, on_delete=models.CASCADE)
+    academic_year = models.CharField(max_length=100)
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=["section", "academic_year"],
+                name="unique_class_teacher_per_section_year"
+            )
+        ]
+
+    def __str__(self):
+        return f"{self.teacher} - {self.section} - {self.academic_year}"
+
+
+class Timetable(models.Model):
+    DAYS = [
+        ("Monday", "Monday"),
+        ("Tuesday", "Tuesday"),
+        ("Wednesday", "Wednesday"),
+        ("Thursday", "Thursday"),
+        ("Friday", "Friday"),
+        ("Saturday", "Saturday"),
+    ]
+    section = models.ForeignKey(Section, on_delete=models.CASCADE)
+    subjects = models.ManyToManyField(Subject)
+    academic_year = models.CharField(max_length=50)
+    day = models.CharField(max_length=50, choices=DAYS)
+
+    def __str__(self):
+        return f"{self.day} - {self.subject}"
+    
