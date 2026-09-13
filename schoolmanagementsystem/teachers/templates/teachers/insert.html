@@ -4,7 +4,7 @@
 
 
 {% block content %}
-<div class="ml-64 flex-1 p-8">
+<div class="flex-1 p-8">
     <div class="px-10">
         <h1 class="text-3xl font-semibold text-slate-800 mb-8">Add Teacher</h1>
         <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-8">
@@ -50,6 +50,17 @@
                         <div>
                             <label for="qualification" class="block text-sm font-medium text-slate-700 mb-2">Qualification</label>
                             <input type="text" id="qualification" name="qualification" value="{{teacher.qualification}}" placeholder="e.g. B.Ed, M.Sc, M.A"required class="w-full border border-slate-300 rounded-lg px-4 py-3">
+                        </div>
+                        <div>
+                            <label for="subject" class="block text-sm font-medium text-slate-700 mb-2">Subject</label>
+                            <select id="subject" name="subject" required class="w-full border border-slate-300 rounded-lg px-4 py-3">
+                                <option value="">Select Subject</option>
+                                {% for subject in subjects %}
+                                    <option value="{{ subject.id }}" {% if teacher.subject and teacher.subject.id == subject.id %}selected{% endif %}>
+                                        {{ subject.name }}
+                                    </option>
+                                {% endfor %}
+                            </select>
                         </div>
                         <div>
                             <label for="joining_date" class="block text-sm font-medium text-slate-700 mb-2">Joining Date</label>

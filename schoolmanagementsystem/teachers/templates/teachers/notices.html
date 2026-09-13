@@ -1,0 +1,27 @@
+{% extends "teachers/base.html" %}
+
+{% block title %}Notices{% endblock title %}
+
+{% block content %}
+<div class="flex-1 p-8">
+    <h1 class="text-2xl font-semibold text-slate-800">Notices</h1>
+    <p class="text-slate-500 mt-1">School notices and announcements.</p>
+    <div class="space-y-4 mt-8">
+        {% for notice in notices %}
+        <div class="bg-white border border-slate-200 rounded-xl p-6">
+            <div class="flex justify-between items-start gap-4">
+                <div>
+                    <h2 class="text-lg font-semibold text-slate-800">{{ notice.title }}</h2>
+                    <p class="text-sm text-slate-500 mt-1">{{ notice.date }}</p>
+                </div>
+            </div>
+            <p class="text-slate-600 mt-4">{{ notice.description }}</p>
+        </div>
+        {% empty %}
+        <div class="bg-white border border-slate-200 rounded-xl p-6">
+            <p class="text-slate-500">No notices available.</p>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock content %}

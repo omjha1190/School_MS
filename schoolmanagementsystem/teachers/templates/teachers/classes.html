@@ -1,0 +1,57 @@
+{% extends "teachers/base.html" %}
+
+{% block title %}My Classes{% endblock title %}
+
+{% block content %}
+<div class="flex-1 p-8">
+    <div class="flex justify-between items-center mb-8">
+        <h1 class="text-2xl font-semibold text-slate-800">My Classes</h1>
+        <a href="{% url "teacher_dashboard" %}" class="block px-5 py-2 bg-neutral-800 text-lg font-medium rounded-lg text-white">Back</a>
+    </div>
+    <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6 mb-8">
+        <h2 class="text-lg font-semibold text-slate-800 mb-5">My Subjects</h2>
+        {% if assignments %}
+        <div class="overflow-x-auto">
+            <table class="w-full text-left">
+                <thead>
+                    <tr class="border-b border-slate-200">
+                        <th class="px-4 py-3 text-sm font-medium text-slate-600">Subject</th>
+                        <th class="px-4 py-3 text-sm font-medium text-slate-600">Class</th>
+                        <th class="px-4 py-3 text-sm font-medium text-slate-600">Section</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for assignment in assignments %}
+                    <tr class="border-b border-slate-100">
+                        <td class="px-4 py-4 text-slate-800">{{ assignment.subject.name }}</td>
+                        <td class="px-4 py-4 text-slate-700">{{ assignment.schoolclass.name }}</td>
+                        <td class="px-4 py-4 text-slate-700">{{ assignment.section.name }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <p class="text-slate-500">No subject assignments found.</p>
+        {% endif %}
+    </div>
+    <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+        <h2 class="text-lg font-semibold text-slate-800 mb-5">Class Teacher</h2>
+        {% if class_teachers %}
+        <div class="space-y-3">
+            {% for class_teacher in class_teachers %}
+            <div class="flex items-center justify-between p-4 bg-slate-50 rounded-lg">
+                <div>
+                    <p class="font-medium text-slate-800">
+                        {{ class_teacher.section.schoolclass.name }} - {{ class_teacher.section.name }}</p>
+                    <p class="text-sm text-slate-500 mt-1">Academic Year: {{ class_teacher.academic_year }}</p>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <p class="text-slate-500">You are not assigned as a class teacher.</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock content %}

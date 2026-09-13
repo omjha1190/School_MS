@@ -9,6 +9,7 @@ class Teacher(models.Model):
         ('other', 'Other'),
     )
     user = models.OneToOneField(User, on_delete=models.CASCADE)
+    subject = models.ForeignKey("academics.Subject", on_delete=models.CASCADE, null=True, blank=True)
     phone = models.CharField(max_length=15)
     address = models.TextField()
     qualification = models.CharField(max_length=100)

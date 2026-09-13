@@ -54,7 +54,7 @@ class Subject(models.Model):
         return self.name
 
 class TeacherAssignment(models.Model):
-    teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE)    
+    teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE, related_name="assignments")    
     subject = models.ForeignKey(Subject, on_delete=models.CASCADE)
     schoolclass = models.ForeignKey(SchoolClass, on_delete=models.CASCADE)
     section = models.ForeignKey(Section, on_delete=models.CASCADE)

@@ -4,15 +4,202 @@
 
 {% block content %}
 
-<div class="flex-1 p-8">
+<div class="flex-1">
 
-    <h1 class="text-3xl font-bold text-slate-900">
-        Teacher Dashboard
-    </h1>
+    <!-- Header -->
+    <div class="flex items-center bg-white px-8 py-5 shadow-lg mb-10">
+        <div>
+            <h1 class="text-3xl font-semibold text-slate-800">
+                Teacher Dashboard
+            </h1>
+            <p class="text-sm text-slate-500 mt-1">
+                Welcome, {{ teacher.user.get_full_name }}
+            </p>
+        </div>
+    </div>
 
-    <p class="mt-2 text-slate-500">
-        Welcome back, {{ request.user.first_name|capfirst }}.
-    </p>
+
+    <div class="px-10 pb-10">
+
+        <!-- Summary Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+
+            <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-6">
+                <p class="text-sm text-slate-500">My Subjects</p>
+                <h2 class="text-3xl font-semibold text-slate-800 mt-2">
+                    {{ total_subjects }}
+                </h2>
+            </div>
+
+            <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-6">
+                <p class="text-sm text-slate-500">My Sections</p>
+                <h2 class="text-3xl font-semibold text-slate-800 mt-2">
+                    {{ total_sections }}
+                </h2>
+            </div>
+
+            <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-6">
+                <p class="text-sm text-slate-500">My Assignments</p>
+                <h2 class="text-3xl font-semibold text-slate-800 mt-2">
+                    {{ total_assignments }}
+                </h2>
+            </div>
+
+        </div>
+
+
+        <!-- Main Grid -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+
+
+            <!-- My Classes & Subjects -->
+            <div class="bg-white rounded-xl border border-slate-200 shadow-sm">
+
+                <div class="px-6 py-5 border-b border-slate-200">
+                    <h2 class="text-lg font-semibold text-slate-800">
+                        My Classes & Subjects
+                    </h2>
+                </div>
+
+                <div class="divide-y divide-slate-100">
+
+                    {% for assignment in assignments %}
+
+                    <div class="px-6 py-4 flex items-center justify-between">
+
+                        <div>
+                            <p class="text-sm font-medium text-slate-800">
+                                {{ assignment.subject.name }}
+                            </p>
+
+                            <p class="text-xs text-slate-500 mt-1">
+                                {{ assignment.schoolclass.name }}
+                                · {{ assignment.section.name }}
+                            </p>
+                        </div>
+
+                        <span class="text-xs px-3 py-1.5 rounded-full
+                                     bg-slate-100 text-slate-600">
+                            {{ assignment.section.name }}
+                        </span>
+
+                    </div>
+
+                    {% empty %}
+
+                    <div class="px-6 py-8 text-center text-sm text-slate-400">
+                        No subjects assigned.
+                    </div>
+
+                    {% endfor %}
+
+                </div>
+
+            </div>
+
+
+            <!-- Class Teacher -->
+            <div class="bg-white rounded-xl border border-slate-200 shadow-sm">
+
+                <div class="px-6 py-5 border-b border-slate-200">
+                    <h2 class="text-lg font-semibold text-slate-800">
+                        Class Teacher
+                    </h2>
+                </div>
+
+                <div class="p-6">
+
+                    {% for class_teacher in class_teachers %}
+
+                    <div class="flex items-center justify-between
+                                px-4 py-4 bg-slate-50 rounded-lg mb-3">
+
+                        <div>
+                            <p class="text-sm font-medium text-slate-800">
+                                {{ class_teacher.section }}
+                            </p>
+
+                            <p class="text-xs text-slate-500 mt-1">
+                                Academic Year:
+                                {{ class_teacher.academic_year }}
+                            </p>
+                        </div>
+
+                        <span class="text-xs px-3 py-1.5 rounded-full
+                                     bg-emerald-50 text-emerald-600">
+                            Class Teacher
+                        </span>
+
+                    </div>
+
+                    {% empty %}
+
+                    <p class="text-sm text-slate-400">
+                        You are not assigned as a class teacher.
+                    </p>
+
+                    {% endfor %}
+
+                </div>
+
+            </div>
+
+
+            <!-- Recent Assignments -->
+            <div class="bg-white rounded-xl border border-slate-200 shadow-sm lg:col-span-2">
+
+                <div class="px-6 py-5 border-b border-slate-200">
+                    <h2 class="text-lg font-semibold text-slate-800">
+                        Recent Assignments
+                    </h2>
+                </div>
+
+                <div class="divide-y divide-slate-100">
+
+                    {% for assignment in teacher_assignments|slice:":5" %}
+
+                    <div class="px-6 py-4 flex items-center justify-between">
+
+                        <div>
+                            <p class="text-sm font-medium text-slate-800">
+                                {{ assignment.title }}
+                            </p>
+
+                            <p class="text-xs text-slate-500 mt-1">
+                                {{ assignment.subject.name }}
+                                · {{ assignment.class_section }}
+                            </p>
+                        </div>
+
+                        <div class="text-right">
+
+                            <p class="text-xs text-slate-500">
+                                Due Date
+                            </p>
+
+                            <p class="text-sm font-medium text-slate-700 mt-1">
+                                {{ assignment.due_date }}
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                    {% empty %}
+
+                    <div class="px-6 py-8 text-center text-sm text-slate-400">
+                        No assignments created yet.
+                    </div>
+
+                    {% endfor %}
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
 
 </div>
 

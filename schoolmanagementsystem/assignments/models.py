@@ -14,4 +14,15 @@ class Assignment(models.Model):
 
     def __str__(self):
         return self.title
+
+class AssignmentSubmisssion(models.Model):
+    assignment = models.ForeignKey(Assignment, on_delete=models.CASCADE)
+    student = models.ForeignKey("students.Student", on_delete=models.CASCADE)
+    submitted_date = models.DateTimeField(auto_now_add=True)
+    file = models.FileField(upload_to="assignment")
+    remarks = models.TextField(blank=True)
+
+    def __str__(self):
+        return f"{self.student} - {self.assignment.title}"
+    
     

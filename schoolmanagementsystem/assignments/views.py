@@ -39,6 +39,12 @@ def manage_assignments(req):
 
     return render(req, "assignments/manage_assignments.html", data)
 
+def assignment_details(req, id):
+    data = {
+        "assignment" : Assignment.objects.get(id=id)
+    }
+    return render(req, "assignments/details_assignment.html", data)
+
 def edit_assignment(req, id):
     data = {
         "assignment" : Assignment.objects.get(id=id),
@@ -59,11 +65,7 @@ def edit_assignment(req, id):
         return redirect("manage_assignments")
     return render(req, "assignments/insert_assignment.html", data)
 
-def assignment_details(req, id):
-    data = {
-        "assignment" : Assignment.objects.get(id=id)
-    }
-    return render(req, "assignments/details_assignment.html", data)
+
 
 def delete_assignment(req, id):
     data = {}
@@ -75,16 +77,3 @@ def delete_assignment(req, id):
         data ['error'] = "This assignment is not available"
     return redirect("manage_assignments")
 
-def student_assignments(req):
-    if req.user.userprofile.role != "student":
-        return redirect("home")
-
-    student = req.user.student
-    enrollment = student.enrollments.first()
-
-    assignments = Assignment.objects.filter(class_section=enrollment.section).order_by("due_date")
-
-    data = {
-        "assignments" : assignments
-    }
-    return render(req, "assignments/student_assignments.html", data)

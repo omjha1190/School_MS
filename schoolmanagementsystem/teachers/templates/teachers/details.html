@@ -5,7 +5,7 @@
 
 {% block content %}
 
-<div class="ml-64 flex-1 p-8 bg-slate-50">
+<div class="flex-1 p-8 bg-slate-50">
     <div class="px-16">
         <div class="flex items-center justify-between mb-8">
             <h1 class="text-4xl font-bold text-slate-800 tracking-tight">Teacher Details</h1>
@@ -80,6 +80,16 @@
                         <div class="p-5 bg-white rounded-xl border border-slate-200 shadow-sm hover:shadow-md transition">
                             <p class="text-sm text-slate-500 mb-2">Qualification</p>
                             <p class="text-base font-semibold text-slate-800">{{ teacher.qualification }}</p>
+                        </div>
+                        <div class="p-5 bg-white rounded-xl border border-slate-200 shadow-sm hover:shadow-md transition">
+                            <p class="text-sm text-slate-500 mb-2">Subject</p>
+                            <p class="text-base font-semibold text-slate-800">
+                                {% for assignment in assignments %}
+                                    <p>{{ assignment.subject.name }}</p>
+                                {% empty %}
+                                    <p>No subject assigned</p>
+                                {% endfor %}
+                            </p>
                         </div>
                         <div class="p-5 bg-white rounded-xl border border-slate-200 shadow-sm hover:shadow-md transition">
                             <p class="text-sm text-slate-500 mb-2">Joining Date</p>

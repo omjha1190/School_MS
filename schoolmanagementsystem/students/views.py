@@ -6,6 +6,7 @@ from academics.models import SchoolClass, Section, StudentEnrollment, TeacherAss
 from django.contrib.auth.decorators import login_required
 from attendance.models import StudentAttendance
 from fees.models import Fee
+from assignments.models import Assignment, AssignmentSubmisssion
 
 
 # Create your views here.
@@ -236,3 +237,56 @@ def student_timetable(req):
         "timetables" : timetables
     }
     return render(req, "students/timetable.html",data)
+
+def student_assignments(req):
+    if req.user.userprofile.role != "student":
+        return redirect("home")
+
+    student = req.user.student
+    enrollment = student.enrollments.first()
+
+    assignments = Assignment.objects.filter(class_section=enrollment.section).order_by("due_date")
+    submissions = AssignmentSubmisssion.objects.filter(student=student)
+
+    data = {
+        "student" : student,
+        "enrollment" : enrollment,
+        "assignments" : assignments,
+        "submissions" : submissions
+    }
+    return render(req, "students/assignments.html", data)
+
+# def student_submissions(req):
+#     if req.user.userprofile.role != "student":
+#         return redirect("home")
+#     student = req.user.student
+#     enrollment = student.enrollments.first()
+
+#     submissions = AssignmentSubmisssion.objects.filter(student=student).select_related("assignment")
+
+#     data = {
+#         "student" : student,
+#         "enrollment" : enrollment,
+#         "submissions" : submissions
+#     }
+#     return render(req, "students/submissions.html", data)
+
+def submit_assignment(req, id):
+    if req.user.userprofile.role != "student":
+        return redirect("home")
+    student = req.user.student
+    assignment = Assignment.objects.get(id=id)
+
+    if req.method == "POST":
+        submission = AssignmentSubmisssion()
+        submission.assignment= assignment
+        submission.student = student
+        submission.file = req.FILES.get("file")
+        submission.remarks = req.POST.get("remarks")
+        submission.save()
+        return redirect("student_assignments")
+    data = {
+        "student"  :student,
+        "assignment" : assignment
+    }
+    return render(req, "students/submit_assignment.html", data)

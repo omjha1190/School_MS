@@ -24,6 +24,19 @@
             <a href="{% url "student_results" %}" class="block px-4 py-3 rounded-lg text-slate-300 hover:bg-slate-700">Results</a>
             <a href="{% url "student_timetable" %}" class="block px-4 py-3 rounded-lg text-slate-300 hover:bg-slate-700">Timetable</a>
             <a href="{% url "student_notices" %}" class="block px-4 py-3 rounded-lg text-slate-300 hover:bg-slate-700">Notices</a>
+            <div class="mt-6 pt-6 border-t border-slate-700">
+                <p class="text-sm text-slate-300 mb-3">Logged in as</p>
+                <p class="font-semibold text-white mb-4">
+                    {% if student.user.first_name %}
+                        {{ student.user.first_name|capfirst }} {{ student.user.last_name }}
+                    {% else %}
+                        {{ student.user.username }}
+                    {% endif %}
+                </p>
+                <a href="{% url 'logout' %}">
+                    <button type="submit" class="w-full text-left px-4 py-3 rounded-lg text-slate-200 hover:bg-red-600">Logout</button>
+                </a>
+            </div>
         </nav>
     </div>
             {% block content %}
