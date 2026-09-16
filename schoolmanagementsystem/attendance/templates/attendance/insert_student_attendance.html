@@ -3,81 +3,125 @@
 {% block title %}Student Attendance{% endblock title %}
 
 {% block content %}
-<div class="flex-1 p-8">
-    <div class="bg-white px-8 py-5 rounded-xl shadow-lg mb-6">
-        <h1 class="text-3xl font-semibold text-slate-800">Student Attendance</h1>
+<div class="flex-1 bg-sky-50 font-['Inter'] min-h-screen">
+    <div class="bg-white px-4 sm:px-6 lg:px-8 py-5 sm:py-6 shadow-lg mb-6 sm:mb-10">
+        <div class="flex items-center gap-3">
+            <div class="w-1.5 h-9 bg-rose-700 rounded-full"></div>
+            <h1 class="text-xl sm:text-2xl lg:text-3xl font-bold text-slate-900">Student Attendance</h1>
+        </div>
     </div>
-    <div class="bg-white rounded-xl border border-slate-200 shadow-lg p-8">
-        <form method="POST">
-            {% csrf_token %}
-            <div class="grid grid-cols-3 gap-6">
-                <div>
-                    <label for="schoolclass" class="block text-sm font-medium text-slate-700 mb-2">Class</label>
-                    <select id="schoolclass" name="schoolclass" class="w-full border border-slate-300 rounded-lg px-4 py-3" required>
-                        <option value="">Select Class</option>
-                        {% for schoolclass in schoolclasses %}
-                            <option
-                                value="{{ schoolclass.id }}"
-                                {% if selected_class == schoolclass.id|stringformat:"s" %}
-                                    selected
-                                {% endif %}>{{ schoolclass.name }}</option>
-                        {% endfor %}
-                    </select>
-                </div>
-                <div>
-                    <label for="section" class="block text-sm font-medium text-slate-700 mb-2">Section</label>
-                    <select id="section" name="section" class="w-full border border-slate-300 rounded-lg px-4 py-3" required>
-                        <option value="">Select Section</option>
-                        {% for section in sections %}
-                            <option
-                                value="{{ section.id }}"
-                                {% if selected_section == section.id|stringformat:"s" %}
-                                    selected
-                                {% endif %}>{{ section.schoolclass.name }} - {{ section.name }}</option>
-                        {% endfor %}
-                    </select>
-                </div>
-                <div>
-                    <label for="date" class="block text-sm font-medium text-slate-700 mb-2">Date</label>
-                    <input type="date" id="date" name="date" value="{{ selected_date }}" class="w-full border border-slate-300 rounded-lg px-4 py-3" required>
+
+    <div class="px-4 sm:px-8 md:px-16 lg:px-[10%] xl:px-[15%] pb-10">
+        <div class="bg-white rounded-2xl border border-slate-300 shadow-xl overflow-hidden">
+
+            <div class="px-5 sm:px-6 md:px-8 py-5 border-b border-slate-200 bg-slate-50">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-lg bg-lime-300 text-red-700 flex items-center justify-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
+                        </svg>
+                    </div>
+                    <h2 class="text-lg sm:text-xl font-bold text-slate-800">Attendance Details</h2>
                 </div>
             </div>
-            <button type="submit" name="action" value="load" class="mt-6 px-6 py-3 rounded-lg bg-slate-800 text-white font-medium hover:bg-slate-700">Load Students</button>
-            {% if enrollments %}
-                <div class="mt-8">
-                    <div class="flex items-center justify-between mb-4">
-                        <h2 class="text-xl font-semibold text-slate-800">Attendance Sheet</h2>
-                        <div class="text-sm text-slate-600">
-                            Total Students:
-                            <span class="font-semibold">{{ enrollments|length }}</span>
+
+            <div class="p-5 sm:p-6 md:p-8">
+                <form method="POST">
+                    {% csrf_token %}
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-5 sm:gap-6">
+                        <div>
+                            <label for="schoolclass" class="block text-base sm:text-lg font-semibold text-slate-800 mb-2">
+                                Class <span class="text-red-500">*</span>
+                            </label>
+                            <select id="schoolclass" name="schoolclass" required
+                                class="w-full border border-slate-300 rounded-xl px-3 sm:px-4 py-3 text-sm sm:text-base bg-white focus:outline-none focus:border-sky-600 focus:ring-2 focus:ring-sky-100 transition duration-200">
+                                <option value="">Select Class</option>
+                                {% for schoolclass in schoolclasses %}
+                                    <option value="{{ schoolclass.id }}"
+                                        {% if selected_class == schoolclass.id|stringformat:"s" %}selected{% endif %}>
+                                        {{ schoolclass.name }}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <div>
+                            <label for="section" class="block text-base sm:text-lg font-semibold text-slate-800 mb-2">
+                                Section <span class="text-red-500">*</span>
+                            </label>
+                            <select id="section" name="section" required
+                                class="w-full border border-slate-300 rounded-xl px-3 sm:px-4 py-3 text-sm sm:text-base bg-white focus:outline-none focus:border-sky-600 focus:ring-2 focus:ring-sky-100 transition duration-200">
+                                <option value="">Select Section</option>
+                                {% for section in sections %}
+                                    <option value="{{ section.id }}"
+                                        {% if selected_section == section.id|stringformat:"s" %}selected{% endif %}>
+                                        {{ section.schoolclass.name }} - {{ section.name }}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <div>
+                            <label for="date" class="block text-base sm:text-lg font-semibold text-slate-800 mb-2">
+                                Date <span class="text-red-500">*</span>
+                            </label>
+                            <input type="date" id="date" name="date" value="{{ selected_date }}" required
+                                class="w-full border border-slate-300 rounded-xl px-3 sm:px-4 py-3 text-sm sm:text-base focus:outline-none focus:border-sky-600 focus:ring-2 focus:ring-sky-100 transition duration-200">
                         </div>
                     </div>
-                    <div class="border border-slate-200 rounded-lg overflow-hidden">
-                        <div class="grid grid-cols-3 bg-slate-100 px-6 py-4">
-                            <div class="font-semibold text-slate-700">Roll No</div>
-                            <div class="font-semibold text-slate-700">Student Name</div>
-                            <div class="font-semibold text-slate-700">Attendance</div>
-                        </div>
-                        {% for enrollment in enrollments %}
-                            <div class="grid grid-cols-3 px-6 py-4 border-t border-slate-200 items-center">
-                                <div class="text-slate-700">{{ enrollment.roll_no }}</div>
-                                <div class="font-medium text-slate-800">{{ enrollment.student }}</div>
-                                <div>
-                                    <label class="inline-flex items-center gap-2 cursor-pointer">
-                                        <input type="checkbox" name="absent_students" value="{{ enrollment.id }}" class="w-5 h-5 rounded border-slate-300">
-                                        <span class="text-red-600 font-medium">Absent</span>
-                                    </label>
-                                </div>
-                            </div>
-                        {% endfor %}
-                    </div>
-                    <div class="mt-6 flex justify-end">
-                        <button type="submit" name="action" value="save" class="px-6 py-3 rounded-lg bg-green-600 text-white font-medium hover:bg-green-700">Save Attendance
+
+                    <div class="mt-8 pt-6 border-t border-slate-400">
+                        <button type="submit" name="action" value="load"
+                            class="w-full sm:w-auto px-7 py-3 rounded-xl bg-sky-700 text-white text-md font-semibold shadow-md transition duration-200 hover:bg-blue-500 hover:shadow-xl">
+                            Load Students
                         </button>
                     </div>
-                </div>
-            {% endif %}
-        </form>
+
+                    {% if enrollments %}
+                        <div class="mt-8 pt-6 border-t border-slate-400">
+                            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-4">
+                                <h2 class="text-lg sm:text-xl font-bold text-slate-800">Attendance Sheet</h2>
+                                <div class="text-sm text-slate-600">
+                                    Total Students:
+                                    <span class="font-semibold">{{ enrollments|length }}</span>
+                                </div>
+                            </div>
+
+                            <div class="border border-slate-300 rounded-xl overflow-hidden">
+                                <div class="grid grid-cols-3 bg-slate-50 px-4 sm:px-6 py-4">
+                                    <div class="font-semibold text-slate-700">Roll No</div>
+                                    <div class="font-semibold text-slate-700">Student Name</div>
+                                    <div class="font-semibold text-slate-700">Attendance</div>
+                                </div>
+
+                                {% for enrollment in enrollments %}
+                                    <div class="grid grid-cols-3 px-4 sm:px-6 py-4 border-t border-slate-200 items-center">
+                                        <div class="text-slate-700">{{ enrollment.roll_no }}</div>
+                                        <div class="font-medium text-slate-800">{{ enrollment.student }}</div>
+                                        <div>
+                                            <label class="inline-flex items-center gap-2 cursor-pointer">
+                                                <input type="checkbox" name="absent_students" value="{{ enrollment.id }}"
+                                                    class="w-5 h-5 rounded border-slate-300">
+                                                <span class="text-red-600 font-medium">Absent</span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+
+                            <div class="mt-8 pt-6 border-t border-slate-400 flex justify-end">
+                                <button type="submit" name="action" value="save"
+                                    class="w-full sm:w-auto px-7 py-3 rounded-xl bg-sky-700 text-white text-md font-semibold shadow-md transition duration-200 hover:bg-blue-500 hover:shadow-xl">
+                                    Save Attendance
+                                </button>
+                            </div>
+                        </div>
+                    {% endif %}
+
+                </form>
+            </div>
+        </div>
     </div>
 </div>
 {% endblock content %}

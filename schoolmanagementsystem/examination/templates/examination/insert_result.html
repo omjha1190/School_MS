@@ -3,16 +3,37 @@
 {% block title %}Add Result{% endblock title %}
 
 {% block content %}
-<div class="flex-1 p-8">
-    <div class="px-10">
-        <h1 class="text-3xl font-semibold text-slate-800 mb-8">Add Result</h1>
-        <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-8">
-            <form method="POST">
-                {% csrf_token %}
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div>
-                        <label class="block text-sm font-medium text-slate-700 mb-2">Student</label>
-                        <select name="student" required class="w-full border border-slate-300 rounded-lg px-4 py-3">
+<div class="flex-1 bg-sky-50 font-['Inter'] min-h-screen">
+    <div class="bg-white px-4 sm:px-6 lg:px-8 py-5 sm:py-6 shadow-lg mb-6 sm:mb-10">
+        <div class="flex items-center gap-3">
+            <div class="w-1.5 h-9 bg-rose-700 rounded-full"></div>
+            <h1 class="text-xl sm:text-2xl lg:text-3xl font-bold text-slate-900">Add Result</h1>
+        </div>
+    </div>
+
+    <div class="px-4 sm:px-8 md:px-16 lg:px-[10%] xl:px-[15%] pb-10">
+        <div class="bg-white rounded-2xl border border-slate-300 shadow-xl overflow-hidden">
+
+            <div class="px-5 sm:px-6 md:px-8 py-5 border-b border-slate-200 bg-slate-50">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-lg bg-lime-300 text-red-700 flex items-center justify-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
+                        </svg>
+                    </div>
+                    <h2 class="text-lg sm:text-xl font-bold text-slate-800">Result Details</h2>
+                </div>
+            </div>
+
+            <div class="p-5 sm:p-6 md:p-8">
+                <form method="POST">
+                    {% csrf_token %}
+
+                    <div class="mb-6">
+                        <label for="student" class="block text-base sm:text-lg font-semibold text-slate-800 mb-2">
+                            Student <span class="text-red-500">*</span>
+                        </label>
+                        <select id="student" name="student" required class="w-full border border-slate-300 rounded-xl px-3 sm:px-4 py-3 text-sm sm:text-base bg-white focus:outline-none focus:border-sky-600 focus:ring-2 focus:ring-sky-100 transition duration-200">
                             <option value="">Select Student</option>
                             {% for student in students %}
                                 <option value="{{ student.id }}" {% if result.student.id == student.id %}selected{% endif %}>
@@ -21,9 +42,12 @@
                             {% endfor %}
                         </select>
                     </div>
-                    <div>
-                        <label class="block text-sm font-medium text-slate-700 mb-2">Exam</label>
-                        <select name="exam" required class="w-full border border-slate-300 rounded-lg px-4 py-3">
+
+                    <div class="mb-6">
+                        <label for="exam" class="block text-base sm:text-lg font-semibold text-slate-800 mb-2">
+                            Exam <span class="text-red-500">*</span>
+                        </label>
+                        <select id="exam" name="exam" required class="w-full border border-slate-300 rounded-xl px-3 sm:px-4 py-3 text-sm sm:text-base bg-white focus:outline-none focus:border-sky-600 focus:ring-2 focus:ring-sky-100 transition duration-200">
                             <option value="">Select Exam</option>
                             {% for exam in exams %}
                                 <option value="{{ exam.id }}" {% if result.exam.id == exam.id %}selected{% endif %}>
@@ -32,9 +56,12 @@
                             {% endfor %}
                         </select>
                     </div>
-                    <div>
-                        <label class="block text-sm font-medium text-slate-700 mb-2">Subject</label>
-                        <select name="subject" required class="w-full border border-slate-300 rounded-lg px-4 py-3">
+
+                    <div class="mb-6">
+                        <label for="subject" class="block text-base sm:text-lg font-semibold text-slate-800 mb-2">
+                            Subject <span class="text-red-500">*</span>
+                        </label>
+                        <select id="subject" name="subject" required class="w-full border border-slate-300 rounded-xl px-3 sm:px-4 py-3 text-sm sm:text-base bg-white focus:outline-none focus:border-sky-600 focus:ring-2 focus:ring-sky-100 transition duration-200">
                             <option value="">Select Subject</option>
                             {% for subject in subjects %}
                                 <option value="{{ subject.id }}" {% if result.subject.id == subject.id %}selected{% endif %}>
@@ -43,13 +70,19 @@
                             {% endfor %}
                         </select>
                     </div>
-                    <div>
-                        <label class="block text-sm font-medium text-slate-700 mb-2">Marks</label>
-                        <input type="number" name="marks" step="0.01" min="0" value="{{result.marks}}" required placeholder="Enter marks obtained" class="w-full border border-slate-300 rounded-lg px-4 py-3">
+
+                    <div class="mb-6">
+                        <label for="marks" class="block text-base sm:text-lg font-semibold text-slate-800 mb-2">
+                            Marks <span class="text-red-500">*</span>
+                        </label>
+                        <input type="number" id="marks" name="marks" step="0.01" min="0" value="{{ result.marks }}" required placeholder="Enter marks obtained" class="w-full border border-slate-300 rounded-xl px-3 sm:px-4 py-3 text-sm sm:text-base focus:outline-none focus:border-sky-600 focus:ring-2 focus:ring-sky-100 transition duration-200">
                     </div>
-                    <div>
-                        <label class="block text-sm font-medium text-slate-700 mb-2">Grade</label>
-                        <select name="grade" required class="w-full border border-slate-300 rounded-lg px-4 py-3">
+
+                    <div class="mb-6">
+                        <label for="grade" class="block text-base sm:text-lg font-semibold text-slate-800 mb-2">
+                            Grade <span class="text-red-500">*</span>
+                        </label>
+                        <select id="grade" name="grade" required class="w-full border border-slate-300 rounded-xl px-3 sm:px-4 py-3 text-sm sm:text-base bg-white focus:outline-none focus:border-sky-600 focus:ring-2 focus:ring-sky-100 transition duration-200">
                             <option value="">Select Grade</option>
                             {% for value, label in grades %}
                                 <option value="{{ value }}" {% if result.grade == value %}selected{% endif %}>
@@ -58,13 +91,18 @@
                             {% endfor %}
                         </select>
                     </div>
+
                     <div>
-                        <label class="block text-sm font-medium text-slate-700 mb-2">Remarks</label>
-                        <input type="text" name="remarks" value="{{result.remarks|default:"" }}" placeholder="Enter remarks" class="w-full border border-slate-300 rounded-lg px-4 py-3">
+                        <label for="remarks" class="block text-base sm:text-lg font-semibold text-slate-800 mb-2">Remarks</label>
+                        <input type="text" id="remarks" name="remarks" value="{{ result.remarks|default:'' }}" placeholder="Enter remarks" class="w-full border border-slate-300 rounded-xl px-3 sm:px-4 py-3 text-sm sm:text-base focus:outline-none focus:border-sky-600 focus:ring-2 focus:ring-sky-100 transition duration-200">
                     </div>
-                </div>
-                <button type="submit" class="w-full px-6 py-3 rounded-lg bg-slate-800 text-white font-medium hover:bg-slate-700 mt-8">Save Result</button>
-            </form>
+
+                    <div class="mt-8 pt-6 border-t border-slate-400 flex flex-col sm:flex-row sm:justify-end gap-3">
+                        <button type="submit" class="w-full sm:w-auto px-7 py-3 rounded-xl bg-sky-700 text-white text-md font-semibold shadow-md transition duration-200 hover:bg-blue-500 hover:shadow-xl">Save Result</button>
+                    </div>
+
+                </form>
+            </div>
         </div>
     </div>
 </div>

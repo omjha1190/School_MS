@@ -3,16 +3,37 @@
 {% block title %}Add Exam Schedule{% endblock title %}
 
 {% block content %}
-<div class="flex-1 p-8">
-    <div class="px-10">
-        <h1 class="text-3xl font-semibold text-slate-800 mb-8">Add Exam Schedule</h1>
-        <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-8">
-            <form method="POST">
-                {% csrf_token %}
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div>
-                        <label class="block text-sm font-medium text-slate-700 mb-2">Exam</label>
-                        <select name="exam" required class="w-full border border-slate-300 rounded-lg px-4 py-3">
+<div class="flex-1 bg-sky-50 font-['Inter'] min-h-screen">
+    <div class="bg-white px-4 sm:px-6 lg:px-8 py-5 sm:py-6 shadow-lg mb-6 sm:mb-10">
+        <div class="flex items-center gap-3">
+            <div class="w-1.5 h-9 bg-rose-700 rounded-full"></div>
+            <h1 class="text-xl sm:text-2xl lg:text-3xl font-bold text-slate-900">Add Exam Schedule</h1>
+        </div>
+    </div>
+
+    <div class="px-4 sm:px-8 md:px-16 lg:px-[10%] xl:px-[15%] pb-10">
+        <div class="bg-white rounded-2xl border border-slate-300 shadow-xl overflow-hidden">
+
+            <div class="px-5 sm:px-6 md:px-8 py-5 border-b border-slate-200 bg-slate-50">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-lg bg-lime-300 text-red-700 flex items-center justify-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
+                        </svg>
+                    </div>
+                    <h2 class="text-lg sm:text-xl font-bold text-slate-800">Exam Schedule Details</h2>
+                </div>
+            </div>
+
+            <div class="p-5 sm:p-6 md:p-8">
+                <form method="POST">
+                    {% csrf_token %}
+
+                    <div class="mb-6">
+                        <label for="exam" class="block text-base sm:text-lg font-semibold text-slate-800 mb-2">
+                            Exam <span class="text-red-500">*</span>
+                        </label>
+                        <select id="exam" name="exam" required class="w-full border border-slate-300 rounded-xl px-3 sm:px-4 py-3 text-sm sm:text-base bg-white focus:outline-none focus:border-sky-600 focus:ring-2 focus:ring-sky-100 transition duration-200">
                             <option value="">Select Exam</option>
                             {% for exam in exams %}
                                 <option value="{{ exam.id }}" {% if examschedule.exam.id == exam.id %}selected{% endif %}>
@@ -21,9 +42,12 @@
                             {% endfor %}
                         </select>
                     </div>
-                    <div>
-                        <label class="block text-sm font-medium text-slate-700 mb-2">Section</label>
-                        <select name="section" required class="w-full border border-slate-300 rounded-lg px-4 py-3">
+
+                    <div class="mb-6">
+                        <label for="section" class="block text-base sm:text-lg font-semibold text-slate-800 mb-2">
+                            Section <span class="text-red-500">*</span>
+                        </label>
+                        <select id="section" name="section" required class="w-full border border-slate-300 rounded-xl px-3 sm:px-4 py-3 text-sm sm:text-base bg-white focus:outline-none focus:border-sky-600 focus:ring-2 focus:ring-sky-100 transition duration-200">
                             <option value="">Select Section</option>
                             {% for section in sections %}
                                 <option value="{{ section.id }}" {% if examschedule.section.id == section.id %}selected{% endif %}>
@@ -32,9 +56,12 @@
                             {% endfor %}
                         </select>
                     </div>
-                    <div>
-                        <label class="block text-sm font-medium text-slate-700 mb-2">Subject</label>
-                        <select name="subject" required class="w-full border border-slate-300 rounded-lg px-4 py-3">
+
+                    <div class="mb-6">
+                        <label for="subject" class="block text-base sm:text-lg font-semibold text-slate-800 mb-2">
+                            Subject <span class="text-red-500">*</span>
+                        </label>
+                        <select id="subject" name="subject" required class="w-full border border-slate-300 rounded-xl px-3 sm:px-4 py-3 text-sm sm:text-base bg-white focus:outline-none focus:border-sky-600 focus:ring-2 focus:ring-sky-100 transition duration-200">
                             <option value="">Select Subject</option>
                             {% for subject in subjects %}
                                 <option value="{{ subject.id }}" {% if examschedule.subject.id == subject.id %}selected{% endif %}>
@@ -43,31 +70,49 @@
                             {% endfor %}
                         </select>
                     </div>
-                    <div>
-                        <label class="block text-sm font-medium text-slate-700 mb-2">Exam Date</label>
-                        <input type="date" name="exam_date" value="{{examschedule.exam_date|date:"Y-m-d"}}" required class="w-full border border-slate-300 rounded-lg px-4 py-3">
+
+                    <div class="mb-6">
+                        <label for="exam_date" class="block text-base sm:text-lg font-semibold text-slate-800 mb-2">
+                            Exam Date <span class="text-red-500">*</span>
+                        </label>
+                        <input type="date" id="exam_date" name="exam_date" value="{{ examschedule.exam_date|date:'Y-m-d' }}" required class="w-full border border-slate-300 rounded-xl px-3 sm:px-4 py-3 text-sm sm:text-base focus:outline-none focus:border-sky-600 focus:ring-2 focus:ring-sky-100 transition duration-200">
                     </div>
-                    <div>
-                        <label class="block text-sm font-medium text-slate-700 mb-2">Start Time</label>
-                        <input type="time" name="start_time" value="{{examschedule.start_time|time:"h:i"}}" required class="w-full border border-slate-300 rounded-lg px-4 py-3">
+
+                    <div class="mb-6">
+                        <label for="start_time" class="block text-base sm:text-lg font-semibold text-slate-800 mb-2">
+                            Start Time <span class="text-red-500">*</span>
+                        </label>
+                        <input type="time" id="start_time" name="start_time" value="{{ examschedule.start_time|time:'H:i' }}" required class="w-full border border-slate-300 rounded-xl px-3 sm:px-4 py-3 text-sm sm:text-base focus:outline-none focus:border-sky-600 focus:ring-2 focus:ring-sky-100 transition duration-200">
                     </div>
-                    <div>
-                        <label class="block text-sm font-medium text-slate-700 mb-2">End Time</label>
-                        <input type="time" name="end_time" value="{{examschedule.end_time|time:"H:i"}}" required class="w-full border border-slate-300 rounded-lg px-4 py-3">
+
+                    <div class="mb-6">
+                        <label for="end_time" class="block text-base sm:text-lg font-semibold text-slate-800 mb-2">
+                            End Time <span class="text-red-500">*</span>
+                        </label>
+                        <input type="time" id="end_time" name="end_time" value="{{ examschedule.end_time|time:'H:i' }}" required class="w-full border border-slate-300 rounded-xl px-3 sm:px-4 py-3 text-sm sm:text-base focus:outline-none focus:border-sky-600 focus:ring-2 focus:ring-sky-100 transition duration-200">
                     </div>
-                    <div>
-                        <label class="block text-sm font-medium text-slate-700 mb-2">Room</label>
-                        <input type="text" name="room_no" value="{{examschedule.room_no}}" required placeholder="Enter room number" class="w-full border border-slate-300 rounded-lg px-4 py-3">
+
+                    <div class="mb-6">
+                        <label for="room_no" class="block text-base sm:text-lg font-semibold text-slate-800 mb-2">
+                            Room <span class="text-red-500">*</span>
+                        </label>
+                        <input type="text" id="room_no" name="room_no" value="{{ examschedule.room_no }}" required placeholder="Enter room number" class="w-full border border-slate-300 rounded-xl px-3 sm:px-4 py-3 text-sm sm:text-base focus:outline-none focus:border-sky-600 focus:ring-2 focus:ring-sky-100 transition duration-200">
                     </div>
+
                     <div>
-                        <label class="block text-sm font-medium text-slate-700 mb-2">Maximum Marks</label>
-                        <input type="number" name="max_marks" step="0.01" min="0" value="{{examschedule.max_marks}}" required placeholder="Example: 100" class="w-full border border-slate-300 rounded-lg px-4 py-3">
+                        <label for="max_marks" class="block text-base sm:text-lg font-semibold text-slate-800 mb-2">
+                            Maximum Marks <span class="text-red-500">*</span>
+                        </label>
+                        <input type="number" id="max_marks" name="max_marks" step="0.01" min="0" value="{{ examschedule.max_marks }}" required placeholder="Example: 100" class="w-full border border-slate-300 rounded-xl px-3 sm:px-4 py-3 text-sm sm:text-base focus:outline-none focus:border-sky-600 focus:ring-2 focus:ring-sky-100 transition duration-200">
                     </div>
-                </div>
-                <button type="submit" class="w-full px-6 py-3 rounded-lg bg-slate-800 text-white font-medium hover:bg-slate-700 mt-8">Save Schedule</button>
-            </form>
+
+                    <div class="mt-8 pt-6 border-t border-slate-400 flex flex-col sm:flex-row sm:justify-end gap-3">
+                        <button type="submit" class="w-full sm:w-auto px-7 py-3 rounded-xl bg-sky-700 text-white text-md font-semibold shadow-md transition duration-200 hover:bg-blue-500 hover:shadow-xl">Save Schedule</button>
+                    </div>
+
+                </form>
+            </div>
         </div>
     </div>
 </div>
-
 {% endblock content %}

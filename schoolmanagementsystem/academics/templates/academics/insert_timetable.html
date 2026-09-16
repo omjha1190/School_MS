@@ -3,64 +3,84 @@
 {% block title %}Insert Timetable{% endblock title %}
 
 {% block content %}
-
-<div class="flex-1 p-8">
-    <div class="min-h-screen bg-slate-50 px-8 py-8">
-        <div class="max-w-4xl mx-auto">
-            <div class="mb-7">
-                <h1 class="text-2xl font-semibold text-slate-800">Create Timetable</h1>
-                <p class="text-sm text-slate-500 mt-1">Add subjects for a section and academic year.</p>
+<div class="flex-1 bg-sky-50 font-['Inter'] min-h-screen">
+    <div class="bg-white px-4 sm:px-6 lg:px-8 py-5 sm:py-6 shadow-lg mb-6 sm:mb-10">
+        <div class="flex items-center gap-3">
+            <div class="w-1.5 h-9 bg-rose-700 rounded-full"></div>
+            <h1 class="text-xl sm:text-2xl lg:text-3xl font-bold text-slate-900">Create Timetable</h1>
+        </div>
+    </div>
+    <div class="px-4 sm:px-8 md:px-16 lg:px-[20%] xl:px-[30%] pb-10">
+        <div class="bg-white rounded-2xl border border-slate-300 shadow-xl overflow-hidden">
+            <div class="px-5 sm:px-6 md:px-8 py-5 border-b border-slate-200 bg-slate-50">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-lg bg-lime-300 text-red-700 flex items-center justify-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
+                        </svg>
+                    </div>
+                    <h2 class="text-lg sm:text-xl font-bold text-slate-800">Timetable Details</h2>
+                </div>
             </div>
-            <div class="bg-white border border-slate-200 rounded-xl shadow-sm p-8">
+            <div class="p-5 sm:p-6 md:p-8">
                 <form method="POST">
                     {% csrf_token %}
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div>
-                            <label class="block text-sm font-medium text-slate-700 mb-2">Section</label>
-                            <select name="section" required class="w-full px-4 py-3 border border-slate-300 rounded-lg bg-white text-slate-700">
-                                <option value="">Select Section</option>
-                                {% for section in sections %}
-                                    <option value="{{ section.id }}" {% if timetable.section.id == section.id %}selected{% endif %}>
-                                        {{ section }}
-                                    </option>
-                                {% endfor %}
-                            </select>
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-slate-700 mb-2">Academic Year</label>
-                            <input type="text" name="academic_year" value="{{timetable.academic_year}}" placeholder="e.g. 2026-2027" required class="w-full px-4 py-3 border border-slate-300 rounded-lg">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-slate-700 mb-2">Day</label>
-                            <select name="day" required class="w-full px-4 py-3 border border-slate-300 rounded-lg bg-white text-slate-700">
-                                <option value="">Select Day</option>
-                                <option value="Monday" {% if timetable.day == "Monday" %}selected{% endif %}>Monday</option>
-                                <option value="Tuesday" {% if timetable.day == "Tuesday" %}selected{% endif %}>Tuesday</option>
-                                <option value="Wednesday" {% if timetable.day == "Wednesday" %}selected{% endif %}>Wednesday</option>
-                                <option value="Thursday" {% if timetable.day == "Thursday" %}selected{% endif %}>Thursday</option>
-                                <option value="Friday" {% if timetable.day == "Friday" %}selected{% endif %}>Friday</option>
-                                <option value="Saturday" {% if timetable.day == "Saturday" %}selected{% endif %}>Saturday</option>
-                            </select>
-                        </div>
+                    <div class="mb-6">
+                        <label for="section" class="block text-base sm:text-lg font-semibold text-slate-800 mb-2">
+                            Section <span class="text-red-500">*</span>
+                        </label>
+                        <select id="section" name="section" required
+                            class="w-full border border-slate-300 rounded-xl px-3 sm:px-4 py-3 text-sm sm:text-base bg-white focus:outline-none focus:border-sky-600 focus:ring-2 focus:ring-sky-100 transition duration-200">
+                            <option value="">Select Section</option>
+                            {% for section in sections %}
+                                <option value="{{ section.id }}" {% if timetable.section.id == section.id %}selected{% endif %}>
+                                    {{ section }}
+                                </option>
+                            {% endfor %}
+                        </select>
                     </div>
-                    <div class="mt-7">
-                        <div class="flex items-center justify-between mb-5">
-                            <label class="block text-sm font-medium text-slate-700">Subjects</label>
-                        </div>
-                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                    <div class="mb-6">
+                        <label for="academic_year" class="block text-base sm:text-lg font-semibold text-slate-800 mb-2">
+                            Academic Year <span class="text-red-500">*</span>
+                        </label>
+                        <input type="text" id="academic_year" name="academic_year"
+                            value="{{ timetable.academic_year }}" placeholder="e.g. 2026-2027" required
+                            class="w-full border border-slate-300 rounded-xl px-3 sm:px-4 py-3 text-sm sm:text-base focus:outline-none focus:border-sky-600 focus:ring-2 focus:ring-sky-100 transition duration-200">
+                    </div>
+                    <div class="mb-6">
+                        <label for="day" class="block text-base sm:text-lg font-semibold text-slate-800 mb-2">
+                            Day <span class="text-red-500">*</span>
+                        </label>
+                        <select id="day" name="day" required
+                            class="w-full border border-slate-300 rounded-xl px-3 sm:px-4 py-3 text-sm sm:text-base bg-white focus:outline-none focus:border-sky-600 focus:ring-2 focus:ring-sky-100 transition duration-200">
+                            <option value="">Select Day</option>
+                            <option value="Monday" {% if timetable.day == "Monday" %}selected{% endif %}>Monday</option>
+                            <option value="Tuesday" {% if timetable.day == "Tuesday" %}selected{% endif %}>Tuesday</option>
+                            <option value="Wednesday" {% if timetable.day == "Wednesday" %}selected{% endif %}>Wednesday</option>
+                            <option value="Thursday" {% if timetable.day == "Thursday" %}selected{% endif %}>Thursday</option>
+                            <option value="Friday" {% if timetable.day == "Friday" %}selected{% endif %}>Friday</option>
+                            <option value="Saturday" {% if timetable.day == "Saturday" %}selected{% endif %}>Saturday</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-base sm:text-lg font-semibold text-slate-800 mb-2">
+                            Subjects <span class="text-red-500">*</span>
+                        </label>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                             {% for subject in subjects %}
-                                <label class="flex items-center gap-3 px-4 py-3 border border-slate-200 rounded-lg cursor-pointer hover:bg-slate-50 hover:border-slate-300">
-                                    <input type="checkbox" name="subjects" value="{{ subject.id }}" {% if subject in timetable.subjects.all %}checked{% endif %} class="w-4 h-4 rounded border-slate-300 text-slate-700">
-                                    <span class="text-sm text-slate-700">{{ subject.name }}</span>
+                                <label class="flex items-center gap-3 border border-slate-300 rounded-xl px-4 py-3 cursor-pointer hover:bg-slate-50">
+                                    <input type="checkbox" name="subjects" value="{{ subject.id }}"
+                                        {% if subject in timetable.subjects.all %}checked{% endif %}
+                                        class="w-4 h-4">
+                                    <span class="text-slate-700">{{ subject.name }}</span>
                                 </label>
                             {% empty %}
                                 <p class="text-sm text-slate-500">No subjects available.</p>
                             {% endfor %}
                         </div>
                     </div>
-                    <div class="flex justify-end gap-3 mt-8 pt-6 border-t border-slate-100">
-                        <a href="{% url 'manage_timetable' %}" class="px-5 py-2.5 rounded-lg border border-slate-300 text-sm font-medium text-slate-600 hover:bg-slate-50">Cancel</a>
-                        <button type="submit" class="px-5 py-2.5 rounded-lg bg-slate-800 text-white text-sm font-medium hover:bg-slate-700">Save Timetable</button>
+                    <div class="mt-8 pt-6 border-t border-slate-400 flex flex-col sm:flex-row sm:justify-end">
+                        <button type="submit" class="w-full sm:w-auto px-7 py-3 rounded-xl bg-sky-700 text-white text-md font-semibold shadow-md transition duration-200 hover:bg-blue-500 hover:shadow-xl">Save Timetable</button>
                     </div>
                 </form>
             </div>

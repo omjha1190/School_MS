@@ -3,31 +3,52 @@
 {% block title %}Add Assignment{% endblock title %}
 
 {% block content %}
-<div class="flex-1 p-8">
-    <div class="px-10">
-        <h1 class="text-3xl font-semibold text-slate-800 mb-8">Add Assignment</h1>
-        <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-8">
-            <form method="POST">
-                {% csrf_token %}
-                <div class="grid grid-cols-2 gap-6">
-                    <div>
-                        <label class="block text-sm font-medium text-slate-700 mb-2">Assignment Title</label>
-                        <input type="text" name="title" value="{{assignment.title}}" placeholder="Enter assignment title" class="w-full border border-slate-300 rounded-lg px-4 py-3">
+<div class="flex-1 bg-sky-50 font-['Inter'] min-h-screen">
+    <div class="bg-white px-4 sm:px-6 lg:px-8 py-5 sm:py-6 shadow-lg mb-6 sm:mb-10">
+        <div class="flex items-center gap-3">
+            <div class="w-1.5 h-9 bg-rose-700 rounded-full"></div>
+            <h1 class="text-xl sm:text-2xl lg:text-3xl font-bold text-slate-900">Add Assignment</h1>
+        </div>
+    </div>
+    <div class="px-4 sm:px-6 md:px-16 lg:px-[10%] xl:px-[20%] pb-10">
+        <div class="bg-white rounded-2xl border border-slate-300 shadow-xl overflow-hidden">
+            <div class="px-5 sm:px-6 md:px-8 py-5 border-b border-slate-200 bg-slate-50">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-lg bg-lime-300 text-red-700 flex items-center justify-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
+                        </svg>
                     </div>
-                    <div>
-                        <label class="block text-sm font-medium text-slate-700 mb-2">Subject</label>
-                        <select name="subject" class="w-full border border-slate-300 rounded-lg px-4 py-3">
+                    <h2 class="text-lg sm:text-xl font-bold text-slate-800">Assignment Details</h2>
+                </div>
+            </div>
+            <div class="p-5 sm:p-6 md:p-8">
+                <form method="POST">
+                    {% csrf_token %}
+                    <div class="mb-6">
+                        <label for="title" class="block text-base sm:text-lg font-semibold text-slate-800 mb-2">
+                            Assignment Title <span class="text-red-500">*</span>
+                        </label>
+                        <input type="text" id="title" name="title" value="{{ assignment.title }}" placeholder="Enter assignment title" required class="w-full border border-slate-300 rounded-xl px-3 sm:px-4 py-3 text-sm sm:text-base focus:outline-none focus:border-sky-600 focus:ring-2 focus:ring-sky-100 transition duration-200">
+                    </div>
+                    <div class="mb-6">
+                        <label for="subject" class="block text-base sm:text-lg font-semibold text-slate-800 mb-2">
+                            Subject <span class="text-red-500">*</span>
+                        </label>
+                        <select id="subject" name="subject" required class="w-full border border-slate-300 rounded-xl px-3 sm:px-4 py-3 text-sm sm:text-base bg-white focus:outline-none focus:border-sky-600 focus:ring-2 focus:ring-sky-100 transition duration-200">
                             <option value="">Select Subject</option>
                             {% for subject in subjects %}
                                 <option value="{{ subject.id }}" {% if assignment.subject.id == subject.id %}selected{% endif %}>
-                                    {{ subject.name }} 
+                                    {{ subject.name }}
                                 </option>
                             {% endfor %}
                         </select>
                     </div>
-                    <div>
-                        <label class="block text-sm font-medium text-slate-700 mb-2">Teacher</label>
-                        <select name="teacher" class="w-full border border-slate-300 rounded-lg px-4 py-3">
+                    <div class="mb-6">
+                        <label for="teacher" class="block text-base sm:text-lg font-semibold text-slate-800 mb-2">
+                            Teacher <span class="text-red-500">*</span>
+                        </label>
+                        <select id="teacher" name="teacher" required class="w-full border border-slate-300 rounded-xl px-3 sm:px-4 py-3 text-sm sm:text-base bg-white focus:outline-none focus:border-sky-600 focus:ring-2 focus:ring-sky-100 transition duration-200">
                             <option value="">Select Teacher</option>
                             {% for teacher in teachers %}
                                 <option value="{{ teacher.id }}" {% if assignment.teacher.id == teacher.id %}selected{% endif %}>
@@ -36,9 +57,11 @@
                             {% endfor %}
                         </select>
                     </div>
-                    <div>
-                        <label class="block text-sm font-medium text-slate-700 mb-2">Class-Section</label>
-                        <select name="class_section" class="w-full border border-slate-300 rounded-lg px-4 py-3">
+                    <div class="mb-6">
+                        <label for="class_section" class="block text-base sm:text-lg font-semibold text-slate-800 mb-2">
+                            Class-Section <span class="text-red-500">*</span>
+                        </label>
+                        <select id="class_section" name="class_section" required class="w-full border border-slate-300 rounded-xl px-3 sm:px-4 py-3 text-sm sm:text-base bg-white focus:outline-none focus:border-sky-600 focus:ring-2 focus:ring-sky-100 transition duration-200">
                             <option value="">Select Class-Section</option>
                             {% for section in sections %}
                                 <option value="{{ section.id }}" {% if assignment.class_section.id == section.id %}selected{% endif %}>
@@ -47,21 +70,28 @@
                             {% endfor %}
                         </select>
                     </div>
-                    <div>
-                        <label class="block text-sm font-medium text-slate-700 mb-2">Assigned Date</label>
-                        <input type="date" name="assigned_date" value="{{assignment.assigned_date|date:'Y-m-d'}}" class="w-full border border-slate-300 rounded-lg px-4 py-3">
+                    <div class="mb-6">
+                        <label for="assigned_date" class="block text-base sm:text-lg font-semibold text-slate-800 mb-2">
+                            Assigned Date <span class="text-red-500">*</span>
+                        </label>
+                        <input type="date" id="assigned_date" name="assigned_date" value="{{ assignment.assigned_date|date:'Y-m-d' }}" required class="w-full border border-slate-300 rounded-xl px-3 sm:px-4 py-3 text-sm sm:text-base focus:outline-none focus:border-sky-600 focus:ring-2 focus:ring-sky-100 transition duration-200">
+                    </div>
+
+                    <div class="mb-6">
+                        <label for="due_date" class="block text-base sm:text-lg font-semibold text-slate-800 mb-2">
+                            Due Date <span class="text-red-500">*</span>
+                        </label>
+                        <input type="date" id="due_date" name="due_date" value="{{ assignment.due_date|date:'Y-m-d' }}" required class="w-full border border-slate-300 rounded-xl px-3 sm:px-4 py-3 text-sm sm:text-base focus:outline-none focus:border-sky-600 focus:ring-2 focus:ring-sky-100 transition duration-200">
                     </div>
                     <div>
-                        <label class="block text-sm font-medium text-slate-700 mb-2">Due Date</label>
-                        <input type="date" name="due_date" value="{{ assignment.due_date|date:'Y-m-d' }}" class="w-full border border-slate-300 rounded-lg px-4 py-3">
+                        <label for="description" class="block text-base sm:text-lg font-semibold text-slate-800 mb-2">Description</label>
+                        <textarea id="description" name="description" rows="5" placeholder="Enter assignment details..." class="w-full border border-slate-300 rounded-xl px-3 sm:px-4 py-3 text-sm sm:text-base focus:outline-none focus:border-sky-600 focus:ring-2 focus:ring-sky-100 transition duration-200">{{ assignment.description }}</textarea>
                     </div>
-                </div>
-                <div class="mt-6">
-                    <label class="block text-sm font-medium text-slate-700 mb-2">Description</label>
-                    <textarea name="description" rows="5" placeholder="Enter assignment details..." class="w-full border border-slate-300 rounded-lg px-4 py-3">{{assignment.description}}</textarea>
-                </div>
-                <button type="submit" class="w-full px-6 py-3 rounded-lg bg-slate-800 text-white font-medium hover:bg-slate-700 mt-4"> Save Assignment</button>
-            </form>
+                    <div class="mt-8 pt-6 border-t border-slate-400 flex flex-col sm:flex-row sm:justify-end gap-3">
+                        <button type="submit" class="w-full sm:w-auto px-7 py-3 rounded-xl bg-sky-700 text-white text-md font-semibold shadow-md transition duration-200 hover:bg-blue-500 hover:shadow-xl">Save Assignment</button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
 </div>

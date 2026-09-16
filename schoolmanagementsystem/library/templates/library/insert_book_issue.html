@@ -4,61 +4,76 @@
 
 {% block content %}
 
-<div class="flex-1 p-8">
-    <div class="px-10">
-        <h1 class="text-3xl font-semibold text-slate-800 mb-8">Issue Book</h1>
-        <div class="bg-white rounded-xl shadow-sm p-6">
+<div class=" bg-violet-200 ">
+    <div class="max-w-6xl mx-auto">
+        <div class="mb-6 sm:mb-8">
+            <div class="flex items-center gap-3 mb-2">
+                <div class="w-2 h-8 bg-orange-500 rounded-full"></div>
+                <h1 class="text-2xl sm:text-3xl font-bold text-slate-900">Issue Book</h1>
+            </div>
+        </div>
+        <div class="bg-white border border-amber-200 rounded-2xl shadow-sm overflow-hidden">
+            <div class="bg-slate-900 px-5 sm:px-8 py-5 sm:py-6">
+                <div class="flex items-center gap-4">
+                    <div class="w-11 h-11 rounded-xl bg-rose-500 ---flex items-center justify-center ---text-white text-xl font-bold shrink-0">+</div>
+                    <h2 class="text-lg sm:text-xl font-semibold text-white">New Book Issue</h2>
+                </div>
+            </div>
             <form method="POST">
                 {% csrf_token %}
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Book</label>
-                        <select name="book" required class="w-full border border-gray-300 rounded-lg px-4 py-2">
-                            <option value="">Select Book</option>
-                            {% for book in books %}
-                                <option value="{{ book.id }}" {% if bookissue.book.id == book.id %}selected{% endif %}>
-                                    {{ book.title }} 
-                                </option>
-                            {% endfor %}
-                        </select>
+                <div class="p-5 sm:p-8">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-5 sm:gap-6">
+                        <div>
+                            <label class="block text-lg font-semibold text-slate-800 mb-1">Book</label>
+                            <select ---name="book" ---required ---class="w-full bg-white border border-amber-300 ---rounded-xl px-4 py-3 text-slate-900 ---outline-none transition duration-200 ---focus:border-rose-400 ---focus:ring-2 focus:ring-rose-100">
+                                <option value="">Select Book</option>
+                                {% for book in books %}
+                                    <option value="{{ book.id }}"
+                                        {% if bookissue.book.id == book.id %}selected{% endif %}>
+                                        {{ book.title }}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-lg font-semibold text-slate-800 mb-1">Student</label>
+                            <select ---name="student" ---required ---class="w-full bg-white border border-amber-300 ---rounded-xl px-4 py-3 text-slate-900 ---outline-none transition duration-200 ---focus:border-rose-400 ---focus:ring-2 focus:ring-rose-100">
+                                <option value="">Select Student</option>
+                                {% for student in students %}
+                                    <option value="{{ student.id }}"
+                                        {% if bookissue.student.id == student.id %}selected{% endif %}>
+                                        {{ student }}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-lg font-semibold text-slate-800 mb-1">Section</label>
+                            <select ---name="section" ---required ---class="w-full bg-white border border-amber-300 ---rounded-xl px-4 py-3 text-slate-900 ---outline-none transition duration-200 ---focus:border-rose-400 ---focus:ring-2 focus:ring-rose-100">
+                                <option value="">Select Section</option>
+                                {% for section in sections %}
+                                    <option value="{{ section.id }}"
+                                        {% if bookissue.section.id == section.id %}selected{% endif %}>
+                                        {{ section }}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-lg font-semibold text-slate-800 mb-1">Issue Date</label>
+                            <input ---type="date" ---name="issue_date" ---value="{{bookissue.issue_date|date:"Y-m-d"}}" ---required ---class="w-full bg-white border border-amber-300 ---rounded-xl px-4 py-3 text-slate-900 ---outline-none transition duration-200 ---focus:border-rose-400 ---focus:ring-2 focus:ring-rose-100">
+                        </div>
+                        <div>
+                            <label class="block text-lg font-semibold text-slate-800 mb-1">Due Date</label>
+                            <input ---type="date" ---name="due_date" ---value="{{bookissue.due_date|date:"Y-m-d"}}" ---required ---class="w-full bg-white border border-amber-300 ---rounded-xl px-4 py-3 text-slate-900 ---outline-none transition duration-200 ---focus:border-rose-400 ---focus:ring-2 focus:ring-rose-100">
+                        </div>
                     </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Student</label>
-                        <select name="student" required class="w-full border border-gray-300 rounded-lg px-4 py-2">
-                            <option value="">Select Student</option>
-                            {% for student in students %}
-                                <option value="{{ student.id }}" {% if bookissue.student.id == student.id %}selected{% endif %}>
-                                    {{ student }}
-                                </option>
-                            {% endfor %}
-                        </select>
+                    <div class="mt-8 pt-6 border-t border-amber-300 ---flex flex-col sm:flex-row ---sm:justify-end gap-3">
+                        <button ---type="submit" ---class="w-full sm:w-auto ---px-8 py-3 ---rounded-xl ---bg-red-600 ---text-white ---text-sm ---font-semibold ---shadow-sm ---transition duration-200 ---hover:bg-red-700 ---hover:shadow-md ---active:scale-[0.98]">Issue Book</button>
                     </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Section</label>
-                        <select name="section" required class="w-full border border-gray-300 rounded-lg px-4 py-2">
-                            <option value="">Select Section</option>
-                            {% for section in sections %}
-                                <option value="{{ section.id }}" {% if bookissue.section.id == section.id %}selected{% endif %}>
-                                    {{ section }}
-                                </option>
-                            {% endfor %}
-                        </select>
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Issue Date</label>
-                        <input type="date" name="issue_date" value="{{bookissue.issue_date|date:"Y-m-d"}}" required class="w-full border border-gray-300 rounded-lg px-4 py-2">
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Due Date</label>    
-                        <input type="date" name="due_date" value="{{bookissue.due_date|date:"Y-m-d"}}" required class="w-full border border-gray-300 rounded-lg px-4 py-2">
-                    </div>
-                </div>
-                <div class="mt-6 flex justify-end">
-                    <button type="submit" class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">Issue Book</button>
                 </div>
             </form>
-        </div>    
+        </div>
     </div>
 </div>
-
 {% endblock %}

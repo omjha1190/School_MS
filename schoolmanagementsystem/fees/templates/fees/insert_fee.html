@@ -3,16 +3,36 @@
 {% block title %}Add Fee{% endblock title %}
 
 {% block content %}
-<div class="flex-1 p-8">
-    <div class="px-10">
-        <h1 class="text-3xl font-semibold text-slate-800 mb-8">Add Fee</h1>
-        <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-8">
-            <form method="POST">
-                {% csrf_token %}
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div>
-                        <label class="block text-sm font-medium text-slate-700 mb-2">Student</label>
-                        <select name="student" required class="w-full border border-slate-300 rounded-lg px-4 py-3">
+<div class="flex-1 bg-sky-50 font-['Inter'] min-h-screen">
+    <div class="bg-white px-4 sm:px-6 lg:px-8 py-5 sm:py-6 shadow-lg mb-6 sm:mb-10">
+        <div class="flex items-center gap-3">
+            <div class="w-1.5 h-9 bg-rose-700 rounded-full"></div>
+            <h1 class="text-xl sm:text-2xl lg:text-3xl font-bold text-slate-900">Add Fee</h1>
+        </div>
+    </div>
+
+    <div class="px-4 sm:px-8 md:px-16 lg:px-[10%] xl:px-[20%] pb-10">
+        <div class="bg-white rounded-2xl border border-slate-300 shadow-xl overflow-hidden">
+
+            <div class="px-5 sm:px-6 md:px-8 py-5 border-b border-slate-200 bg-slate-50">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-lg bg-lime-300 text-red-700 flex items-center justify-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
+                        </svg>
+                    </div>
+                    <h2 class="text-lg sm:text-xl font-bold text-slate-800">Fee Details</h2>
+                </div>
+            </div>
+
+            <div class="p-5 sm:p-6 md:p-8">
+                <form method="POST">
+                    {% csrf_token %}
+                    <div class="mb-6">
+                        <label class="block text-base sm:text-lg font-semibold text-slate-800 mb-2">
+                            Student <span class="text-red-500">*</span>
+                        </label>
+                        <select name="student" required class="w-full border border-slate-300 rounded-xl px-3 sm:px-4 py-3 text-sm sm:text-base bg-white focus:outline-none focus:border-sky-600 focus:ring-2 focus:ring-sky-100 transition duration-200">
                             <option value="">Select Student</option>
                             {% for student in students %}
                                 <option value="{{ student.id }}" {% if fee.student.id == student.id %}selected{% endif %}>
@@ -21,9 +41,10 @@
                             {% endfor %}
                         </select>
                     </div>
-                    <div>
-                        <label class="block text-sm font-medium text-slate-700 mb-2">Section</label>
-                        <select name="section" class="w-full border border-slate-300 rounded-lg px-4 py-3">
+
+                    <div class="mb-6">
+                        <label class="block text-base sm:text-lg font-semibold text-slate-800 mb-2">Section</label>
+                        <select name="section" class="w-full border border-slate-300 rounded-xl px-3 sm:px-4 py-3 text-sm sm:text-base bg-white focus:outline-none focus:border-sky-600 focus:ring-2 focus:ring-sky-100 transition duration-200">
                             <option value="">Select Section</option>
                             {% for section in sections %}
                                 <option value="{{ section.id }}" {% if fee.section.id == section.id %}selected{% endif %}>
@@ -32,17 +53,21 @@
                             {% endfor %}
                         </select>
                     </div>
-                    <div class="md:col-span-2">
-                        <label class="block text-sm font-medium text-slate-700 mb-3">Fee Items</label>
+
+                    <div class="mb-6">
+                        <label class="block text-base sm:text-lg font-semibold text-slate-800 mb-3">Fee Items</label>
+
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                             {% for feeitem in feeitems %}
-                                <label class="border border-slate-200 rounded-lg p-4 cursor-pointer hover:bg-slate-50">
+                                <label class="border border-slate-300 rounded-xl p-4 cursor-pointer hover:bg-slate-50">
                                     <div class="flex items-center gap-3">
                                         <input type="checkbox" name="fee_items" value="{{ feeitem.id }}" data-amount="{{ feeitem.amount }}" {% if feeitem in fee.fee_items.all %}checked{% endif %} class="fee-checkbox w-4 h-4">
+
                                         <div class="flex-1">
                                             <p class="text-sm font-medium text-slate-700">{{ feeitem.get_fee_type_display }}</p>
-                                            <p class="text-sm text-slate-500"> class: {{ feeitem.schoolclass.name }}</p>
+                                            <p class="text-sm text-slate-500">Class: {{ feeitem.schoolclass.name }}</p>
                                         </div>
+
                                         <span class="font-medium text-slate-800">₹ {{ feeitem.amount }}</span>
                                     </div>
                                 </label>
@@ -51,25 +76,29 @@
                             {% endfor %}
                         </div>
                     </div>
-                    <div class="md:col-span-2">
-                        <div class="bg-slate-50 border border-slate-200 rounded-lg p-5">
-                            <div class="flex justify-between items-center">
-                                <span class="text-sm font-medium text-slate-600">Total Amount</span>
-                                <span id="totalAmount" class="text-2xl font-semibold text-slate-800">₹ 0.00</span>
-                            </div>
+
+                    <div class="mb-6 bg-slate-50 border border-slate-200 rounded-xl p-5">
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm font-medium text-slate-600">Total Amount</span>
+                            <span id="totalAmount" class="text-2xl font-semibold text-slate-800">₹ 0.00</span>
                         </div>
                     </div>
-                    <div>
-                        <label class="block text-sm font-medium text-slate-700 mb-2">Due Date</label>
-                        <input type="date" name="due_date" value="{{fee.due_date|date:"Y-m-d"}}" required class="w-full border border-slate-300 rounded-lg px-4 py-3">
+
+                    <div class="mb-6">
+                        <label class="block text-base sm:text-lg font-semibold text-slate-800 mb-2">
+                            Due Date <span class="text-red-500">*</span>
+                        </label>
+                        <input type="date" name="due_date" value="{{ fee.due_date|date:'Y-m-d' }}" required class="w-full border border-slate-300 rounded-xl px-3 sm:px-4 py-3 text-sm sm:text-base focus:outline-none focus:border-sky-600 focus:ring-2 focus:ring-sky-100 transition duration-200">
                     </div>
-                    <div>
-                        <label class="block text-sm font-medium text-slate-700 mb-2">Paid Date</label>
-                        <input type="date" name="paid_date" value="{{fee.paid_date|date:"Y-m-d"}}" class="w-full border border-slate-300 rounded-lg px-4 py-3">
+
+                    <div class="mb-6">
+                        <label class="block text-base sm:text-lg font-semibold text-slate-800 mb-2">Paid Date</label>
+                        <input type="date" name="paid_date" value="{{ fee.paid_date|date:'Y-m-d' }}" class="w-full border border-slate-300 rounded-xl px-3 sm:px-4 py-3 text-sm sm:text-base focus:outline-none focus:border-sky-600 focus:ring-2 focus:ring-sky-100 transition duration-200">
                     </div>
-                    <div>
-                        <label class="block text-sm font-medium text-slate-700 mb-2">Status</label>
-                        <select name="status" class="w-full border border-slate-300 rounded-lg px-4 py-3">
+
+                    <div class="mb-6">
+                        <label class="block text-base sm:text-lg font-semibold text-slate-800 mb-2">Status</label>
+                        <select name="status" class="w-full border border-slate-300 rounded-xl px-3 sm:px-4 py-3 text-sm sm:text-base bg-white focus:outline-none focus:border-sky-600 focus:ring-2 focus:ring-sky-100 transition duration-200">
                             {% for value, label in fee_status %}
                                 <option value="{{ value }}" {% if fee.status == value %}selected{% endif %}>
                                     {{ label }}
@@ -77,9 +106,10 @@
                             {% endfor %}
                         </select>
                     </div>
+
                     <div>
-                        <label class="block text-sm font-medium text-slate-700 mb-2">Payment Method</label>
-                        <select name="payment_method" class="w-full border border-slate-300 rounded-lg px-4 py-3">
+                        <label class="block text-base sm:text-lg font-semibold text-slate-800 mb-2">Payment Method</label>
+                        <select name="payment_method" class="w-full border border-slate-300 rounded-xl px-3 sm:px-4 py-3 text-sm sm:text-base bg-white focus:outline-none focus:border-sky-600 focus:ring-2 focus:ring-sky-100 transition duration-200">
                             {% for value, label in payment_methods %}
                                 <option value="{{ value }}" {% if fee.payment_method == value %}selected{% endif %}>
                                     {{ label }}
@@ -87,9 +117,13 @@
                             {% endfor %}
                         </select>
                     </div>
-                </div>
-                <button type="submit" class="w-full px-6 py-3 rounded-lg bg-slate-800 text-white font-medium hover:bg-slate-700 mt-8">Save Fee</button>
-            </form>
+
+                    <div class="mt-8 pt-6 border-t border-slate-400 flex flex-col sm:flex-row sm:justify-end gap-3">
+                        <button type="submit" class="w-full sm:w-auto px-7 py-3 rounded-xl bg-sky-700 text-white text-md font-semibold shadow-md transition duration-200 hover:bg-blue-500 hover:shadow-xl">Save Fee</button>
+                    </div>
+
+                </form>
+            </div>
         </div>
     </div>
 </div>
@@ -109,5 +143,6 @@
     checkboxes.forEach(function(checkbox) {
         checkbox.addEventListener("change", calculateTotal);
     });
+    calculateTotal();
 </script>
 {% endblock content %}
